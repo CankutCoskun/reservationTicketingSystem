@@ -189,6 +189,101 @@ app.get('/events', function (req, res) {
     }
 });
 
+<<<<<<< HEAD
+=======
+app.get('/profile', async function (req, res) {
+
+
+
+
+    try {
+        if (req.session.loggedin) {
+            let uname = req.session.username;
+            console.log(uname);
+            let user = await db.getUserByUname(uname);
+            console.log("User: ",user);
+            //res.send('Welcome back, ' + req.session.username + '!');
+           // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
+            res.render('user_profile.html', {
+                username: user.username,
+                type: user.usertype,
+                uid: user.uid,
+                email: user.email,
+                name_surname: user.name + " " + user.surname,
+                name: user.name,
+                surname:  user.surname,
+                created: user.createdAt,
+                updated: user.updatedAt
+                
+            });
+        }
+        else {
+            res.send('Please login to view this page!');
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+app.post('/createUser', async function (request, response) {
+    console.log('Authentication request: ', request.body);
+    var username = request.body.uname;
+    var password = request.body.password;
+    var email = request.body.email;
+    var name = request.body.name;
+    var surname = request.body.surname;
+
+    try {
+        let results = await db.addNewUser(username, password, email, name, surname);
+        let results2 = await db.authLogin(username, password);
+        
+        if (results2.length > 0) {
+            request.session.loggedin = true;
+            request.session.username = username;
+            //response.json(results);
+            response.redirect('/events');
+        }
+
+    }
+    catch (e) {
+        response.send('Already Registered User');
+        response.end();
+    }
+
+
+});
+app.post('/updateUser', async function (request, response) {
+    console.log('update user request: ', request.body);
+    var uid= request.body.uid;
+    var username = request.body.uname;
+    var password = request.body.password;
+    var email = request.body.email;
+    var name = request.body.name;
+    var surname = request.body.surname;
+
+    try {
+        let results = await db.updateUser(uid, username, password, email, name, surname);
+        console.log(results)
+        
+        if (results.message.length > 0) {
+            
+            response.redirect('/profile');
+        }
+
+    }
+    catch (e) {
+        response.send('Error in updating User');
+        response.end();
+    }
+
+
+});
+
+
+
+
+>>>>>>> origin/dev
 
 
 app.get('/signup', (req, res) => {

@@ -52,6 +52,7 @@ router.get('/users/:id', async (req, res, next) => {
     }
 });
 
+
 router.post('/users/add', async (req, res) => {
     try {
         console.log('Request Body: ', req.body);

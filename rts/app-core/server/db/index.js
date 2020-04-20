@@ -80,6 +80,21 @@ db.addNewUser = (uname, password, email, name, surname) => {
     });
 }
 
+db.updateUser = (uid, uname, password, email , name, surname ) =>{
+
+    return new Promise( (resolve, reject) => {
+
+        pool.query(`UPDATE Users SET username = ? , password = ?, email = ?, name = ?, surname = ? WHERE uid= ? ;`, [uname, password, email, name, surname,uid], (err) => {
+            if(err){
+                console.log('ERROR: .updateUser()');
+                return reject(err);
+            }
+            
+            return resolve({ message: ' user updated successfully'});
+        });
+    });
+}
+
 //---TO-DO---
 db.addNewLocalAdmin = (cuname, cpassword, cemail, atype) => {
 
