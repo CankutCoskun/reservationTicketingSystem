@@ -6,7 +6,7 @@
     <title>Your Profile</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
- 
+    
 
 
 
@@ -75,6 +75,7 @@
 
 
 <header>
+
 		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
 			<img src="../resources/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
 			<div class="collapse navbar-collapse" id="navbarColor02">
@@ -136,7 +137,7 @@
         <div class="col-sm-10">
 			        <!--    <a href="/users" class="pull-left"><img title="profile image" class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
 					-->
-			<h1><%= name_surname %></h1>
+            <h1><%= name_surname %></h1>
 
 		</div>	
         <div class="col-sm-2">
@@ -170,6 +171,7 @@
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
+
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
@@ -182,10 +184,23 @@
                                 </tr>
                             </thead>
                             <tbody id="items">
+                                <% for(var i=0; i < tickets.length; i++) { %>
+                                    <tr>
+                                        <td><%= i+1 %> </td>
+                                        <td><%= tickets[i].title %></td>
+                                        <td><%= tickets[i].eventtype %></td>
+                                        <td><%= tickets[i].companyname %></td>
+                                        <td><%= tickets[i].eventaddress %></td>
+                                        <td><%= tickets[i].eventdate %></td>
+                                        <td>
+                                            <input type='submit' name='edit' class='btn btn-success btn-sl' role='button' value='See Ticket'> 
+                                            <input type='submit' name='edit' class='btn btn-primary btn-sl' role='button' value='Cancel'>
+                                        </td>
+                                      </tr>
+                                <% } %>
                                 <tr >
-									
                                     <td>1</td>
-                                    <td href = "google.com">Ceza</td>
+                                    <td href = "google.com">Static Trial</td>
                                     <td>Concert</td>
                                     <td>SGM</td>
                                     <td>SGM</td>
@@ -196,7 +211,7 @@
 								<tr >
 									
                                     <td>2</td>
-                                    <td href = "google.com">Sagopa Kajmer</td>
+                                    <td href = "google.com">Static Trial</td>
                                     <td>Concert</td>
                                     <td>SGM</td>
                                     <td>SGM</td>

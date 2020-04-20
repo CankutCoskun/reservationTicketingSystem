@@ -98,7 +98,13 @@ router.get('/events/:id', async (req, res) => {
         res.sendStatus(500);
     }
 }); */
+<<<<<<< HEAD
 router.post('/company/add', upload.single('myFile'), async (req, res, next) => {
+=======
+
+//company
+router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
+>>>>>>> dd715b199abeaa41fe1c2ccdfc5f8e6e80569149
 
     try {
         console.log("Attached file: ", req.file);
@@ -174,15 +180,39 @@ router.post('/company/add', upload.single('myFile'), async (req, res, next) => {
 });
 
 
+<<<<<<< HEAD
 router.get('/companies/', async (req, res, next) => {
     try {
         let results = await db.getCompaines();
         res.json(results);
+=======
+//tickets
+router.post('/ticket/buy/:eid', async (req, res) => {
+    try {
+        console.log('berko' );   
+        console.log('Request Body: ', req.body );   
+        let event= await db.getEventById(req.params.eid);
+        if(event.remainingseat < req.body.peoplenumber   ){
+            res.send("no seats left for this event");
+        }
+        else {
+
+            let result = await db.addNewTicket(req.body.userid,req.body.peoplenumber,req.params.eid);
+            res.json(result);
+
+        }
+
+>>>>>>> dd715b199abeaa41fe1c2ccdfc5f8e6e80569149
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
+<<<<<<< HEAD
 });
+=======
+})
+
+>>>>>>> dd715b199abeaa41fe1c2ccdfc5f8e6e80569149
 
 
 

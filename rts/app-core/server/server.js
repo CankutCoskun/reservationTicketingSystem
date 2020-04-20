@@ -103,6 +103,14 @@ app.get('/home', (req, res) => {
 
 app.get('/login', (req, res) => {
     try {
+        if (req.session.utype == "CUSTOMER") {
+            
+            res.redirect('/events');
+            //res.sendFile(path.resolve('static/web-pages/event-pages/events.html'));
+        }
+        else if (req.session.utype == "GLOBAL"){res.redirect('/gadmin');}
+
+
         res.sendFile(path.resolve('static/web-pages/login-signup/login-user.html'));
     } catch (e) {
         console.log(e);
@@ -133,6 +141,7 @@ app.post('/auth', async (request, response) => {
                 if (utype == "CUSTOMER") {
                     request.session.loggedin = true;
                     request.session.username = username;
+                    request.session.utype = utype;
                     //response.json(results);
                     response.redirect('/events');
                     //console.log("ege selam");
@@ -142,11 +151,13 @@ app.post('/auth', async (request, response) => {
                 else if (utype == "GLOBAL") {
                     request.session.loggedin = true;
                     request.session.username = username;
+                    request.session.utype = utype;
                     response.redirect('/gadmin');
 
                 }
 
                 else if (utype == "LOCAL") {
+                    request.session.utype = utype;
 
                 }
 
@@ -181,7 +192,8 @@ app.get('/events', function (req, res) {
             res.sendFile(path.resolve('static/web-pages/event-pages/events.html'));
         }
         else {
-            res.send('Please login to view this page!');
+            //redirect to login/ homepage
+            res.redirect('/login');
         }
     } catch (e) {
         console.log(e);
@@ -192,16 +204,14 @@ app.get('/events', function (req, res) {
 <<<<<<< HEAD
 =======
 app.get('/profile', async function (req, res) {
-
-
-
-
     try {
         if (req.session.loggedin) {
             let uname = req.session.username;
             console.log(uname);
             let user = await db.getUserByUname(uname);
-            console.log("User: ",user);
+            let tickets = await db.getActiveTicketsById(user.uid);
+            console.log("User: ",user.name + " " + user.surname);
+            console.log("Tickets: ",tickets);
             //res.send('Welcome back, ' + req.session.username + '!');
            // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
             res.render('user_profile.html', {
@@ -213,7 +223,8 @@ app.get('/profile', async function (req, res) {
                 name: user.name,
                 surname:  user.surname,
                 created: user.createdAt,
-                updated: user.updatedAt
+                updated: user.updatedAt,
+                tickets: tickets
                 
             });
         }

@@ -19,7 +19,8 @@ const pool = mysql.createPool({
     user: 'doadmin',
     database: 'reservations',
     host: 'cs308db-do-user-7358055-0.a.db.ondigitalocean.com',
-    port: '25060'
+    port: '25060',
+    multipleStatements:true 
 });
 
 let db = {};
@@ -198,6 +199,47 @@ db.addNewEvent = (title, detail, address, date, capacity, imagePath) => {
             });
     });
 };
+
+/*Get all tickets of a customer */
+db.getActiveTicketsById = (id) => {
+
+    return new Promise( (resolve, reject) => {
+
+    querystr=`SELECT E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
+            FROM Tickets T JOIN Events E ON T.eId=E.eId JOIN Companies AS C ON C.id = E.cId 
+            where T.userid=? and T.status='ACTIVE' ; ` ; 
+        pool.query(querystr, [id] ,(err, results) => {
+        if(err){
+            console.log('ERROR: .getTicketsById()');
+
+            return reject(err);
+            }
+        return resolve(results);
+        });
+    });
+};
+
+
+//decrease remaining capacity of event and create tickets for the user
+db.addNewTicket = (userid,peoplenumber,eId) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`UPDATE Events SET remainingseat = remainingseat - ? WHERE Events.eId =? ;
+                    INSERT INTO Tickets (userid, peoplenumber,status, eId) VALUES( ?, ?, 'ACTIVE',?);`
+            , [peoplenumber,eId ,userid,peoplenumber,eId], (err, results) => {
+
+                if (err) {
+                    console.log('ERROR: .addNewTicket()');
+                    return reject(err);
+                }
+                console.log(results);
+                return resolve({ message: 'ticket is purchased successfully' });
+            });
+    });
+};
+
+
+
+
 /*
 
 */
