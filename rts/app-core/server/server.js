@@ -3,6 +3,8 @@ const session = require('express-session');
 const apiRouter = require('./routes/api');
 const db = require('./db');
 var path = require('path');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 // TO-DO Encrypt password before sending to database
 //const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
@@ -15,7 +17,7 @@ const app = express();
 //Render engine config
 //In html syntax <%= var %>
 app.set('views', process.cwd() + '/views');
-app.engine('html', require('ejs').renderFile);  
+app.engine('html', require('ejs').renderFile);
 
 
 //Servin api calls
@@ -28,13 +30,13 @@ app.use(express.json());
 //Html static file root 
 app.use(express.static(process.cwd() + '/static'));
 
-app.get('/getEventDetailPage/:eid', async function (req, res){
+app.get('/getEventDetailPage/:eid', async function (req, res) {
 
     try {
         let eid = req.params.eid;
         console.log(eid);
         let event = await db.getEventById(eid);
-        console.log("Event: ",event);
+        console.log("Event: ", event);
         //If you render relative path static/views/
         res.render('event-detail.html', {
             eId: event.eId,
@@ -50,7 +52,7 @@ app.get('/getEventDetailPage/:eid', async function (req, res){
     } catch (error) {
         console.log(error);
     }
-    
+
 });
 
 
@@ -187,6 +189,8 @@ app.get('/events', function (req, res) {
     }
 });
 
+
+
 app.get('/signup', (req, res) => {
 
     try {
@@ -199,7 +203,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.post('/createUser', async function (request, response) {
-
+    //email feature added
     console.log('Authentication request: ', request.body);
     var username = request.body.uname;
     var password = request.body.password;
@@ -215,6 +219,47 @@ app.post('/createUser', async function (request, response) {
             request.session.loggedin = true;
             request.session.username = username;
             //response.json(results);
+
+            const output = `
+    <h3>Message</h3>
+    <p>Hi ${name} ${surname}, Your account has been created</p>
+    <h3>User Details</h3>
+    <ul>  
+      <li>Name: ${name}</li>
+      <li>Surname: ${surname}</li>
+      <li>Email: ${email}</li>
+      <li>Username: ${username}</li>
+    </ul>
+   
+  `;
+
+            // create reusable transporter object using the default SMTP transport
+            var transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD
+                }
+            });
+
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: 'cs308reservationsystem@gmail.com', // sender address
+                to: email, // list of receivers
+                subject: 'New User', // Subject line
+                html: output // html body
+            };
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message sent: %s', info.messageId);
+                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+                res.render('contact', { msg: 'Email has been sent' });
+            });
             response.redirect('/events');
         }
 

@@ -46,6 +46,8 @@ xhttp.onreadystatechange = function () {
         col.append(card);
 
         document.getElementById("events").appendChild(col);
+        console.log(col);
+        console.log("ege");
 
     });
   }

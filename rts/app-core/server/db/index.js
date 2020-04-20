@@ -124,6 +124,17 @@ db.addNewCompany = (cuname, cname, caddress, imagePath) => {
     });
 }
 
+db.getCompaines = () => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT A.username, A.email, A.password, B.name, B.companyAddress, B.id FROM Users AS A INNER JOIN Companies as B ON A.uid=B.adminId `, (err, results) => {
+            if (err) {
+                console.log('ERROR: .getCompanies()');
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 
 
 
