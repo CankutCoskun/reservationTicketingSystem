@@ -198,7 +198,6 @@ router.post('/ticket/buy/:eid', async (req, res) => {
     }
 })
 
-
 // Add events with image upload
 router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
 
