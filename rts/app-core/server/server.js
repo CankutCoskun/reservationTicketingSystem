@@ -201,8 +201,6 @@ app.get('/events', function (req, res) {
     }
 });
 
-<<<<<<< HEAD
-=======
 app.get('/profile', async function (req, res) {
     try {
         if (req.session.loggedin) {
@@ -291,12 +289,6 @@ app.post('/updateUser', async function (request, response) {
 
 });
 
-
-
-
->>>>>>> origin/dev
-
-
 app.get('/signup', (req, res) => {
 
     try {
@@ -327,17 +319,16 @@ app.post('/createUser', async function (request, response) {
             //response.json(results);
 
             const output = `
-    <h3>Message</h3>
-    <p>Hi ${name} ${surname}, Your account has been created</p>
-    <h3>User Details</h3>
-    <ul>  
-      <li>Name: ${name}</li>
-      <li>Surname: ${surname}</li>
-      <li>Email: ${email}</li>
-      <li>Username: ${username}</li>
-    </ul>
-   
-  `;
+                <h3>Message</h3>
+                <p>Hi ${name} ${surname}, Your account has been created</p>
+                <h3>User Details</h3>
+                <ul>  
+                <li>Name: ${name}</li>
+                <li>Surname: ${surname}</li>
+                <li>Email: ${email}</li>
+                <li>Username: ${username}</li>
+                </ul>
+            `;
 
             // create reusable transporter object using the default SMTP transport
             var transporter = nodemailer.createTransport({
@@ -404,7 +395,6 @@ app.get('/admin', (req, res) => {
         res.sendStatus(500);
     }
 });
-
 
 
 app.listen(process.env.PORT || '3000', () => {
