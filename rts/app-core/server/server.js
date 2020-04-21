@@ -201,8 +201,6 @@ app.get('/events', function (req, res) {
     }
 });
 
-<<<<<<< HEAD
-=======
 app.get('/profile', async function (req, res) {
     try {
         if (req.session.loggedin) {
@@ -294,7 +292,6 @@ app.post('/updateUser', async function (request, response) {
 
 
 
->>>>>>> origin/dev
 
 
 app.get('/signup', (req, res) => {
