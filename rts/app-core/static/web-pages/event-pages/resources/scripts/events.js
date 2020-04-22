@@ -5,7 +5,7 @@ var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function () {
   if (this.readyState == 4 && this.status == 200) {
     const data = JSON.parse(this.responseText);
-    console.log("INFO LEVEL: ", data);
+    console.log("INFO: ", data);
 
     data.forEach(function(event){
 
@@ -46,12 +46,10 @@ xhttp.onreadystatechange = function () {
         col.append(card);
 
         document.getElementById("events").appendChild(col);
-        console.log(col);
-        console.log("ege");
 
     });
   }
 }
 
-xhttp.open("GET", "/api/events", true)
-xhttp.send()
+xhttp.open("GET", "/api/events", true);
+xhttp.send();

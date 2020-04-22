@@ -30,31 +30,6 @@ app.use(express.json());
 //Html static file root 
 app.use(express.static(process.cwd() + '/static'));
 
-app.get('/getEventDetailPage/:eid', async function (req, res) {
-
-    try {
-        let eid = req.params.eid;
-        console.log(eid);
-        let event = await db.getEventById(eid);
-        console.log("Event: ", event);
-        //If you render relative path static/views/
-        res.render('event-detail.html', {
-            eId: event.eId,
-            eTitle: event.title,
-            eDetail: event.detail,
-            eAddress: event.address,
-            eDate: event.date,
-            eCapacity: event.capacity,
-            eStatus: event.status,
-            eImagePath: event.imagePath
-            //cId: event.cId;
-        });
-    } catch (error) {
-        console.log(error);
-    }
-
-});
-
 
 app.get('/check', async (req, res) => {
     try {
@@ -65,14 +40,6 @@ app.get('/check', async (req, res) => {
     }
 });
 
-//Call admin dashboard page TO ADD NEW EVENT
-app.get('/new-event', (req, res) => {
-    try {
-        res.sendFile(path.resolve('static/web-pages/admin-dashboard/add_event.html'));
-    } catch (er) {
-        throw er;
-    }
-});
 
 //App
 app.use(session({
@@ -85,7 +52,7 @@ app.use(session({
 
 app.get('/', (req, res) => {
     try {
-        res.sendFile(path.resolve('static/web-pages/home.html'));
+        res.sendFile(path.resolve('static/web-pages/home-page/home.html'));
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -94,7 +61,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', (req, res) => {
     try {
-        res.sendFile(path.resolve('static/web-pages/home.html'));
+        res.sendFile(path.resolve('static/web-pages/home-page/home.html'));
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -103,14 +70,6 @@ app.get('/home', (req, res) => {
 
 app.get('/login', (req, res) => {
     try {
-        if (req.session.utype == "CUSTOMER") {
-            
-            res.redirect('/events');
-            //res.sendFile(path.resolve('static/web-pages/event-pages/events.html'));
-        }
-        else if (req.session.utype == "GLOBAL"){res.redirect('/gadmin');}
-
-
         res.sendFile(path.resolve('static/web-pages/login-signup/login-user.html'));
     } catch (e) {
         console.log(e);
@@ -201,6 +160,87 @@ app.get('/events', function (req, res) {
     }
 });
 
+app.get('/getEventDetailPage/:eid', async function (req, res) {
+
+    try {
+        let uname = req.session.username;
+        let user = await db.getUserByUname(uname);
+        let eid = req.params.eid;
+        let event = await db.getEventById(eid);
+        //If you render relative path /views/
+        res.render('event-detail.html', {
+            uId: user.uid,
+            eId: event.eId,
+            eTitle: event.title,
+            eDetail: event.detail,
+            eAddress: event.address,
+            eDate: event.date,
+            eCapacity: event.capacity,
+            eStatus: event.status,
+            eImagePath: event.imagePath
+            //cId: event.cId;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
+});
+
+app.get('/ticketPurchasePage',  async (req, res) => {
+    try {  
+        console.log("Ticket purchase is called...");
+        console.log(req.query); 
+        let event = await db.getEventById(req.query.eid);
+        let user = await db.getUserById(req.query.uid);
+        res.render('ticket-purchase.html' ,{
+            uId: user.uid,
+            eId: event.eId,
+            eTitle: event.title,
+            eDetail: event.detail,
+            eAddress: event.address,
+            eDate: event.date,
+            eCapacity: event.capacity,
+            eStatus: event.status,
+            eImagePath: event.imagePath
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.post('/createTicket',  async (req, res) => {
+
+    try {
+        console.log("CREATE TICKET IS CALLED");  
+        console.log(req.body);
+        let event = await db.getEventById(req.body.eid);
+        let user = await db.getUserById(req.body.uid);
+        if(event.remainingseat < req.body.numTickets){
+            res.send("no seats left for this event");
+        }
+        else {
+            let result = await db.addNewTicket(req.body.uid,req.body.peoplenumber,req.body.eid);
+            console.log(result);
+            res.render('view-ticket.html' ,{
+                uId: user.uid,
+                uName:user.name,
+                eId: event.eId,
+                eTitle: event.title,
+                eDetail: event.detail,
+                eAddress: event.address,
+                eDate: event.date,
+                eCapacity: event.capacity,
+                eStatus: event.status,
+                eImagePath: event.imagePath
+            });
+        }
+        
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+});
+
 app.get('/profile', async function (req, res) {
     try {
         if (req.session.loggedin) {
@@ -235,33 +275,6 @@ app.get('/profile', async function (req, res) {
     }
 });
 
-app.post('/createUser', async function (request, response) {
-    console.log('Authentication request: ', request.body);
-    var username = request.body.uname;
-    var password = request.body.password;
-    var email = request.body.email;
-    var name = request.body.name;
-    var surname = request.body.surname;
-
-    try {
-        let results = await db.addNewUser(username, password, email, name, surname);
-        let results2 = await db.authLogin(username, password);
-        
-        if (results2.length > 0) {
-            request.session.loggedin = true;
-            request.session.username = username;
-            //response.json(results);
-            response.redirect('/events');
-        }
-
-    }
-    catch (e) {
-        response.send('Already Registered User');
-        response.end();
-    }
-
-
-});
 app.post('/updateUser', async function (request, response) {
     console.log('update user request: ', request.body);
     var uid= request.body.uid;
@@ -285,7 +298,6 @@ app.post('/updateUser', async function (request, response) {
         response.send('Error in updating User');
         response.end();
     }
-
 
 });
 
@@ -393,6 +405,15 @@ app.get('/admin', (req, res) => {
     catch (e) {
         console.log(e);
         res.sendStatus(500);
+    }
+});
+
+//Call admin dashboard page TO ADD NEW EVENT
+app.get('/new-event', (req, res) => {
+    try {
+        res.sendFile(path.resolve('static/web-pages/admin-dashboard/add_event.html'));
+    } catch (er) {
+        throw er;
     }
 });
 

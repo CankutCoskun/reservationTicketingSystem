@@ -96,7 +96,6 @@ db.updateUser = (uid, uname, password, email , name, surname ) =>{
     });
 }
 
-//---TO-DO---
 db.addNewLocalAdmin = (cuname, cpassword, cemail, atype) => {
 
     return new Promise((resolve, reject) => {
@@ -151,9 +150,6 @@ db.getCompaines = () => {
         });
     });
 };
-
-
-
 
 db.getEvents = () => {
     return new Promise((resolve, reject) => {
@@ -219,7 +215,6 @@ db.getActiveTicketsById = (id) => {
     });
 };
 
-
 //decrease remaining capacity of event and create tickets for the user
 db.addNewTicket = (userid,peoplenumber,eId) => {
     return new Promise((resolve, reject) => {
@@ -239,10 +234,6 @@ db.addNewTicket = (userid,peoplenumber,eId) => {
 
 
 
-
-/*
-
-*/
 /* ****************  Login Authentication    ***************** */
 //
 
