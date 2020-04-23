@@ -196,7 +196,21 @@ db.addNewEvent = (title, detail, address, date, capacity, imagePath) => {
     });
 };
 
-/*Get all tickets of a customer */
+
+//get ticket by tid
+db.getTicketById = (tid) => {
+    return new Promise((resolve, reject)=>{
+        pool.query(`SELECT * FROM Tickets WHERE id = ?`, [tid], (err, results) => {
+            if(err){
+                console.log('ERROR: .getTicketById()');
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
+
+/*Get all tickets of a customer by user id */
 db.getActiveTicketsById = (id) => {
 
     return new Promise( (resolve, reject) => {
@@ -221,13 +235,12 @@ db.addNewTicket = (userid,peoplenumber,eId) => {
         pool.query(`UPDATE Events SET remainingseat = remainingseat - ? WHERE Events.eId =? ;
                     INSERT INTO Tickets (userid, peoplenumber,status, eId) VALUES( ?, ?, 'ACTIVE',?);`
             , [peoplenumber,eId ,userid,peoplenumber,eId], (err, results) => {
-
                 if (err) {
                     console.log('ERROR: .addNewTicket()');
                     return reject(err);
                 }
-                console.log(results);
-                return resolve({ message: 'ticket is purchased successfully' });
+                console.log({ message: 'ticket is purchased successfully' });
+                return resolve(results[1]);
             });
     });
 };

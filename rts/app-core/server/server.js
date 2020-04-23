@@ -3,6 +3,7 @@ const session = require('express-session');
 const apiRouter = require('./routes/api');
 const db = require('./db');
 var path = require('path');
+const url = require('url');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 // TO-DO Encrypt password before sending to database
@@ -208,31 +209,60 @@ app.get('/ticketPurchasePage',  async (req, res) => {
     }
 });
 
-app.post('/createTicket',  async (req, res) => {
+//TEST
+app.get('/viewTicket/', async (req, res) => {
+    try {
+        let tid = req.query.tid;
+        console.log(tid);
+        console.log("IN VIEW TICKET");
+        let ticket = await db.getTicketById(tid);
+        let event = await db.getEventById(ticket.eId);
+        let user =  await db.getUserById(ticket.userid);
+        console.log(ticket);
+        console.log(user);
+        res.render('view-ticket.html' ,{
+            tId: ticket.id,
+            tNum: ticket.peoplenumber,
+            tStatus: ticket.status,
+            //ticket category will be added into db
+            uId: user.uid,
+            uName: user.name,
+            eId: event.eId,
+            eTitle: event.title,
+            eDetail: event.detail,
+            eAddress: event.address,
+            eDate: event.date,
+            eCapacity: event.capacity,
+            eStatus: event.status,
+            eImagePath: event.imagePath
+        });
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
 
+app.post('/createTicket',  async (req, res) => {
     try {
         console.log("CREATE TICKET IS CALLED");  
         console.log(req.body);
         let event = await db.getEventById(req.body.eid);
         let user = await db.getUserById(req.body.uid);
-        if(event.remainingseat < req.body.numTickets){
+        if(event.remainingseat < req.body.peoplenumber){
             res.send("no seats left for this event");
         }
         else {
             let result = await db.addNewTicket(req.body.uid,req.body.peoplenumber,req.body.eid);
-            console.log(result);
-            res.render('view-ticket.html' ,{
-                uId: user.uid,
-                uName:user.name,
-                eId: event.eId,
-                eTitle: event.title,
-                eDetail: event.detail,
-                eAddress: event.address,
-                eDate: event.date,
-                eCapacity: event.capacity,
-                eStatus: event.status,
-                eImagePath: event.imagePath
-            });
+            console.log(result.insertId);
+            //TO-DO REDIRECT CONNECTION
+            var tid = result.insertId;
+            res.redirect(url.format({
+                pathname: "/viewTicket",
+                query: {
+                   "tid": result.insertId
+                 }             
+              }));
+            
         }
         
     } catch (error) {
@@ -240,6 +270,20 @@ app.post('/createTicket',  async (req, res) => {
         throw error;
     }
 });
+
+
+// res.render('view-ticket.html' ,{
+//     uId: user.uid,
+//     uName:user.name,
+//     eId: event.eId,
+//     eTitle: event.title,
+//     eDetail: event.detail,
+//     eAddress: event.address,
+//     eDate: event.date,
+//     eCapacity: event.capacity,
+//     eStatus: event.status,
+//     eImagePath: event.imagePath
+// });
 
 app.get('/profile', async function (req, res) {
     try {
@@ -365,7 +409,6 @@ app.post('/createUser', async function (request, response) {
                     return console.log(error);
                 }
                 console.log('Message sent: %s', info.messageId);
-                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
                 res.render('contact', { msg: 'Email has been sent' });
             });
@@ -416,7 +459,6 @@ app.get('/new-event', (req, res) => {
         throw er;
     }
 });
-
 
 app.listen(process.env.PORT || '3000', () => {
     console.log(`Server is running on port: ${process.env.PORT || '3000'}`);
