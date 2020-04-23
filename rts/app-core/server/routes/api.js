@@ -98,13 +98,9 @@ router.get('/events/:id', async (req, res) => {
         res.sendStatus(500);
     }
 }); */
-<<<<<<< HEAD
-router.post('/company/add', upload.single('myFile'), async (req, res, next) => {
-=======
 
 //company
 router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
->>>>>>> dd715b199abeaa41fe1c2ccdfc5f8e6e80569149
 
     try {
         console.log("Attached file: ", req.file);
@@ -180,12 +176,6 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
 });
 
 
-<<<<<<< HEAD
-router.get('/companies/', async (req, res, next) => {
-    try {
-        let results = await db.getCompaines();
-        res.json(results);
-=======
 //tickets
 router.post('/ticket/buy/:eid', async (req, res) => {
     try {
@@ -202,27 +192,11 @@ router.post('/ticket/buy/:eid', async (req, res) => {
 
         }
 
->>>>>>> dd715b199abeaa41fe1c2ccdfc5f8e6e80569149
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
-<<<<<<< HEAD
-});
-=======
 })
-
->>>>>>> dd715b199abeaa41fe1c2ccdfc5f8e6e80569149
-
-
-
-
-
-
-
-
-
-
 
 // Add events with image upload
 router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
