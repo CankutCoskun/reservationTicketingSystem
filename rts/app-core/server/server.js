@@ -104,11 +104,13 @@ app.get('/home', (req, res) => {
 app.get('/login', (req, res) => {
     try {
         if (req.session.utype == "CUSTOMER") {
-            
+
             res.redirect('/events');
             //res.sendFile(path.resolve('static/web-pages/event-pages/events.html'));
         }
-        else if (req.session.utype == "GLOBAL"){res.redirect('/gadmin');}
+        //else if (req.session.utype == "GLOBAL")
+
+        //{res.redirect('/gadmin');}
 
 
         res.sendFile(path.resolve('static/web-pages/login-signup/login-user.html'));
@@ -142,9 +144,7 @@ app.post('/auth', async (request, response) => {
                     request.session.loggedin = true;
                     request.session.username = username;
                     request.session.utype = utype;
-                    //response.json(results);
                     response.redirect('/events');
-                    //console.log("ege selam");
 
                 }
 
@@ -157,8 +157,10 @@ app.post('/auth', async (request, response) => {
                 }
 
                 else if (utype == "LOCAL") {
+                    request.session.loggedin = true;
+                    request.session.username = username;
                     request.session.utype = utype;
-
+                    response.redirect('/company');
                 }
 
             } else {
@@ -201,6 +203,31 @@ app.get('/events', function (req, res) {
     }
 });
 
+app.get('/gadmin', async function (req, res) {
+
+    try {
+        if (req.session.loggedin) {
+            //res.send('Welcome back, ' + req.session.username + '!');
+            console.log(req.session);
+            let uname = req.session.username;
+            console.log(uname);
+            let company = await db.getCompaines();
+            console.log(company);
+            res.render('global-admin.html', {
+                company: company
+            });
+        }
+        else {
+            res.send('Please login to view this page!');
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+
+
 app.get('/profile', async function (req, res) {
     try {
         if (req.session.loggedin) {
@@ -208,10 +235,10 @@ app.get('/profile', async function (req, res) {
             console.log(uname);
             let user = await db.getUserByUname(uname);
             let tickets = await db.getActiveTicketsById(user.uid);
-            console.log("User: ",user.name + " " + user.surname);
-            console.log("Tickets: ",tickets);
+            console.log("User: ", user.name + " " + user.surname);
+            console.log("Tickets: ", tickets);
             //res.send('Welcome back, ' + req.session.username + '!');
-           // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
+            // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
             res.render('user_profile.html', {
                 username: user.username,
                 type: user.usertype,
@@ -219,11 +246,39 @@ app.get('/profile', async function (req, res) {
                 email: user.email,
                 name_surname: user.name + " " + user.surname,
                 name: user.name,
-                surname:  user.surname,
+                surname: user.surname,
                 created: user.createdAt,
                 updated: user.updatedAt,
                 tickets: tickets
-                
+
+            });
+        }
+        else {
+            res.send('Please login to view this page!');
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+app.get('/company', async function (req, res) {
+    try {
+        if (req.session.loggedin) {
+            let uname = req.session.username;
+            console.log(uname);
+            let a = await db.getCompIDbyUsername(uname);
+
+            var string = JSON.stringify(a);
+            var json = JSON.parse(string);
+            let compid = json[0].id;
+            let compname=json[0].name;
+            console.log(a);
+            let events = await db.getEventByCompanyId(compid);
+            res.render('local-admin.html', {
+                compid:compid,
+                compname:compname,
+                events: events
             });
         }
         else {
@@ -246,7 +301,7 @@ app.post('/createUser', async function (request, response) {
     try {
         let results = await db.addNewUser(username, password, email, name, surname);
         let results2 = await db.authLogin(username, password);
-        
+
         if (results2.length > 0) {
             request.session.loggedin = true;
             request.session.username = username;
@@ -264,7 +319,7 @@ app.post('/createUser', async function (request, response) {
 });
 app.post('/updateUser', async function (request, response) {
     console.log('update user request: ', request.body);
-    var uid= request.body.uid;
+    var uid = request.body.uid;
     var username = request.body.uname;
     var password = request.body.password;
     var email = request.body.email;
@@ -274,9 +329,9 @@ app.post('/updateUser', async function (request, response) {
     try {
         let results = await db.updateUser(uid, username, password, email, name, surname);
         console.log(results)
-        
+
         if (results.message.length > 0) {
-            
+
             response.redirect('/profile');
         }
 
@@ -375,21 +430,7 @@ app.post('/createUser', async function (request, response) {
 
 });
 
-app.get('/gadmin', (req, res) => {
 
-    try {
-        if (req.session.loggedin) {
-            //res.send('Welcome back, ' + req.session.username + '!');
-            res.sendFile(path.resolve('static/web-pages/admin-dashboard/global-admin.html'));
-        }
-        else {
-            res.send('Please login to view this page!');
-        }
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-});
 
 app.get('/admin', (req, res) => {
 

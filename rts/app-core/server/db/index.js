@@ -153,6 +153,19 @@ db.getCompaines = () => {
 };
 
 
+//return the company id and company name of a certain companyusername
+
+db.getCompIDbyUsername = (uname) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT C.id, C.name FROM Companies AS C INNER JOIN Users as U ON C.adminId=U.uid AND U.username= ?`,[uname], (err, results) => { 
+            if (err) {
+                console.log('ERROR: .getCompanies()');
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 
 
 db.getEvents = () => {
@@ -183,20 +196,51 @@ db.getEventById = (id) => {
     });
 };
 
-db.addNewEvent = (title, detail, address, date, capacity, imagePath) => {
+db.addNewEvent = (compid,title, venue, date, time, capacity, detail,imagePath) => {
     return new Promise((resolve, reject) => {
-        //TO-DO Check If the required parameters are empty or not. If so send NUll
-        pool.query(`INSERT INTO Events (title, detail, address, date, capacity, imagePath, status)
-                    VALUES( ?, ?, ?, ?, ?, ?, 'ACTIVE');`
-            , [title, detail, address, date, capacity, imagePath], (err, results) => {
+        console.log(capacity);
+        pool.query(`INSERT INTO Events (cId,remainingseat,title, venue, date, time, capacity,detail,status, imagePath)
+                    VALUES(?,?,?,?, ?, ?, ?, ?, 'ACTIVE', ?);`
+            , [compid,capacity,title, venue, date, time, capacity,detail,imagePath], (err, results) => {
 
                 if (err) {
                     console.log('ERROR: .addNewEvent()');
                     return reject(err);
                 }
-
                 return resolve({ message: 'new event added successfully' });
             });
+    });
+};
+
+
+//delete event
+db.deleteEvent=(id)=>{
+
+    return new Promise((resolve, reject) => {
+        pool.query(`DELETE FROM Events WHERE eId = ?`, [id] ,(err, results) => {
+                if (err) {
+                    console.log('ERROR: .deleteEvent()');
+                    return reject(err);
+                }
+                return resolve({ message: 'event successfully deleted'});
+            });
+    });
+};
+
+
+//get all tickets of a company
+db.getEventByCompanyId = (id) => {
+
+    return new Promise( (resolve, reject) => {
+        pool.query(`SELECT * FROM Events WHERE cId = ?`, [id] ,(err, results) => {
+            if(err){
+                console.log('ERROR: .getEventByCompanyId');
+
+                return reject(err);
+            }
+
+            return resolve(results);
+        });
     });
 };
 
@@ -218,7 +262,6 @@ db.getActiveTicketsById = (id) => {
         });
     });
 };
-
 
 //decrease remaining capacity of event and create tickets for the user
 db.addNewTicket = (userid,peoplenumber,eId) => {

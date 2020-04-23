@@ -1,239 +1,214 @@
-
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.6">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="   crossorigin="anonymous"></script>
-    <title>Admin Dashboard</title>
 
-    <link rel="apple-touch-icon" href="/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/4.4/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
-    <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon.ico">
-    <meta name="msapplication-config" content="/docs/4.4/assets/img/favicons/browserconfig.xml">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    
+    <script src="../../bootstrap-resources/js/jquery.min.js"></script>
+    <script src="../../bootstrap-resources/js/popper.min.js"></script>
+    <script src="../../bootstrap-resources/js/bootstrap.min.js"></script>
+    <title>Global Admin</title>
     <meta name="theme-color" content="#563d7c">
 
     <style>
-        .bd-placeholder-img {
-          font-size: 1.125rem;
-          text-anchor: middle;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
+        .navbar-nav>.nav-item {
+            color: white;
+            margin-left: 10px;
+            margin-right: 5px;
         }
-  
-        @media (min-width: 768px) {
-          .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-          }
+
+        .navbar ul.nav li.open>a.get-started-btn {
+            color: #fff;
+            background: white;
         }
-      </style>
-      <!-- Custom styles for this template -->
-    </head>
-    <body>
-      <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-          <a class="navbar-brand" href="#">CS 308 Project</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Sign Out</a>
-              </li>
+
+        /* change the brand and text color */
+        .navbar .navbar-brand,
+        .navbar .navbar-text {
+            color: white;
+        }
+
+        /* change the link color */
+        .navbar-nav .nav-item .nav-link {
+            color: white;
+        }
+
+        /* change the color of active or hovered links */
+        .navbar-nav .nav-item.active .nav-link,
+        .navbar-nav .nav-item:hover .nav-link {
+            color: white;
+
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px
+        }
+
+        #profile-section {
+            width: 280px;
+            padding: 20px;
+            left: auto;
+            right: 0;
+        }
+
+        h1,
+        h2 {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+            color: #0d5abe;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <img src="../resources/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
+        <h5 class="modal-title" id="title" style="color: white; border-color: white;"><%= compname %></h5>
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="nav navbar-nav navbar-right ml-auto">
+                <li class="nav-item">
+                    <form class="form-inline">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"
+                            style="color: white; border-color: white;">
+                            <i class="fa fa-fw fa-search"></i>Search</button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+                </li>
+                </li>
             </ul>
-            <form class="form-inline mt-2 mt-md-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-          </div>
-      </nav>
-  <div class="container-fluid">
-    <div class="row">
-      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-        <div class="sidebar-sticky">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="index.html">
-                <span data-feather="home"></span>
-                Dashboard <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="file"></span>
-                Edit Events
-              </a>
-			  <a class="nav-link" href="#">
-                <span data-feather="file"></span>
-                Local Admins
-              </a>
-            </li>
-          </ul>
-          <ul class="nav flex-column mb-2">
-          </ul>
         </div>
-      </nav>
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Local Admins</h1>
+    </nav>
+
+
+    <main role="main" class="">
+
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Edit Event</h1>
         </div>
 
-        <form class="form-row">
-          <div class="form-group col-md-2">
-              <label for="name" class="control-label">Admin ID</label>
-              <input type="text" value='' class="form-control" id="adminid" placeholder="Enter ID">
-          </div>
-          <div class="form-group col-md-2">
-              <label for="name" class="control-label">Admin Name</label>
-              <input type="text" value='' class="form-control" id="adminname" placeholder="Enter Name">
-          </div>
-          <div class="form-group col-md-2">
-              <label for="name" class="control-label">Admin Lastname</label>
-              <input type="text" value='' class="form-control" id="adminlastname" placeholder="Enter Lastname">
-          </div>
-          <div class="form-group col-md-2">
-              <label for="name" class="control-label">Admin Company</label>
-              <input type="text" value='' class="form-control" id="admincompany" placeholder="Enter Company">
-          </div>
-          <div class="form-group col-md-2">
-              <label for="name" class="control-label">Admin Password</label>
-              <input type="text" value='' class="form-control" id="adminpswd" placeholder="Enter Password">
-          </div>
-          <div class="form-group col-md-2">
-              <label for="name" class="control-label">Confirm Password</label>
-              <input type="text" value='' class="form-control" id="adminpswd" placeholder="Enter Password">
-          </div>
-        </form>
-        <button class="btn btn-info" onclick="addFunction()" id="add"><span class="glyphicon glyphicon-plus-sign"></span>Add New Admin</button>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+            Add Event
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Add Event</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form action="/api/events/add" enctype="multipart/form-data" method="POST">
+                            <div class="form-group">
+                                <label for="EventInformation">Event Title</label>
+                                <input type="text" class="form-control" name="eventtitle" id="eventtitle"
+                                    placeholder="Event Title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Venue</label>
+                                <input type="text" class="form-control" name="eventvenue" id="eventvenue"
+                                    placeholder="Event Venue" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Date</label>
+                                <input type="text" class="form-control" name="eventdate" id="eventdate"
+                                    placeholder="Event Date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Time</label>
+                                <input type="text" class="form-control" name="eventtime" id="eventtime"
+                                    placeholder="Event Time" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Capacity</label>
+                                <input type="number" class="form-control" name="eventcapacity" id="eventcapacity"
+                                    placeholder="Event Capacity" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Detail</label>
+                                <input type="text" class="form-control" name="eventdetail" id="eventdetail"
+                                    placeholder="Event Detail" required>
+                            </div>
+                            <div class="form-group">
+                                <h4 class="modal-title">Upload Image</h5>
+                                    <input type="file" name="myFile" class="form-control-file"
+                                        id="exampleFormControlFile1">
+                            </div>
+                            <input type="number" name="compid" value="<%= compid %>" style="display:none;"> 
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <input type='submit' name='addcomp' class="btn btn-primary  active" role="button"
+                                    aria-pressed="true" value="Add New Company">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-
-
-
-       
-
-
-
-
-
-
-
-
-        <table id=t1 class="table table-striped">
+        <table id=eventtable class="table table-striped">
             <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Lastname</th>
-                <th scope="col">Company</th>
-				<th scope="col">Password</th>
-				<th scope="col">Password</th>
-				<th scope="col">Action</th>
-				<th scope="col">         </th>
-                
-              </tr>
+                <tr>
+                    <!--  <th scope="col">Company Image</th> -->
+                    <th scope="col">Event ID</th>
+                    <th scope="col">Event Title</th>
+                    <th scope="col">Event Venue</th>
+                    <th scope="col">Event Date</th>
+                    <th scope="col">Event Time</th>
+                    <th scope="col">Event Capacity</th>
+                    <th scope="col">Event Detail</th>
+
+                </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">              <input type="text" value='1' class="form-control" id="adminid" >  </th>
-                
-                <td>              <input type="text" value='Yunus' class="form-control" id="adminname" > </td>
-                <td>              <input type="text" value='Çelik' class="form-control" id="adminlastname" > </td>
-                <td>                <input type="text" value='Sabancı' class="form-control" id="admincompany" >   </td>    
-                <td>                              <input type="text" value='' class="form-control" id="adminpswd" placeholder="********">  </td>    
-                <td>                             <input type="text" value='' class="form-control" id="adminpswd" placeholder="********">  </td>    
-				<td>         <button class="btn btn-info" onclick="addFunction()" id="add"><span class="glyphicon glyphicon-plus-sign"></span>Update</button> </td>
-				<td>         <button class="btn btn-danger" onclick="deleteFunction()" id="delete"><span class="glyphicon glyphicon-plus-sign"></span>Delete</button> </td>
-                
-              </tr>
-              <tr>
-                <th scope="row">              <input type="text" value='2' class="form-control" id="adminid" >  </th>
-                
-                <td>              <input type="text" value='Ege' class="form-control" id="adminname" > </td>
-                <td>              <input type="text" value='Arıkan' class="form-control" id="adminlastname" > </td>
-                <td>                <input type="text" value='Sabancı' class="form-control" id="admincompany" >   </td>    
-                <td>                              <input type="text" value='' class="form-control" id="adminpswd" placeholder="********">  </td>    
-                <td>                             <input type="text" value='' class="form-control" id="adminpswd" placeholder="********">  </td>    
-				<td>         <button class="btn btn-info" onclick="addFunction()" id="add"><span class="glyphicon glyphicon-plus-sign"></span>Update</button> </td>
-				<td>         <button class="btn btn-danger" onclick="deleteFunction()" id="delete"><span class="glyphicon glyphicon-plus-sign"></span>Delete</button> </td>
-                
-              </tr>
-			  <tr>
-                <th scope="row">              <input type="text" value='3' class="form-control" id="adminid" >  </th>
-                
-                <td>              <input type="text" value='Cankut' class="form-control" id="adminname" > </td>
-                <td>              <input type="text" value='Coşkun' class="form-control" id="adminlastname" > </td>
-                <td>                <input type="text" value='Sabancı' class="form-control" id="admincompany" >   </td>    
-                <td>                              <input type="text" value='' class="form-control" id="adminpswd" placeholder="********">  </td>    
-                <td>                             <input type="text" value='' class="form-control" id="adminpswd" placeholder="********">  </td>    
-				<td>         <button class="btn btn-info" onclick="addFunction()" id="add"><span class="glyphicon glyphicon-plus-sign"></span>Update</button> </td>
-				<td>         <button class="btn btn-danger" onclick="deleteFunction()" id="delete"><span class="glyphicon glyphicon-plus-sign"></span>Delete</button> </td>
+            <tbody id="events">
+              
 
-              </tr>
             </tbody>
-          </table>
-          
-        </div>
-        
-      </main>
-    </div>
+        </table>
 
-    
-  </div>
+        </div>
+
+    </main>
+
 
     <!-- Optional JavaScript -->
+
+
     <script>
-      var line=2;
-
-
-      function addFunction() {
-
-      var table = document.getElementById("t1");
-      var row = table.insertRow(line+1);
-      var cell1 = row.insertCell(0);
-      var cell2 = row.insertCell(1);
-      var cell3 = row.insertCell(2);
-      var cell4 = row.insertCell(3);
-      var cell5 = row.insertCell(4);
-      var cell6 = row.insertCell(5);
-
-      var c1 = document.getElementById("eventid").value;
-      var c2 = document.getElementById("eventname").value;
-      var c3 = document.getElementById("eventvenue").value;
-      var c4 = document.getElementById("eventdate").value;
-      var c5 = document.getElementById("eventtime").value;
-      var c6 = document.getElementById("eventcapacity").value;
-
-      var newHTML=c1.bold();
-      cell1.innerHTML=newHTML;
-      cell2.innerHTML=c2;
-      cell3.innerHTML=c3;
-      cell4.innerHTML=c4;
-      cell5.innerHTML=c5;
-      cell6.innerHTML=c6;
-      line+=1;
-      }
+      
 
 
 
     </script>
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+
+
+
+
+
+</body>
+
 </html>

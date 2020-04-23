@@ -1,32 +1,41 @@
-var xhttp = new XMLHttpRequest();
+const companies=document.querySelector("#companytable > tbody");
+console.log("ege");
+function loadComp(){
+    console.log("ege");
+    const req = new XMLHttpRequest();
+    req.open("GET", "api/companies", true);
+    req.onload=() => {
 
-xhttp.onreadystatechange = function () {
+        try{
+            const json=JSON.parse(req.responseText);
+            populateComp(json);
 
-    if (this.readyState == 4 && this.status == 200) {
-        const data = JSON.parse(this.responseText);
-        console.log("INFO LEVEL: ", data);
-
-        data.forEach(function (company) {
-
-            var row = document.createElement('tr');
-            row.setAttribute('class', 'event-row');
-
-            var rowcol = document.createElement('td');
-            var rowimage = document.createElement('img');
-
-            rowimage.setAttribute('class', 'card-img-top');
-            rowimage.setAttribute('src', '/' + event.imagePath);
-            rowimage.setAttribute('data-holder-rendered', true);
-            rowimage.style.height = "225px";
-            rowimage.style.width = "100%";
-            rowimage.style.display = "block";
+        }
+        catch(e){
+            console.log.apply("hata");
+        }
 
 
-
-
-        });
     }
+    req.send();
 }
 
-xhttp.open("GET", "api/companies", true);
-xhttp.send();
+
+function populateComp(json){
+
+    while (companies.firstChild){
+        companies.removeChild(companies.firstChild);
+    }
+
+    json.forEach((row)=> {
+        const tr=document.createElement("tr");
+
+        row.forEach((cell)=>{
+            const td=document.createElement("td");
+            td.textContent=cell;
+            tr.appendChild(td);
+        });
+        companies.appendChild(tr);
+    });
+    document.addEventListener("DOMContentLoaded",()=>{loadComp();});
+}
