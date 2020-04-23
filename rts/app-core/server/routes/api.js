@@ -100,7 +100,7 @@ router.get('/events/:id', async (req, res) => {
 }); */
 
 //company
-router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
+router.post('/company/add', upload.single('myFile'), async (req, res, next) => {
 
     try {
         console.log("Attached file: ", req.file);
@@ -150,10 +150,10 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
             subject: 'New Company', // Subject line
             html: output // html body
             //email with company picture
-           /* attachments: [{   // stream as an attachment
-                filename: 'image.jpg',
-                content: fs.createReadStream(filePath)
-            }]*/
+            /* attachments: [{   // stream as an attachment
+                 filename: 'image.jpg',
+                 content: fs.createReadStream(filePath)
+             }]*/
         };
 
         // send mail with defined transport object
@@ -167,7 +167,8 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
             res.render('contact', { msg: 'Email has been sent' });
         });
 
-        res.json({ message: 'company is added' });
+        //res.json({ message: 'company is added' });
+        res.redirect('http://localhost:3000/gadmin')
 
     } catch (error) {
         console.log(error);
@@ -179,17 +180,16 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
 //tickets
 router.post('/ticket/buy/:eid', async (req, res) => {
     try {
-        console.log('berko' );   
-        console.log('Request Body: ', req.body );   
-        let event= await db.getEventById(req.params.eid);
-        if(event.remainingseat < req.body.peoplenumber   ){
+        console.log('berko');
+        console.log('Request Body: ', req.body);
+        let event = await db.getEventById(req.params.eid);
+        if (event.remainingseat < req.body.peoplenumber) {
             res.send("no seats left for this event");
         }
         else {
 
-            let result = await db.addNewTicket(req.body.userid,req.body.peoplenumber,req.params.eid);
+            let result = await db.addNewTicket(req.body.userid, req.body.peoplenumber, req.params.eid);
             res.json(result);
-
         }
 
     } catch (e) {
@@ -197,6 +197,23 @@ router.post('/ticket/buy/:eid', async (req, res) => {
         res.sendStatus(500);
     }
 })
+
+
+
+//delete event by id
+router.delete('/events/delete/:eId', async (req, res) => {
+    try {
+        let result = await db.deleteEvent(req.params.eId);
+        console.log(result);
+        res.send("event deleted");
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+})
+
+
+
 
 // Add events with image upload
 router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
@@ -214,16 +231,9 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
         //Relative to static directory
         let filePath = 'uploads/' + file.filename;
         console.log("file received: ", filePath);
-
-        var title = ((req.body.title == '') ? 'NULL' : req.body.title);
-        var detail = ((req.body.detail == '') ? 'NULL' : req.body.detail);
-        var address = ((req.body.address == '') ? 'NULL' : req.body.address);
-        var date = ((req.body.date == '') ? '2020-10-10' : req.body.date);
-        var capacity = ((req.body.capacity == '') ? 0 : req.body.capacity);
-        console.log(title, detail, address, date, capacity, filePath);
-
-        let db_result = await db.addNewEvent(title, detail, address, date, capacity, filePath);
-        res.json({ message: 'event is added' });
+        console.log(req.body);
+        let db_result = await db.addNewEvent(req.body.compid, req.body.eventtitle, req.body.eventvenue, req.body.eventdate, req.body.eventtime, req.body.eventcapacity, req.body.eventdetail, filePath);
+        res.redirect("/company");
 
     } catch (error) {
         console.log(error);
