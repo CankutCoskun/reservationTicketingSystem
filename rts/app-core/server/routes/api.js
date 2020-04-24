@@ -87,6 +87,21 @@ router.get('/events/:id', async (req, res) => {
     }
 });
 
+router.get('/eventsbytype/:eventtype', async (req, res, next) => {
+    try {
+        console.log(req.params.eventtype);
+        let results = await db.getEventsbyType(req.params.eventtype);       
+        res.json(results);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+
+
+
+
 // Add events with image upload
 router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
 

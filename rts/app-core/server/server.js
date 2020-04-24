@@ -315,6 +315,21 @@ app.post('/createTicket',  async (req, res) => {
     }
 });
 
+app.get('/eventsbytype/:eventtype', async function (req, res) {
+    try {
+        if (req.session.loggedin) {
+            var etype= req.params.eventtype;
+            res.render('eventsbytype.html',{ eventtype: etype});
+        }
+        else {
+            //redirect to login/ homepage
+            res.redirect('/login');
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
 
 app.get('/profile', async function (req, res) {
     try {
