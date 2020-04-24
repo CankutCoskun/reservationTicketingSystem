@@ -212,32 +212,34 @@ app.get('/ticketPurchasePage',  async (req, res) => {
 //viewTciket?tid=12
 app.get('/viewTicket/', async (req, res) => {
     try {
-        console.log("IN VIEW TICKET");
-        let tid = req.query.tid;
-        let ticket = await db.getTicketById(tid);
-        let event = await db.getEventById(ticket.eId);
-        let user =  await db.getUserById(ticket.userid);
-        console.log(ticket);
-        console.log(user);
-        res.render('view-ticket.html' ,{
-            //<%=eDay%>
-            //<%=eMonth%>
-            //<%=eYear%>
-            tId: tid,
-            tNum: ticket.peoplenumber,
-            tStatus: ticket.status,
-            //ticket category will be added into db
-            uId: user.uid,
-            uName: user.name,
-            eId: event.eId,
-            eTitle: event.title,
-            eDetail: event.detail,
-            eAddress: event.address,
-            eDate: event.date,
-            eCapacity: event.capacity,
-            eStatus: event.status,
-            eImagePath: event.imagePath
-        });
+        if(req.session.loggedin){
+            console.log("IN VIEW TICKET");
+            let tid = req.query.tid;
+            let ticket = await db.getTicketById(tid);
+            let event = await db.getEventById(ticket.eId);
+            let user =  await db.getUserById(ticket.userid);
+            console.log(ticket);
+            console.log(user);
+            res.render('view-ticket.html' ,{
+                //<%=eDay%>
+                //<%=eMonth%>
+                //<%=eYear%>
+                tId: tid,
+                tNum: ticket.peoplenumber,
+                tStatus: ticket.status,
+                //ticket category will be added into db
+                uId: user.uid,
+                uName: user.name,
+                eId: event.eId,
+                eTitle: event.title,
+                eDetail: event.detail,
+                eAddress: event.address,
+                eDate: event.date,
+                eCapacity: event.capacity,
+                eStatus: event.status,
+                eImagePath: event.imagePath
+            });
+        }
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
