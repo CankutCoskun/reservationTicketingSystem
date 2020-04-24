@@ -212,13 +212,11 @@ app.get('/ticketPurchasePage',  async (req, res) => {
 app.get('/viewTicket/', async (req, res) => {
     try {
         if(req.session.loggedin){
-            console.log("IN VIEW TICKET");
             let tid = req.query.tid;
             let ticket = await db.getTicketById(tid);
             let event = await db.getEventById(ticket.eId);
             let user =  await db.getUserById(ticket.userid);
             console.log(ticket);
-            console.log(user);
             res.render('view-ticket.html' ,{
                 //<%=eDay%>
                 //<%=eMonth%>
@@ -250,8 +248,6 @@ app.get('/viewTicket/', async (req, res) => {
 
 app.post('/createTicket',  async (req, res) => {
     try {
-        console.log("CREATE TICKET IS CALLED");  
-        console.log(req.body);
         let event = await db.getEventById(req.body.eid);
         let user = await db.getUserById(req.body.uid);
         if(event.remainingseat < req.body.peoplenumber){
@@ -326,6 +322,7 @@ app.get('/profile', async function (req, res) {
             let uname = req.session.username;
             let user = await db.getUserByUname(uname);
             let tickets = await db.getActiveTicketsById(user.uid);
+            console.log(tickets);
             //res.send('Welcome back, ' + req.session.username + '!');
             // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
             res.render('user_profile.html', {
@@ -339,8 +336,8 @@ app.get('/profile', async function (req, res) {
                 created: user.createdAt,
                 updated: user.updatedAt,
                 tickets: tickets
-
             });
+            
         }
         else {
             res.send('Please login to view this page!');
@@ -480,6 +477,7 @@ app.post('/createUser', async function (request, response) {
         response.end();
     }
 });
+
 app.get('/gadmin', async function (req, res) {
 
     try {
