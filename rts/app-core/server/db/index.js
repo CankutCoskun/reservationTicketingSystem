@@ -254,7 +254,24 @@ db.getEventByCompanyId = (id) => {
     });
 };
 
+<<<<<<< Updated upstream
 /*Get all tickets of a customer by user id */
+=======
+db.getEventsbyType = (eventtype) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM Events WHERE eType=?`, [eventtype], (err, results) => {
+            if (err) {
+                console.log('ERROR: .getEvents()');
+                return reject(err);
+            }
+
+            return resolve(results);
+        });
+    });
+};
+
+/*Get all tickets of a customer */
+>>>>>>> Stashed changes
 db.getActiveTicketsById = (id) => {
 
     return new Promise((resolve, reject) => {

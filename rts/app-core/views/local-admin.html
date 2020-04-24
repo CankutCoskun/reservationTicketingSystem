@@ -281,9 +281,17 @@
         function deleteFunc(eId) {
 
             var xmlhttp = new XMLHttpRequest();
+<<<<<<< Updated upstream
             var a = "/api/events/delete/" + String(eId);
             xmlhttp.open("DELETE", a, true);
             xmlhttp.send();
+=======
+
+            var a = "/api/events/delete/" + String(eId);
+            xmlhttp.open("DELETE", a, true);
+            xmlhttp.send();
+
+>>>>>>> Stashed changes
             window.location.reload();
         }
 
