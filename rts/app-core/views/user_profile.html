@@ -8,14 +8,14 @@
 
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/w3.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-    <script src="../../bootstrap-resources/js/jquery.min.js"></script>
-    <script src="../../bootstrap-resources/js/popper.min.js"></script>
-    <script src="../../bootstrap-resources/js/bootstrap.min.js"></script>
+    <script src="/bootstrap-resources/js/jquery.min.js"></script>
+    <script src="/bootstrap-resources/js/popper.min.js"></script>
+    <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
 
     <script>
         $('#exampleModalCenter').on('shown.bs.modal', function () {
@@ -186,11 +186,16 @@
                                         <td><%= tickets[i].eventaddress %></td>
                                         <td><%= tickets[i].eventdate %></td>
                                         <td>
-                                            <input type='submit' name='edit' class='btn btn-secondary btn-sl' style="background-color: #0d5abe;"
+                                            <a href="/viewTicket?tid=<%=tickets[i].id%>">
+                                                <input type='submit' name='edit' class='btn btn-secondary btn-sl' style="background-color: #0d5abe;"
                                                 role='button' value='See Ticket'>
-                                                <br></br>
-                                            <input type='submit' name='edit' class='btn btn-secondary btn-sl'
+                                            </a>
+                                                <br>
+                                                <br>
+                                            <a href="">
+                                                <input type='submit' name='edit' class='btn btn-secondary btn-sl'
                                                 role='button' value='Cancel'>
+                                            </a>
                                         </td>
                                     </tr>
                                     <% } %>
@@ -291,10 +296,7 @@
                             <div class="form-group">
                                 <div class="col-xs-12">
                                     <br>
-                                    <button class="btn btn-lg btn-success" type="submit"><i
-                                            class="glyphicon glyphicon-ok-sign"></i> Update</button>
-
-
+                                    <button style="background-color: #0d5abe;" class="btn btn-lg btn-primary" type="submit">Update</button>
                                 </div>
                             </div>
                         </form>

@@ -74,7 +74,8 @@ margin-bottom: 10px;
 font-family: 'Oswald', sans-serif;
 text-transform: uppercase;
 border-radius: 4px;
-position: relative
+position: relative;
+margin-bottom: 0px;
 }
 
 .card + .card{margin-left: 2%}

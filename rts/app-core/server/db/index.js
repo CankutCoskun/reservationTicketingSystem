@@ -88,6 +88,7 @@ db.updateUser = (uid, uname, password, email , name, surname ) =>{
         pool.query(`UPDATE Users SET username = ? , password = ?, email = ?, name = ?, surname = ? WHERE uid= ? ;`, [uname, password, email, name, surname,uid], (err) => {
             if(err){
                 console.log('ERROR: .updateUser()');
+                console.log(err);
                 return reject(err);
             }
             
@@ -215,7 +216,7 @@ db.getActiveTicketsById = (id) => {
 
     return new Promise( (resolve, reject) => {
 
-    querystr=`SELECT E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
+    querystr=`SELECT T.id, E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
             FROM Tickets T JOIN Events E ON T.eId=E.eId JOIN Companies AS C ON C.id = E.cId 
             where T.userid=? and T.status='ACTIVE' ; ` ; 
         pool.query(querystr, [id] ,(err, results) => {
@@ -244,8 +245,6 @@ db.addNewTicket = (userid,peoplenumber,eId) => {
             });
     });
 };
-
-
 
 /* ****************  Login Authentication    ***************** */
 //

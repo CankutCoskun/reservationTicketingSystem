@@ -209,19 +209,21 @@ app.get('/ticketPurchasePage',  async (req, res) => {
     }
 });
 
-//TEST
+//viewTciket?tid=12
 app.get('/viewTicket/', async (req, res) => {
     try {
-        let tid = req.query.tid;
-        console.log(tid);
         console.log("IN VIEW TICKET");
+        let tid = req.query.tid;
         let ticket = await db.getTicketById(tid);
         let event = await db.getEventById(ticket.eId);
         let user =  await db.getUserById(ticket.userid);
         console.log(ticket);
         console.log(user);
         res.render('view-ticket.html' ,{
-            tId: ticket.id,
+            //<%=eDay%>
+            //<%=eMonth%>
+            //<%=eYear%>
+            tId: tid,
             tNum: ticket.peoplenumber,
             tStatus: ticket.status,
             //ticket category will be added into db
@@ -253,9 +255,53 @@ app.post('/createTicket',  async (req, res) => {
         }
         else {
             let result = await db.addNewTicket(req.body.uid,req.body.peoplenumber,req.body.eid);
-            console.log(result.insertId);
-            //TO-DO REDIRECT CONNECTION
-            var tid = result.insertId;
+            let email = user.email; 
+            let tid = result.insertId;
+            let ticket =  db.getTicketById(tid);
+            var name = user.name;
+            var surname = user.surname;
+            var eventTitle = event.title;
+            var eventDetail = event.detail;
+            var eventAdress = event.address;
+            var eventDate = event.date;
+            var numPeople = ticket.peoplenumber;
+            const output = `
+                <h3>Message</h3>
+                <p>Hi ${name} ${surname}, Your ticket is created please find details below:</p>
+                <h3>Event Details</h3>
+                <ul>  
+                <li><TITLE: ${eventTitle}</li>
+                <li>DATE: ${eventDate}</li>
+                <li>DETAIL: ${eventDetail}</li>
+                <li>ADDRESS: ${eventAdress}</li>
+                </ul>
+            `;
+
+            // create reusable transporter object using the default SMTP transport
+            var transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD
+                }
+            });
+
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: 'cs308reservationsystem@gmail.com', // sender address
+                to: email, // list of receivers
+                subject: 'New Ticket', // Subject line
+                html: output // html body
+            };
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message sent: %s', info.messageId);
+            });
+
             res.redirect(url.format({
                 pathname: "/viewTicket",
                 query: {
@@ -267,33 +313,16 @@ app.post('/createTicket',  async (req, res) => {
         
     } catch (error) {
         console.log(error);
-        throw error;
+        res.sendStatus(500);
     }
 });
-
-
-// res.render('view-ticket.html' ,{
-//     uId: user.uid,
-//     uName:user.name,
-//     eId: event.eId,
-//     eTitle: event.title,
-//     eDetail: event.detail,
-//     eAddress: event.address,
-//     eDate: event.date,
-//     eCapacity: event.capacity,
-//     eStatus: event.status,
-//     eImagePath: event.imagePath
-// });
 
 app.get('/profile', async function (req, res) {
     try {
         if (req.session.loggedin) {
             let uname = req.session.username;
-            console.log(uname);
             let user = await db.getUserByUname(uname);
             let tickets = await db.getActiveTicketsById(user.uid);
-            console.log("User: ",user.name + " " + user.surname);
-            console.log("Tickets: ",tickets);
             //res.send('Welcome back, ' + req.session.username + '!');
            // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
             res.render('user_profile.html', {
