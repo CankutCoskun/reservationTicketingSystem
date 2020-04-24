@@ -103,16 +103,9 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
         //Relative to static directory
         let filePath = 'uploads/' + file.filename;
         console.log("file received: ", filePath);
-
-        var title = ((req.body.title == '') ? 'NULL' : req.body.title);
-        var detail = ((req.body.detail == '') ? 'NULL' : req.body.detail);
-        var address = ((req.body.address == '') ? 'NULL' : req.body.address);
-        var date = ((req.body.date == '') ? '2020-10-10' : req.body.date);
-        var capacity = ((req.body.capacity == '') ? 0 : req.body.capacity);
-        console.log(title, detail, address, date, capacity, filePath);
-
-        let db_result = await db.addNewEvent(title, detail, address, date, capacity, filePath);
-        res.json({ message: 'event is added' });
+        console.log(req.body);
+        let db_result = await db.addNewEvent(req.body.compid, req.body.eventtitle, req.body.eventvenue, req.body.eventdate, req.body.eventtime, req.body.eventcapacity, req.body.eventdetail, filePath);
+        res.redirect("/company");
 
     } catch (error) {
         console.log(error);
@@ -120,6 +113,17 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
     }
 });
 
+//delete event by id
+router.delete('/events/delete/:eId', async (req, res) => {
+    try {
+        let result = await db.deleteEvent(req.params.eId);
+        console.log(result);
+        res.send("event deleted");
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+})
 
 /******************************* COMPANY *******************************/
 
@@ -144,6 +148,7 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
         let db_result = await db.addNewCompany(req.body.companyusername, req.body.companyname, req.body.companyaddress, filePath);
 
         const output = `
+        
     <h3>Message</h3>
     <p>Hi ${req.body.companyname}, Your account has been created</p>
     <h3>Company Details</h3>
@@ -199,6 +204,22 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
     }
 });
 
+//delete company by company id
+router.delete('/companies/delete/:id', async (req, res) => {
+    try {
+        let result1 = await db.getUserIDbyCompID(req.params.id);
+        var string = JSON.stringify(result1);
+        var json = JSON.parse(string);
+        let id = json[0].adminId;
+        console.log(id);
+        let result = await db.deleteCompany(id);
+        //console.log(result);
+        res.send("company deleted");
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
 
 /******************************* TICKET *******************************/
 
@@ -220,46 +241,6 @@ router.post('/ticketBuy/:eid', async (req, res) => {
         res.sendStatus(500);
     }
 })
-
-
-//delete event by id
-router.delete('/events/delete/:eId', async (req, res) => {
-    try {
-        let result = await db.deleteEvent(req.params.eId);
-        console.log(result);
-        res.send("event deleted");
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-})
-
-
-// Add events with image upload
-router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
-
-    try {
-        console.log("Attached file: ", req.file);
-        console.log("Request body: ", req.body);
-        const file = req.file;
-
-        if (!file) {
-            console.log("No file received");
-            res.send("No File is attached. Please add a file");
-        }
-
-        //Relative to static directory
-        let filePath = 'uploads/' + file.filename;
-        console.log("file received: ", filePath);
-        console.log(req.body);
-        let db_result = await db.addNewEvent(req.body.compid, req.body.eventtitle, req.body.eventvenue, req.body.eventdate, req.body.eventtime, req.body.eventcapacity, req.body.eventdetail, filePath);
-        res.redirect("/company");
-
-    } catch (error) {
-        console.log(error);
-        res.sendStatus(500);
-    }
-});
 
 
 module.exports = router;

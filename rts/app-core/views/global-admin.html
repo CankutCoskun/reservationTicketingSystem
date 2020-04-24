@@ -74,7 +74,7 @@
 
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <img src="../resources/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
+        <img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
         <h5 class="modal-title" id="title" style="color: white; border-color: white;">Global Admin</h5>
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="nav navbar-nav navbar-right ml-auto">
@@ -204,8 +204,9 @@
     <!-- Optional JavaScript -->
     <script>
         function deleteFunc(id) {
-                   
+            
             var xmlhttp = new XMLHttpRequest();
+
             var a="/api/companies/delete/" + String(id);
             xmlhttp.open("DELETE",a , true);
             xmlhttp.send();

@@ -239,6 +239,9 @@ app.get('/viewTicket/', async (req, res) => {
                 eImagePath: event.imagePath
             });
         }
+        else{
+                res.send("Please  login");
+        }
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
@@ -316,28 +319,6 @@ app.post('/createTicket',  async (req, res) => {
     }
 });
 
-app.get('/gadmin', async function (req, res) {
-
-    try {
-        if (req.session.loggedin) {
-            //res.send('Welcome back, ' + req.session.username + '!');
-            console.log(req.session);
-            let uname = req.session.username;
-            console.log(uname);
-            let company = await db.getCompaines();
-            console.log(company);
-            res.render('global-admin.html', {
-                company: company
-            });
-        }
-        else {
-            res.send('Please login to view this page!');
-        }
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-});
 
 app.get('/profile', async function (req, res) {
     try {
@@ -409,7 +390,6 @@ app.post('/updateUser', async function (request, response) {
 
     try {
         let results = await db.updateUser(uid, username, password, email, name, surname);
-        console.log(results)
 
         if (results.message.length > 0) {
 
@@ -498,6 +478,23 @@ app.post('/createUser', async function (request, response) {
     catch (e) {
         response.send('Already Registered User');
         response.end();
+    }
+});
+app.get('/gadmin', async function (req, res) {
+
+    try {
+        if (req.session.loggedin) {
+            let company = await db.getCompaines();
+            res.render('global-admin.html', {
+                company: company
+            });
+        }
+        else {
+            res.send('Please login to view this page!');
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
     }
 });
 
