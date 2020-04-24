@@ -315,7 +315,6 @@ app.post('/createTicket',  async (req, res) => {
     }
 });
 
-
 app.get('/profile', async function (req, res) {
     try {
         if (req.session.loggedin) {
