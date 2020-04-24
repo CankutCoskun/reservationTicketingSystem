@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/w3.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    
-    <script src="../../bootstrap-resources/js/jquery.min.js"></script>
-    <script src="../../bootstrap-resources/js/popper.min.js"></script>
-    <script src="../../bootstrap-resources/js/bootstrap.min.js"></script>
-    <title>Global Admin</title>
+
+    <script src="/bootstrap-resources/js/jquery.min.js"></script>
+    <script src="/bootstrap-resources/js/popper.min.js"></script>
+    <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
+    <title>Local Admin</title>
     <meta name="theme-color" content="#563d7c">
 
     <style>
@@ -160,14 +160,76 @@
                             <input type="number" name="compid" value="<%= compid %>" style="display:none;"> 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <input type='submit' name='addcomp' class="btn btn-primary  active" role="button"
-                                    aria-pressed="true" value="Add New Company">
+                                <input type='submit' name='addevent' class="btn btn-primary  active" role="button"
+                                    aria-pressed="true" value="Add New Event">
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modal for Edit Event-->
+        <div class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Update Event</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form action="/api/events/update/" enctype="multipart/form-data" method="POST">
+                            <div class="form-group">
+                                <label for="EventInformation">Event Title</label>
+                                <input type="text" class="form-control" name="eventtitle2" id="eventtitle2"
+                                    placeholder="Event Title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Venue</label>
+                                <input type="text" class="form-control" name="eventvenue2" id="eventvenue2"
+                                    placeholder="Event Venue" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Date</label>
+                                <input type="text" class="form-control" name="eventdate2" id="eventdate2"
+                                    placeholder="Event Date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Time</label>
+                                <input type="text" class="form-control" name="eventtime2" id="eventtime2"
+                                    placeholder="Event Time" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Capacity</label>
+                                <input type="number" class="form-control" name="eventcapacity2" id="eventcapacity2"
+                                    placeholder="Event Capacity" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Event Detail</label>
+                                <input type="text" class="form-control" name="eventdetail2" id="eventdetail2"
+                                    placeholder="Event Detail" required>
+                            </div>
+                           <!-- <div class="form-group">
+                                <h4 class="modal-title">Upload Image</h5>
+                                    <input type="file" name="myFile" class="form-control-file"
+                                        id="exampleFormControlFile1">
+                            </div> -->
+                            
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <input type='submit' name='updateevent' class="btn btn-primary  active" role="button"
+                                    aria-pressed="true" value="Update Event">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
         <table id=eventtable class="table table-striped">
@@ -185,7 +247,23 @@
                 </tr>
             </thead>
             <tbody id="events">
-              
+                <% for(var i=0; i < events.length; i++) { %>
+                <tr>
+                    <td><%= events[i].eId %></td>
+                    <td><%= events[i].title %></td>
+                    <td><%= events[i].venue %></td>
+                    <td><%= events[i].date %></td>
+                    <td><%= events[i].time %></td>
+                    <td><%= events[i].capacity %></td>
+                    <td><%= events[i].detail %></td>
+                    <td>
+                        <input type='submit' name='edit' class='btn btn-sm btn-info' role='button' value='Edit' id="a"
+                            onclick="updateFunc(<%= events[i].eId %>,'<%= events[i].title %>','<%= events[i].venue %>','<%= events[i].date %>','<%= events[i].time %>',<%= events[i].capacity %>,'<%= events[i].detail %>')">
+                        <input type='submit' name='delete' class='btn btn-sm btn-danger' role='button' value='Delete'
+                            onclick="deleteFunc(<%= events[i].eId %>)">
+                    </td>
+                </tr>
+                <% } %>
 
             </tbody>
         </table>
@@ -199,15 +277,30 @@
 
 
     <script>
-      
+        
+        function deleteFunc(eId) {
 
+            var xmlhttp = new XMLHttpRequest();
+            var a = "/api/events/delete/" + String(eId);
+            xmlhttp.open("DELETE", a, true);
+            xmlhttp.send();
+            window.location.reload();
+        }
+
+        function updateFunc(eId, title, venue, date, time, capacity, detail) {
+            var myModal = $('#updateModal');
+            $("#eventtitle2", myModal).val(title);
+            $("#eventvenue2", myModal).val(venue);
+            $("#eventdate2", myModal).val(date);
+            $("#eventtime2", myModal).val(time);
+            $("#eventcapacity2", myModal).val(capacity);
+            $("#eventdetail2", myModal).val(detail);
+            //$("#eventid", myModal).val(eId);
+            $('#updateModal').modal('show');
+        }
 
 
     </script>
-
-
-
-
 
 </body>
 

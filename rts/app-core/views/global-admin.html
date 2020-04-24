@@ -7,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/w3.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    
-    <script src="../../bootstrap-resources/js/jquery.min.js"></script>
-    <script src="../../bootstrap-resources/js/popper.min.js"></script>
-    <script src="../../bootstrap-resources/js/bootstrap.min.js"></script>
+
+    <script src="/bootstrap-resources/js/jquery.min.js"></script>
+    <script src="/bootstrap-resources/js/popper.min.js"></script>
+    <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
     <title>Global Admin</title>
     <meta name="theme-color" content="#563d7c">
 
@@ -75,7 +75,7 @@
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <img src="../resources/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
-        <h5 class="modal-title" id="title" style="color: white; border-color: white;"><%= compname %></h5>
+        <h5 class="modal-title" id="title" style="color: white; border-color: white;">Global Admin</h5>
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="nav navbar-nav navbar-right ml-auto">
                 <li class="nav-item">
@@ -96,16 +96,14 @@
 
 
     <main role="main" class="">
-
         <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Edit Event</h1>
+            <h1 class="h2">Edit Company</h1>
         </div>
-
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-            Add Event
+            Add Company
         </button>
 
         <!-- Modal -->
@@ -114,54 +112,49 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Add Event</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Add Company</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
 
-                        <form action="/api/events/add" enctype="multipart/form-data" method="POST">
+                        <form action="/api/company/add" enctype="multipart/form-data" method="POST">
                             <div class="form-group">
-                                <label for="EventInformation">Event Title</label>
-                                <input type="text" class="form-control" name="eventtitle" id="eventtitle"
-                                    placeholder="Event Title" required>
+                                <label for="CompanyCredentails">Company Name</label>
+                                <input type="text" class="form-control" name="companyname" id="companyname"
+                                    placeholder="Company Name" required>
                             </div>
                             <div class="form-group">
-                                <label for="EventInformation">Event Venue</label>
-                                <input type="text" class="form-control" name="eventvenue" id="eventvenue"
-                                    placeholder="Event Venue" required>
+                                <label for="CompanyCredentails">Company Email</label>
+                                <input type="text" class="form-control" name="companyemail" id="companyemail"
+                                    placeholder="Company Email" required>
                             </div>
                             <div class="form-group">
-                                <label for="EventInformation">Event Date</label>
-                                <input type="text" class="form-control" name="eventdate" id="eventdate"
-                                    placeholder="Event Date" required>
+                                <label for="CompanyCredentails">Company Username</label>
+                                <input type="text" class="form-control" name="companyusername" id="companyusername"
+                                    placeholder="Company Username" required>
                             </div>
                             <div class="form-group">
-                                <label for="EventInformation">Event Time</label>
-                                <input type="text" class="form-control" name="eventtime" id="eventtime"
-                                    placeholder="Event Time" required>
+                                <label for="CompanyCredentails">Company Password</label>
+                                <input type="text" class="form-control" name="companypassword" id="companypassword"
+                                    placeholder="Company Password" required>
                             </div>
                             <div class="form-group">
-                                <label for="EventInformation">Event Capacity</label>
-                                <input type="number" class="form-control" name="eventcapacity" id="eventcapacity"
-                                    placeholder="Event Capacity" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="EventInformation">Event Detail</label>
-                                <input type="text" class="form-control" name="eventdetail" id="eventdetail"
-                                    placeholder="Event Detail" required>
+                                <label for="CompanyCredentails">Company Address</label>
+                                <input type="text" class="form-control" name="companyaddress" id="companyaddress"
+                                    placeholder="Company Address" required>
                             </div>
                             <div class="form-group">
                                 <h4 class="modal-title">Upload Image</h5>
                                     <input type="file" name="myFile" class="form-control-file"
                                         id="exampleFormControlFile1">
                             </div>
-                            <input type="number" name="compid" value="<%= compid %>" style="display:none;"> 
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 <input type='submit' name='addcomp' class="btn btn-primary  active" role="button"
-                                    aria-pressed="true" value="Add New Company">
+                                    aria-pressed="true"  value="Add New Company">
                             </div>
                         </form>
                     </div>
@@ -170,22 +163,35 @@
         </div>
 
 
-        <table id=eventtable class="table table-striped">
+        <table id=companytable class="table table-striped">
             <thead>
                 <tr>
                     <!--  <th scope="col">Company Image</th> -->
-                    <th scope="col">Event ID</th>
-                    <th scope="col">Event Title</th>
-                    <th scope="col">Event Venue</th>
-                    <th scope="col">Event Date</th>
-                    <th scope="col">Event Time</th>
-                    <th scope="col">Event Capacity</th>
-                    <th scope="col">Event Detail</th>
-
+                    <th scope="col">Company ID</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Company Email</th>
+                    <th scope="col">Company Username</th>
+                    <th scope="col">Company Password</th>
+                    <th scope="col">Company Address</th>
                 </tr>
             </thead>
-            <tbody id="events">
-              
+            <tbody id="companies">
+                <% for(var i=0; i < company.length; i++) { %>
+                <tr>
+                    <td><%= company[i].id %></td>
+                    <td><%= company[i].name %></td>
+                    <td><%= company[i].email %></td>
+                    <td><%= company[i].username %></td>
+                    <td><%= company[i].password %></td>
+                    <td><%= company[i].companyAddress %></td>
+                    <td>
+                        <input type='submit' name='edit' class='btn btn-sm btn-info' role='button' value='Edit'>
+                        <input type='submit' name='delete' class='btn btn-sm btn-danger' role='button' value='Delete'
+                        onclick="deleteFunc(<%= company[i].id %>)">
+                        
+                    </td>
+                </tr>
+                <% } %>
 
             </tbody>
         </table>
@@ -196,19 +202,16 @@
 
 
     <!-- Optional JavaScript -->
-
-
     <script>
-      
-
-
-
+        function deleteFunc(id) {
+                   
+            var xmlhttp = new XMLHttpRequest();
+            var a="/api/companies/delete/" + String(id);
+            xmlhttp.open("DELETE",a , true);
+            xmlhttp.send();
+            window.location.reload();
+        }
+        
     </script>
-
-
-
-
-
 </body>
-
 </html>

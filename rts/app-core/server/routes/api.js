@@ -173,10 +173,10 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
             subject: 'New Company', // Subject line
             html: output // html body
             //email with company picture
-           /* attachments: [{   // stream as an attachment
-                filename: 'image.jpg',
-                content: fs.createReadStream(filePath)
-            }]*/
+            /* attachments: [{   // stream as an attachment
+                 filename: 'image.jpg',
+                 content: fs.createReadStream(filePath)
+             }]*/
         };
 
         // send mail with defined transport object
@@ -190,7 +190,8 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
             res.render('contact', { msg: 'Email has been sent' });
         });
 
-        res.json({ message: 'company is added' });
+        //res.json({ message: 'company is added' });
+        res.redirect('http://localhost:3000/gadmin')
 
     } catch (error) {
         console.log(error);
@@ -210,9 +211,8 @@ router.post('/ticketBuy/:eid', async (req, res) => {
         }
         else {
 
-            let result = await db.addNewTicket(req.body.userid,req.body.peoplenumber,req.params.eid);
+            let result = await db.addNewTicket(req.body.userid, req.body.peoplenumber, req.params.eid);
             res.json(result);
-
         }
 
     } catch (e) {
@@ -220,5 +220,46 @@ router.post('/ticketBuy/:eid', async (req, res) => {
         res.sendStatus(500);
     }
 })
+
+
+//delete event by id
+router.delete('/events/delete/:eId', async (req, res) => {
+    try {
+        let result = await db.deleteEvent(req.params.eId);
+        console.log(result);
+        res.send("event deleted");
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+})
+
+
+// Add events with image upload
+router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
+
+    try {
+        console.log("Attached file: ", req.file);
+        console.log("Request body: ", req.body);
+        const file = req.file;
+
+        if (!file) {
+            console.log("No file received");
+            res.send("No File is attached. Please add a file");
+        }
+
+        //Relative to static directory
+        let filePath = 'uploads/' + file.filename;
+        console.log("file received: ", filePath);
+        console.log(req.body);
+        let db_result = await db.addNewEvent(req.body.compid, req.body.eventtitle, req.body.eventvenue, req.body.eventdate, req.body.eventtime, req.body.eventcapacity, req.body.eventdetail, filePath);
+        res.redirect("/company");
+
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
+
 
 module.exports = router;
