@@ -3,6 +3,7 @@ const session = require('express-session');
 const apiRouter = require('./routes/api');
 const db = require('./db');
 var path = require('path');
+const url = require('url');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 // TO-DO Encrypt password before sending to database
@@ -30,31 +31,6 @@ app.use(express.json());
 //Html static file root 
 app.use(express.static(process.cwd() + '/static'));
 
-app.get('/getEventDetailPage/:eid', async function (req, res) {
-
-    try {
-        let eid = req.params.eid;
-        console.log(eid);
-        let event = await db.getEventById(eid);
-        console.log("Event: ", event);
-        //If you render relative path static/views/
-        res.render('event-detail.html', {
-            eId: event.eId,
-            eTitle: event.title,
-            eDetail: event.detail,
-            eAddress: event.address,
-            eDate: event.date,
-            eCapacity: event.capacity,
-            eStatus: event.status,
-            eImagePath: event.imagePath
-            //cId: event.cId;
-        });
-    } catch (error) {
-        console.log(error);
-    }
-
-});
-
 
 app.get('/check', async (req, res) => {
     try {
@@ -65,14 +41,6 @@ app.get('/check', async (req, res) => {
     }
 });
 
-//Call admin dashboard page TO ADD NEW EVENT
-app.get('/new-event', (req, res) => {
-    try {
-        res.sendFile(path.resolve('static/web-pages/admin-dashboard/add_event.html'));
-    } catch (er) {
-        throw er;
-    }
-});
 
 //App
 app.use(session({
@@ -85,7 +53,7 @@ app.use(session({
 
 app.get('/', (req, res) => {
     try {
-        res.sendFile(path.resolve('static/web-pages/home.html'));
+        res.sendFile(path.resolve('static/web-pages/home-page/home.html'));
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -94,7 +62,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', (req, res) => {
     try {
-        res.sendFile(path.resolve('static/web-pages/home.html'));
+        res.sendFile(path.resolve('static/web-pages/home-page/home.html'));
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -103,16 +71,6 @@ app.get('/home', (req, res) => {
 
 app.get('/login', (req, res) => {
     try {
-        if (req.session.utype == "CUSTOMER") {
-
-            res.redirect('/events');
-            //res.sendFile(path.resolve('static/web-pages/event-pages/events.html'));
-        }
-        //else if (req.session.utype == "GLOBAL")
-
-        //{res.redirect('/gadmin');}
-
-
         res.sendFile(path.resolve('static/web-pages/login-signup/login-user.html'));
     } catch (e) {
         console.log(e);
@@ -182,10 +140,9 @@ app.post('/auth', async (request, response) => {
 
 app.get('/logout', (req, res) => {
     console.log('Log out request is recieved');
-    req.session.loggedin = false;
+    req.session.destroy();
     res.redirect('/home');
 });
-//TO-DO app.post('/logout')
 
 app.get('/events', function (req, res) {
     try {
@@ -200,6 +157,162 @@ app.get('/events', function (req, res) {
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
+    }
+});
+
+app.get('/getEventDetailPage/:eid', async function (req, res) {
+
+    try {
+        let uname = req.session.username;
+        let user = await db.getUserByUname(uname);
+        let eid = req.params.eid;
+        let event = await db.getEventById(eid);
+        //If you render relative path /views/
+        res.render('event-detail.html', {
+            uId: user.uid,
+            eId: event.eId,
+            eTitle: event.title,
+            eDetail: event.detail,
+            eAddress: event.address,
+            eDate: event.date,
+            eCapacity: event.capacity,
+            eStatus: event.status,
+            eImagePath: event.imagePath
+            //cId: event.cId;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
+});
+
+app.get('/ticketPurchasePage',  async (req, res) => {
+    try {  
+        console.log("Ticket purchase is called...");
+        console.log(req.query); 
+        let event = await db.getEventById(req.query.eid);
+        let user = await db.getUserById(req.query.uid);
+        res.render('ticket-purchase.html' ,{
+            uId: user.uid,
+            eId: event.eId,
+            eTitle: event.title,
+            eDetail: event.detail,
+            eAddress: event.address,
+            eDate: event.date,
+            eCapacity: event.capacity,
+            eStatus: event.status,
+            eImagePath: event.imagePath
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//viewTciket?tid=12
+app.get('/viewTicket/', async (req, res) => {
+    try {
+        if(req.session.loggedin){
+            console.log("IN VIEW TICKET");
+            let tid = req.query.tid;
+            let ticket = await db.getTicketById(tid);
+            let event = await db.getEventById(ticket.eId);
+            let user =  await db.getUserById(ticket.userid);
+            console.log(ticket);
+            console.log(user);
+            res.render('view-ticket.html' ,{
+                //<%=eDay%>
+                //<%=eMonth%>
+                //<%=eYear%>
+                tId: tid,
+                tNum: ticket.peoplenumber,
+                tStatus: ticket.status,
+                //ticket category will be added into db
+                uId: user.uid,
+                uName: user.name,
+                eId: event.eId,
+                eTitle: event.title,
+                eDetail: event.detail,
+                eAddress: event.address,
+                eDate: event.date,
+                eCapacity: event.capacity,
+                eStatus: event.status,
+                eImagePath: event.imagePath
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
+
+app.post('/createTicket',  async (req, res) => {
+    try {
+        console.log("CREATE TICKET IS CALLED");  
+        console.log(req.body);
+        let event = await db.getEventById(req.body.eid);
+        let user = await db.getUserById(req.body.uid);
+        if(event.remainingseat < req.body.peoplenumber){
+            res.send("no seats left for this event");
+        }
+        else {
+            let result = await db.addNewTicket(req.body.uid,req.body.peoplenumber,req.body.eid);
+            let email = user.email; 
+            let tid = result.insertId;
+            let ticket =  db.getTicketById(tid);
+            var name = user.name;
+            var surname = user.surname;
+            var eventTitle = event.title;
+            var eventDetail = event.detail;
+            var eventAdress = event.address;
+            var eventDate = event.date;
+            var numPeople = ticket.peoplenumber;
+            const output = `
+                <h3>Message</h3>
+                <p>Hi ${name} ${surname}, Your ticket is created please find details below:</p>
+                <h3>Event Details</h3>
+                <ul>  
+                <li><TITLE: ${eventTitle}</li>
+                <li>DATE: ${eventDate}</li>
+                <li>DETAIL: ${eventDetail}</li>
+                <li>ADDRESS: ${eventAdress}</li>
+                </ul>
+            `;
+
+            // create reusable transporter object using the default SMTP transport
+            var transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD
+                }
+            });
+
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: 'cs308reservationsystem@gmail.com', // sender address
+                to: email, // list of receivers
+                subject: 'New Ticket', // Subject line
+                html: output // html body
+            };
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message sent: %s', info.messageId);
+            });
+
+            res.redirect(url.format({
+                pathname: "/viewTicket",
+                query: {
+                   "tid": result.insertId
+                 }             
+              }));
+        }
+        
+    } catch (error) {
+        console.log(error);
     }
 });
 
@@ -226,17 +339,12 @@ app.get('/gadmin', async function (req, res) {
     }
 });
 
-
-
 app.get('/profile', async function (req, res) {
     try {
         if (req.session.loggedin) {
             let uname = req.session.username;
-            console.log(uname);
             let user = await db.getUserByUname(uname);
             let tickets = await db.getActiveTicketsById(user.uid);
-            console.log("User: ", user.name + " " + user.surname);
-            console.log("Tickets: ", tickets);
             //res.send('Welcome back, ' + req.session.username + '!');
             // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
             res.render('user_profile.html', {
@@ -290,33 +398,6 @@ app.get('/company', async function (req, res) {
     }
 });
 
-app.post('/createUser', async function (request, response) {
-    console.log('Authentication request: ', request.body);
-    var username = request.body.uname;
-    var password = request.body.password;
-    var email = request.body.email;
-    var name = request.body.name;
-    var surname = request.body.surname;
-
-    try {
-        let results = await db.addNewUser(username, password, email, name, surname);
-        let results2 = await db.authLogin(username, password);
-
-        if (results2.length > 0) {
-            request.session.loggedin = true;
-            request.session.username = username;
-            //response.json(results);
-            response.redirect('/events');
-        }
-
-    }
-    catch (e) {
-        response.send('Already Registered User');
-        response.end();
-    }
-
-
-});
 app.post('/updateUser', async function (request, response) {
     console.log('update user request: ', request.body);
     var uid = request.body.uid;
@@ -341,13 +422,7 @@ app.post('/updateUser', async function (request, response) {
         response.end();
     }
 
-
 });
-
-
-
-
-
 
 app.get('/signup', (req, res) => {
 
@@ -379,17 +454,16 @@ app.post('/createUser', async function (request, response) {
             //response.json(results);
 
             const output = `
-    <h3>Message</h3>
-    <p>Hi ${name} ${surname}, Your account has been created</p>
-    <h3>User Details</h3>
-    <ul>  
-      <li>Name: ${name}</li>
-      <li>Surname: ${surname}</li>
-      <li>Email: ${email}</li>
-      <li>Username: ${username}</li>
-    </ul>
-   
-  `;
+                <h3>Message</h3>
+                <p>Hi ${name} ${surname}, Your account has been created</p>
+                <h3>User Details</h3>
+                <ul>  
+                <li>Name: ${name}</li>
+                <li>Surname: ${surname}</li>
+                <li>Email: ${email}</li>
+                <li>Username: ${username}</li>
+                </ul>
+            `;
 
             // create reusable transporter object using the default SMTP transport
             var transporter = nodemailer.createTransport({
@@ -414,7 +488,6 @@ app.post('/createUser', async function (request, response) {
                     return console.log(error);
                 }
                 console.log('Message sent: %s', info.messageId);
-                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
                 res.render('contact', { msg: 'Email has been sent' });
             });
@@ -426,11 +499,7 @@ app.post('/createUser', async function (request, response) {
         response.send('Already Registered User');
         response.end();
     }
-
-
 });
-
-
 
 app.get('/admin', (req, res) => {
 
@@ -443,7 +512,14 @@ app.get('/admin', (req, res) => {
     }
 });
 
-
+//Call admin dashboard page TO ADD NEW EVENT
+app.get('/new-event', (req, res) => {
+    try {
+        res.sendFile(path.resolve('static/web-pages/admin-dashboard/add_event.html'));
+    } catch (er) {
+        throw er;
+    }
+});
 
 app.listen(process.env.PORT || '3000', () => {
     console.log(`Server is running on port: ${process.env.PORT || '3000'}`);

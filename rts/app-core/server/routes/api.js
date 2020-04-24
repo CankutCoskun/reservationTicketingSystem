@@ -2,9 +2,14 @@ const express = require('express');
 const db = require('../db');
 const router = express.Router();
 const bodyParser = require('body-parser');
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 const multer = require('multer');
 var path = require('path');
+
+//fs is never used ? 
 const fs = require('fs');
+
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let destPath = path.resolve('./static/uploads');
@@ -18,17 +23,14 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
+
 const nodemailer = require('nodemailer');
 require('dotenv').config();
-//Image Upload Api
-
-
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
 
 // CRUD Apis
 
-//users/
+/******************************* USER *******************************/
+
 router.get('/users/', async (req, res) => {
 
     try {
@@ -52,7 +54,6 @@ router.get('/users/:id', async (req, res, next) => {
     }
 });
 
-
 router.post('/users/add', async (req, res) => {
     try {
         console.log('Request Body: ', req.body);
@@ -64,7 +65,8 @@ router.post('/users/add', async (req, res) => {
     }
 })
 
-//events/
+/******************************* EVENT *******************************/
+
 router.get('/events/', async (req, res, next) => {
     try {
         let results = await db.getEvents();
@@ -75,7 +77,6 @@ router.get('/events/', async (req, res, next) => {
     }
 });
 
-//get event by id
 router.get('/events/:id', async (req, res) => {
     try {
         let result = await db.getEventById(req.params.id);
@@ -86,21 +87,43 @@ router.get('/events/:id', async (req, res) => {
     }
 });
 
-//Add event without image upload
-/* router.post('/events/add', async (req, res) => {
+// Add events with image upload
+router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
+
     try {
-        console.log('Request Body: ', req.body );
-        let result = await db.addNewEvent(req.body.title, req.body.detail, req.body.address, req.body.date, 
-                                            req.body.capacity, req.body.imagePath)
-        res.json(result);
-    } catch (e) {
-        console.log(e);
+        console.log("Attached file: ", req.file);
+        console.log("Request body: ", req.body);
+        const file = req.file;
+
+        if (!file) {
+            console.log("No file received");
+            res.send("No File is attached. Please add a file");
+        }
+
+        //Relative to static directory
+        let filePath = 'uploads/' + file.filename;
+        console.log("file received: ", filePath);
+
+        var title = ((req.body.title == '') ? 'NULL' : req.body.title);
+        var detail = ((req.body.detail == '') ? 'NULL' : req.body.detail);
+        var address = ((req.body.address == '') ? 'NULL' : req.body.address);
+        var date = ((req.body.date == '') ? '2020-10-10' : req.body.date);
+        var capacity = ((req.body.capacity == '') ? 0 : req.body.capacity);
+        console.log(title, detail, address, date, capacity, filePath);
+
+        let db_result = await db.addNewEvent(title, detail, address, date, capacity, filePath);
+        res.json({ message: 'event is added' });
+
+    } catch (error) {
+        console.log(error);
         res.sendStatus(500);
     }
-}); */
+});
 
-//company
-router.post('/company/add', upload.single('myFile'), async (req, res, next) => {
+
+/******************************* COMPANY *******************************/
+
+router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
 
     try {
         console.log("Attached file: ", req.file);
@@ -177,13 +200,13 @@ router.post('/company/add', upload.single('myFile'), async (req, res, next) => {
 });
 
 
-//tickets
-router.post('/ticket/buy/:eid', async (req, res) => {
+/******************************* TICKET *******************************/
+
+router.post('/ticketBuy/:eid', async (req, res) => {
     try {
-        console.log('berko');
-        console.log('Request Body: ', req.body);
-        let event = await db.getEventById(req.params.eid);
-        if (event.remainingseat < req.body.peoplenumber) {
+        console.log('Request Body: ', req.body );   
+        let event= await db.getEventById(req.params.eid);
+        if(event.remainingseat < req.body.peoplenumber   ){
             res.send("no seats left for this event");
         }
         else {
@@ -199,7 +222,6 @@ router.post('/ticket/buy/:eid', async (req, res) => {
 })
 
 
-
 //delete event by id
 router.delete('/events/delete/:eId', async (req, res) => {
     try {
@@ -211,8 +233,6 @@ router.delete('/events/delete/:eId', async (req, res) => {
         res.sendStatus(500);
     }
 })
-
-
 
 
 // Add events with image upload
@@ -241,43 +261,5 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
     }
 });
 
-
-//Generic file upload request
-/* 
-    const multer = require('multer');
-    var storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, path.resolve('./<yor destination path>'));
-        },
-        filename: function (req, file, cb) {
-            let ts = Date.now();
-            let date_ob = new Date(ts);
-            let date = date_ob.getDate();
-            let month = date_ob.getMonth() + 1;
-            let year = date_ob.getFullYear();
-            cb(null,  year + "-" + month + "-" + date + "_" + file.originalname);  
-        }
-    });   
-    var uploader = multer({ storage: storage });
-    router.post('/uploadfile', uploader.single('filename') ,async (req, res) => {
-        try {
-            const file = req.file;
-            console.log("Attached file: ", file);
-            if (!file) {
-                console.log("No file received");
-                const error = new Error('Please upload a file')
-                error.httpStatusCode = 400
-                return next(error)
-            }
-            console.log('file received');
-            res.send(file);
-    
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
-    }) 
-
-*/
 
 module.exports = router;

@@ -75,29 +75,7 @@ h1, h2{
 .navbar .nav li a {
   color: #888;
 }
-.search-box {
-  position: relative;
-}
-.search-box input {
-  padding-right: 35px;
-  border-color: #dfe3e8;
-  border-radius: 4px !important;
-  box-shadow: none;
-}
-.search-box .input-group-addon {
-  min-width: 35px;
-  border: none;
-  background: transparent;
-  position: absolute;
-  right: 0;
-  z-index: 9;
-  padding: 7px;
-  height: 100%;
-}
-.search-box i {
-  color: #a0a5b1;
-  font-size: 19px;
-}
+
 .navbar .nav .btn-primary,
 .navbar .nav .btn-primary:active {
   color: #fff;
@@ -213,7 +191,7 @@ h1, h2{
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:visited {
-  background-color: #0d5abe !important;
+  background-color: #0d5abe;
 }
 
 @media (min-width: 768px) {
@@ -250,14 +228,17 @@ h1, h2{
 }
 
 .carousel {
-  background-color: dimgray;
-  width: 575px;
-  height: 375px;
+  background-color: #343a40;
+  width: 630px;
+  height: 400px;
   text-align: center;
   margin: auto;
+  position: relative;
 }
 
 .carousel-inner > .carousel-item > img{
+  height: 275px;
+  width: 500px;
   margin-top: 15px;
   }
 
@@ -266,5 +247,7 @@ h1, h2{
   font-size: medium;
 }
 
-
-
+.item img {
+  width: 100%;
+  height: auto
+}

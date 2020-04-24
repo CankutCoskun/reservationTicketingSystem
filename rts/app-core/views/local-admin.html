@@ -7,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/w3.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-    <script src="../../bootstrap-resources/js/jquery.min.js"></script>
-    <script src="../../bootstrap-resources/js/popper.min.js"></script>
-    <script src="../../bootstrap-resources/js/bootstrap.min.js"></script>
+    <script src="/bootstrap-resources/js/jquery.min.js"></script>
+    <script src="/bootstrap-resources/js/popper.min.js"></script>
+    <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
     <title>Local Admin</title>
     <meta name="theme-color" content="#563d7c">
 
@@ -277,20 +277,14 @@
 
 
     <script>
+        
         function deleteFunc(eId) {
-            console.log("ege");
-            console.log(typeof (eId));
-            console.log(eId);
 
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    console.log("deneme");
-                }
-            }
             var a = "/api/events/delete/" + String(eId);
             xmlhttp.open("DELETE", a, true);
             xmlhttp.send();
+            window.location.reload();
         }
 
         function updateFunc(eId, title, venue, date, time, capacity, detail) {
@@ -306,17 +300,7 @@
         }
 
 
-
-
-
-
-
-
     </script>
-
-
-
-
 
 </body>
 

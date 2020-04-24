@@ -20,7 +20,7 @@ const pool = mysql.createPool({
     database: 'reservations',
     host: 'cs308db-do-user-7358055-0.a.db.ondigitalocean.com',
     port: '25060',
-    multipleStatements:true 
+    multipleStatements: true
 });
 
 let db = {};
@@ -81,22 +81,22 @@ db.addNewUser = (uname, password, email, name, surname) => {
     });
 }
 
-db.updateUser = (uid, uname, password, email , name, surname ) =>{
+db.updateUser = (uid, uname, password, email, name, surname) => {
 
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-        pool.query(`UPDATE Users SET username = ? , password = ?, email = ?, name = ?, surname = ? WHERE uid= ? ;`, [uname, password, email, name, surname,uid], (err) => {
-            if(err){
+        pool.query(`UPDATE Users SET username = ? , password = ?, email = ?, name = ?, surname = ? WHERE uid= ? ;`, [uname, password, email, name, surname, uid], (err) => {
+            if (err) {
                 console.log('ERROR: .updateUser()');
+                console.log(err);
                 return reject(err);
             }
-            
-            return resolve({ message: ' user updated successfully'});
+
+            return resolve({ message: ' user updated successfully' });
         });
     });
 }
 
-//---TO-DO---
 db.addNewLocalAdmin = (cuname, cpassword, cemail, atype) => {
 
     return new Promise((resolve, reject) => {
@@ -152,12 +152,10 @@ db.getCompaines = () => {
     });
 };
 
-
 //return the company id and company name of a certain companyusername
-
 db.getCompIDbyUsername = (uname) => {
     return new Promise((resolve, reject) => {
-        pool.query(`SELECT C.id, C.name FROM Companies AS C INNER JOIN Users as U ON C.adminId=U.uid AND U.username= ?`,[uname], (err, results) => { 
+        pool.query(`SELECT C.id, C.name FROM Companies AS C INNER JOIN Users as U ON C.adminId=U.uid AND U.username= ?`, [uname], (err, results) => {
             if (err) {
                 console.log('ERROR: .getCompanies()');
                 return reject(err);
@@ -183,9 +181,9 @@ db.getEvents = () => {
 
 db.getEventById = (id) => {
 
-    return new Promise( (resolve, reject) => {
-        pool.query(`SELECT * FROM Events WHERE eId = ?`, [id] ,(err, results) => {
-            if(err){
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM Events WHERE eId = ?`, [id], (err, results) => {
+            if (err) {
                 console.log('ERROR: .getEventById()');
 
                 return reject(err);
@@ -196,12 +194,12 @@ db.getEventById = (id) => {
     });
 };
 
-db.addNewEvent = (compid,title, venue, date, time, capacity, detail,imagePath) => {
+db.addNewEvent = (compid, title, venue, date, time, capacity, detail, imagePath) => {
     return new Promise((resolve, reject) => {
         console.log(capacity);
         pool.query(`INSERT INTO Events (cId,remainingseat,title, venue, date, time, capacity,detail,status, imagePath)
                     VALUES(?,?,?,?, ?, ?, ?, ?, 'ACTIVE', ?);`
-            , [compid,capacity,title, venue, date, time, capacity,detail,imagePath], (err, results) => {
+            , [compid, capacity, title, venue, date, time, capacity, detail, imagePath], (err, results) => {
 
                 if (err) {
                     console.log('ERROR: .addNewEvent()');
@@ -212,18 +210,30 @@ db.addNewEvent = (compid,title, venue, date, time, capacity, detail,imagePath) =
     });
 };
 
+//get ticket by tid
+db.getTicketById = (tid) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM Tickets WHERE id = ?`, [tid], (err, results) => {
+            if (err) {
+                console.log('ERROR: .getTicketById()');
+                return reject(err);
+            }
+            return resolve(results[0]);
+        });
+    });
+};
 
 //delete event
-db.deleteEvent=(id)=>{
+db.deleteEvent = (id) => {
 
     return new Promise((resolve, reject) => {
-        pool.query(`DELETE FROM Events WHERE eId = ?`, [id] ,(err, results) => {
-                if (err) {
-                    console.log('ERROR: .deleteEvent()');
-                    return reject(err);
-                }
-                return resolve({ message: 'event successfully deleted'});
-            });
+        pool.query(`DELETE FROM Events WHERE eId = ?`, [id], (err, results) => {
+            if (err) {
+                console.log('ERROR: .deleteEvent()');
+                return reject(err);
+            }
+            return resolve({ message: 'event successfully deleted' });
+        });
     });
 };
 
@@ -231,9 +241,9 @@ db.deleteEvent=(id)=>{
 //get all tickets of a company
 db.getEventByCompanyId = (id) => {
 
-    return new Promise( (resolve, reject) => {
-        pool.query(`SELECT * FROM Events WHERE cId = ?`, [id] ,(err, results) => {
-            if(err){
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM Events WHERE cId = ?`, [id], (err, results) => {
+            if (err) {
                 console.log('ERROR: .getEventByCompanyId');
 
                 return reject(err);
@@ -244,48 +254,41 @@ db.getEventByCompanyId = (id) => {
     });
 };
 
-/*Get all tickets of a customer */
+/*Get all tickets of a customer by user id */
 db.getActiveTicketsById = (id) => {
 
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-    querystr=`SELECT E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
+        querystr = `SELECT T.id, E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
             FROM Tickets T JOIN Events E ON T.eId=E.eId JOIN Companies AS C ON C.id = E.cId 
-            where T.userid=? and T.status='ACTIVE' ; ` ; 
-        pool.query(querystr, [id] ,(err, results) => {
-        if(err){
-            console.log('ERROR: .getTicketsById()');
+            where T.userid=? and T.status='ACTIVE' ; ` ;
+        pool.query(querystr, [id], (err, results) => {
+            if (err) {
+                console.log('ERROR: .getTicketsById()');
 
-            return reject(err);
+                return reject(err);
             }
-        return resolve(results);
+            return resolve(results);
         });
     });
 };
 
 //decrease remaining capacity of event and create tickets for the user
-db.addNewTicket = (userid,peoplenumber,eId) => {
+db.addNewTicket = (userid, peoplenumber, eId) => {
     return new Promise((resolve, reject) => {
         pool.query(`UPDATE Events SET remainingseat = remainingseat - ? WHERE Events.eId =? ;
                     INSERT INTO Tickets (userid, peoplenumber,status, eId) VALUES( ?, ?, 'ACTIVE',?);`
-            , [peoplenumber,eId ,userid,peoplenumber,eId], (err, results) => {
-
+            , [peoplenumber, eId, userid, peoplenumber, eId], (err, results) => {
                 if (err) {
                     console.log('ERROR: .addNewTicket()');
                     return reject(err);
                 }
-                console.log(results);
-                return resolve({ message: 'ticket is purchased successfully' });
+                console.log({ message: 'ticket is purchased successfully' });
+                return resolve(results[1]);
             });
     });
 };
 
-
-
-
-/*
-
-*/
 /* ****************  Login Authentication    ***************** */
 //
 
