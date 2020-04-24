@@ -31,33 +31,6 @@ app.use(express.json());
 //Html static file root 
 app.use(express.static(process.cwd() + '/static'));
 
-<<<<<<< Updated upstream
-=======
-app.get('/getEventDetailPage/:eid', async function (req, res) {
-
-    try {
-        let eid = req.params.eid;
-        console.log(eid);
-        let event = await db.getEventById(eid);
-        console.log("Event: ", event);
-        //If you render relative path static/views/
-        res.render('event-detail.html', {
-            eId: event.eId,
-            eTitle: event.title,
-            eDetail: event.detail,
-            eAddress: event.address,
-            eDate: event.date,
-            eCapacity: event.capacity,
-            eStatus: event.status,
-            eImagePath: event.imagePath
-            //cId: event.cId;
-        });
-    } catch (error) {
-        console.log(error);
-    }
-
-});
->>>>>>> Stashed changes
 
 app.get('/check', async (req, res) => {
     try {
@@ -170,13 +143,6 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/home');
 });
-<<<<<<< Updated upstream
-=======
-
-
-
-//TO-DO app.post('/logout')
->>>>>>> Stashed changes
 
 app.get('/events', function (req, res) {
     try {
@@ -194,7 +160,6 @@ app.get('/events', function (req, res) {
     }
 });
 
-<<<<<<< Updated upstream
 app.get('/getEventDetailPage/:eid', async function (req, res) {
 
     try {
@@ -276,30 +241,10 @@ app.get('/viewTicket/', async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-=======
-app.get('/eventsbytype/:eventtype', async function (req, res) {
-    try {
-        if (req.session.loggedin) {
-
-            var etype= req.params.eventtype;
-            console.log('serverrr');
-            console.log(etype);
-            let results = await db.getEventsbyType(req.params.eventtype);
-            res.render('eventsbytype.html',{results:results, eventtype: etype});
-
-        }
-        else {
-            //redirect to login/ homepage
-            res.redirect('/login');
-        }
-    } catch (e) {
-        console.log(e);
->>>>>>> Stashed changes
         res.sendStatus(500);
     }
 });
 
-<<<<<<< Updated upstream
 app.post('/createTicket',  async (req, res) => {
     try {
         console.log("CREATE TICKET IS CALLED");  
@@ -370,10 +315,6 @@ app.post('/createTicket',  async (req, res) => {
         console.log(error);
     }
 });
-=======
-
-
->>>>>>> Stashed changes
 
 app.get('/gadmin', async function (req, res) {
 

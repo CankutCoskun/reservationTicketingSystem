@@ -204,15 +204,9 @@ router.post('/company/add', upload.single('myFile') ,async (req, res, next) => {
 
 router.post('/ticketBuy/:eid', async (req, res) => {
     try {
-<<<<<<< Updated upstream
         console.log('Request Body: ', req.body );   
         let event= await db.getEventById(req.params.eid);
         if(event.remainingseat < req.body.peoplenumber   ){
-=======
-        console.log('Request Body: ', req.body);
-        let event = await db.getEventById(req.params.eid);
-        if (event.remainingseat < req.body.peoplenumber) {
->>>>>>> Stashed changes
             res.send("no seats left for this event");
         }
         else {
@@ -231,15 +225,9 @@ router.post('/ticketBuy/:eid', async (req, res) => {
 //delete event by id
 router.delete('/events/delete/:eId', async (req, res) => {
     try {
-        console.log("girdin mi");
         let result = await db.deleteEvent(req.params.eId);
         console.log(result);
-        console.log("redirect etsene1");
-        console.log("redirect etsene2");
-        
-        let newevents = await db.getEventByCompanyId();
-        res.json(newevents);
-
+        res.send("event deleted");
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -265,7 +253,6 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
         console.log("file received: ", filePath);
         console.log(req.body);
         let db_result = await db.addNewEvent(req.body.compid, req.body.eventtitle, req.body.eventvenue, req.body.eventdate, req.body.eventtime, req.body.eventcapacity, req.body.eventdetail, filePath);
-        console.log('yonlendirmeli');
         res.redirect("/company");
 
     } catch (error) {
@@ -275,74 +262,4 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
 });
 
 
-<<<<<<< Updated upstream
-=======
-router.get('/eventsbytype/:eventtype', async (req, res, next) => {
-    try {
-        console.log(req.params.eventtype);
-        let results = await db.getEventsbyType(req.params.eventtype);       
-        res.json(results);
-    } catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-});
-
-
-router.post('/events/update', async (req, res) => {
-    try {
-        //let result=await db.UpdateEvent(req.params.eId);
-        console.log("ege");
-        console.log(req.body);
-        res.send("event deleted");
-
-
-    }
-    catch (e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-});
-
-
-
-//Generic file upload request
-/* 
-    const multer = require('multer');
-    var storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, path.resolve('./<yor destination path>'));
-        },
-        filename: function (req, file, cb) {
-            let ts = Date.now();
-            let date_ob = new Date(ts);
-            let date = date_ob.getDate();
-            let month = date_ob.getMonth() + 1;
-            let year = date_ob.getFullYear();
-            cb(null,  year + "-" + month + "-" + date + "_" + file.originalname);  
-        }
-    });   
-    var uploader = multer({ storage: storage });
-    router.post('/uploadfile', uploader.single('filename') ,async (req, res) => {
-        try {
-            const file = req.file;
-            console.log("Attached file: ", file);
-            if (!file) {
-                console.log("No file received");
-                const error = new Error('Please upload a file')
-                error.httpStatusCode = 400
-                return next(error)
-            }
-            console.log('file received');
-            res.send(file);
-    
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
-    }) 
-
-*/
-
->>>>>>> Stashed changes
 module.exports = router;
