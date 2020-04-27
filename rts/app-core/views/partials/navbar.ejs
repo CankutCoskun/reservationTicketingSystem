@@ -1,44 +1,49 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-    <img src="/resources/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
-    <div class="collapse navbar-collapse" id="navbarColor02">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" class="active" href="#"><i class="fa fa-fw fa-home"></i> Home</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Events</a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Concerts</a>
-                    <a class="dropdown-item" href="#">Theatre</a>
-                    <a class="dropdown-item" href="#">Dance</a>
-                    <a class="dropdown-item" href="#">Stand-up Comedy</a>
-                    <a class="dropdown-item" href="#">Opera/Ballet</a>
-                    <a class="dropdown-item" href="#">Musical</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-
-        </ul>
-        <ul class="nav navbar-nav navbar-right ml-auto">
-            
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">
-                    <i class="fa fa-fw fa-user"></i> Profile </a>
-                <div class="dropdown-menu" id="profile-section" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i> My Profile</a>
-                    <a class="dropdown-item" href="#">Events</a>
-                    <a class="dropdown-item" href="#">My tickets</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
-            </li>
-            </li>
-        </ul>
-    </div>
-</nav>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <img src="/resources/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" class="active" href="/"><i class="fa fa-fw fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Events</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/eventsbytype/concert">Concerts</a>
+                        <a class="dropdown-item" href="/eventsbytype/theatre">Theatre</a>
+                        <a class="dropdown-item" href="/eventsbytype/dance">Dance</a>
+                        <a class="dropdown-item" href="/eventsbytype/standup">Stand-up Comedy</a>
+                        <a class="dropdown-item" href="/eventsbytype/opera">Opera</a>
+                        <a class="dropdown-item" href="/eventsbytype/ballet">Ballet</a>
+                        <a class="dropdown-item" href="/eventsbytype/musical">Musical</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+    
+            </ul>
+            <ul class="nav navbar-nav navbar-right ml-auto">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">
+                        <i class="fa fa-fw fa-user"></i> Profile </a>
+                    <div class="dropdown-menu" id="profile-section" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/profile"><i class="fa fa-fw fa-user"></i> My Profile</a>
+                        <a class="dropdown-item" href="#">Events</a>
+                        <a class="dropdown-item" href="#">My tickets</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+                </li>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    
+</header>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	
+	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
+	<link rel="stylesheet" href="/web-pages/event-pages/resources/stylesheets/events.css">
+
+</head>
+
+<body>
+	<header>
+		<%- include('partials/navbar') %>
+	</header>
+	<main role="main">
+		<% if (eventtype) { %>
+		<span id='variableJSON' hidden>
+			<%= JSON.stringify(eventtype); %>
+		</span>
+		<% } %>
+		<div class="album py-5 bg-light" style="margin-top: 90px;">
+			<div class="container">
+				<h2 style="text-align: center; margin-bottom: 60px;"> <% if (eventtype) { %> <%= eventtype.toUpperCase() %> <% } %> EVENTS</h2>
+			  <div class="row" id="events">
+				<!--SCRIPT FILL THIS PART-->
+
+			  </div>
+			</div>
+		  </div>
+	</main>
+
+	<!--	Bootstrap Script-->
+	<script src="/bootstrap-resources/js/jquery.min.js"></script>
+	<script src="/bootstrap-resources/js/popper.min.js"></script>	
+	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
+
+	<script src="/web-pages/event-pages/resources/scripts/eventsbytype.js"></script>
+	<script src="/web-pages/event-pages/resources/scripts/holer.min.js"></script>
+</body>
+
+</html>
