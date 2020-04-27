@@ -1,21 +1,20 @@
 
-//REF:https://medium.com/@olamilekan001/image-upload-with-google-cloud-storage-and-node-js-a1cf9baa1876
-
-const bucketName = 'rts-event-images';
-const filename = 'photo.jpg';
-const key = 'cs308-rts-af8045b0ad06.json';
+const BUCKET_NAME = 'rts-event-images';
+const KEY = 'cs308-rts-af8045b0ad06.json';
 // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
 
 // Creates a client
-const storage = new Storage({keyFilename: key});
+const storage = new Storage({keyFilename: KEY});
 
 gc = {}
 
 
-async function uploadFile() {
+gc.uploadFile = async function (filepath) {
   // Uploads a local file to the bucket
-  await storage.bucket(bucketName).upload(filename, {
+  console.log("****IN CLOUD CLIENT UPLOAD FILE****" )
+  console.log(filepath)
+  await storage.bucket(BUCKET_NAME).upload(filepath, {
     // Support for HTTP requests made with `Accept-Encoding: gzip`
     gzip: true,
     // By setting the option `destination`, you can change the name of the
@@ -28,37 +27,26 @@ async function uploadFile() {
     },
   });
 
-  console.log(`${filename} uploaded to ${bucketName}.`);
+  console.log(`${filepath} uploaded to ${BUCKET_NAME}.`);
 }
 
-//uploadFile().catch(console.error);
-
-// get public url for file
-var getPublicThumbnailUrlForItem = file_name => {
-  return `https://storage.googleapis.com/${bucketName}/${file_name}`
-}
-
-
-const srcFilename = 'photo.jpg';
-const destFilename = './files/photo.jpg';
-
-async function downloadFile() {
+gc.downloadFile =  async function (srcFilename, destFilename) {
   const options = {
     destination: destFilename,
   };
 
   // Downloads the file
-  await storage.bucket(bucketName).file(srcFilename).download(options);
+  await storage.bucket(BUCKET_NAME).file(srcFilename).download(options);
 
   console.log(
-    `gs://${bucketName}/${srcFilename} downloaded to ${destFilename}.`
+    `gs://${BUCKET_NAME}/${srcFilename} downloaded to ${destFilename}.`
   );
 }
 
-async function getMetadata() {
+gc.getMetadata = async function (filename) {
   // Gets the metadata for the file
   const [metadata] = await storage
-    .bucket(bucketName)
+    .bucket(BUCKET_NAME)
     .file(filename)
     .getMetadata();
 
@@ -66,9 +54,14 @@ async function getMetadata() {
   console.log(`Bucket: ${metadata.bucket}`);
   console.log(`Storage class: ${metadata.storageClass}`);
   console.log(`Self link: ${metadata.selfLink}`);
+  console.log(`Media link (Download URL): ${metadata.mediaLink}`);
   console.log(`ID: ${metadata.id}`);
   console.log(`Size: ${metadata.size}`);
-  console.log(`Metadata: ${metadata.metadata}`);
 }
 
-getMetadata().catch(console.error);
+// get public url for file
+gc.getPublicUrlForItem = (filename) => {
+  return `https://storage.googleapis.com/${BUCKET_NAME}/${filename}`
+}
+
+module.exports = gc;

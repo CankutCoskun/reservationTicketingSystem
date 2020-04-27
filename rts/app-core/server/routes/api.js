@@ -1,14 +1,21 @@
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
+var path = require('path');
 const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-const multer = require('multer');
-var path = require('path');
-
 //fs is never used ? 
 const fs = require('fs');
+//Google cloud client
+var gcClient = require('../gcp');
+
+var multer = require('multer');
+
+// const multerGoogleStorage = require("multer-google-storage");
+// var uploadHandler = multer({
+//     storage: multerGoogleStorage.storageEngine()
+// });
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -99,9 +106,6 @@ router.get('/eventsbytype/:eventtype', async (req, res, next) => {
 });
 
 
-
-
-
 // Add events with image upload
 router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
 
@@ -116,17 +120,21 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
         }
 
         //Relative to static directory
-        let filePath = 'uploads/' + file.filename;
-        console.log("file received: ", filePath);
-        console.log(req.body);
-        let db_result = await db.addNewEvent(req.body.compid, req.body.eventtitle, req.body.eventvenue, req.body.eventdate, req.body.eventtime, req.body.eventcapacity, req.body.eventdetail, filePath);
-        res.redirect("/company");
+        console.log("file received: ", file.path);
+        await gcClient.uploadFile(file.path).catch(console.error);
+        let db_result = await db.addNewEvent(req.body.compid, req.body.eventtitle, 
+                                            req.body.eventvenue, req.body.eventdate, 
+                                            req.body.eventtime, req.body.eventcapacity, 
+                                            req.body.eventdetail, gcClient.getPublicUrlForItem(file.filename));
 
+        res.redirect("/company");
+        
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
     }
 });
+
 
 //delete event by id
 router.delete('/events/delete/:eId', async (req, res) => {
