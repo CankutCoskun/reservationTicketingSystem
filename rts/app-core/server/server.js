@@ -245,6 +245,7 @@ app.get('/viewTicket/', async (req, res) => {
     }
 });
 
+
 app.post('/createTicket',  async (req, res) => {
     try {
         console.log("CREATE TICKET IS CALLED");  
@@ -313,12 +314,35 @@ app.post('/createTicket',  async (req, res) => {
         
     } catch (error) {
         console.log(error);
+    } 
+});
+
+app.get('/deleteTicket/', async (req, res) => {
+    try {
+        
+        console.log("aaaa")
+        let tid = req.query.tid;
+        let pnum = req.query.pnum;
+        let eid = req.query.eid;   
+            let result = await db.deleteTicket(tid,pnum,eid);
+            //let result = await db.deleteTicket(tid);
+            console.log(result);
+            
+            res.redirect('/profile');
+        
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
     }
 });
 
+
+
+
+
 app.get('/gadmin', async function (req, res) {
 
-    try {
+    try {  
         if (req.session.loggedin) {
             //res.send('Welcome back, ' + req.session.username + '!');
             console.log(req.session);
@@ -345,6 +369,7 @@ app.get('/profile', async function (req, res) {
             let uname = req.session.username;
             let user = await db.getUserByUname(uname);
             let tickets = await db.getActiveTicketsById(user.uid);
+            console.log(tickets)
             //res.send('Welcome back, ' + req.session.username + '!');
             // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
             res.render('user_profile.html', {

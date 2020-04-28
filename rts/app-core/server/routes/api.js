@@ -222,7 +222,7 @@ router.post('/ticketBuy/:eid', async (req, res) => {
 })
 
 
-//delete event by id
+//delete event by id 
 router.delete('/events/delete/:eId', async (req, res) => {
     try {
         let result = await db.deleteEvent(req.params.eId);
@@ -233,6 +233,9 @@ router.delete('/events/delete/:eId', async (req, res) => {
         res.sendStatus(500);
     }
 })
+
+
+
 
 
 // Add events with image upload
@@ -246,8 +249,9 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
         if (!file) {
             console.log("No file received");
             res.send("No File is attached. Please add a file");
-        }
+        } 
 
+ 
         //Relative to static directory
         let filePath = 'uploads/' + file.filename;
         console.log("file received: ", filePath);

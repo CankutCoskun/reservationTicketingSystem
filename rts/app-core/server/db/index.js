@@ -238,6 +238,21 @@ db.deleteEvent = (id) => {
 };
 
 
+db.deleteTicket = (id,pnum,eid) => {
+
+    return new Promise((resolve, reject) => {
+        pool.query(`DELETE FROM Tickets WHERE id = ?;UPDATE Events SET remainingseat = remainingseat + ? WHERE Events.eId =? ;`, [id,pnum,eid], (err, results) => {
+            if (err) {
+                console.log('ERROR: .deleteTicket()');
+                return reject(err);
+            }
+            return resolve({ message: 'ticket successfully deleted' });
+        });
+    });
+};
+
+
+
 //get all tickets of a company
 db.getEventByCompanyId = (id) => {
 
@@ -259,7 +274,7 @@ db.getActiveTicketsById = (id) => {
 
     return new Promise((resolve, reject) => {
 
-        querystr = `SELECT T.id, E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
+        querystr = `SELECT T.id, E.eID as eid, E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
             FROM Tickets T JOIN Events E ON T.eId=E.eId JOIN Companies AS C ON C.id = E.cId 
             where T.userid=? and T.status='ACTIVE' ; ` ;
         pool.query(querystr, [id], (err, results) => {
