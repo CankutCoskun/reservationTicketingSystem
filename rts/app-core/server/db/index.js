@@ -165,6 +165,18 @@ db.getCompIDbyUsername = (uname) => {
     });
 };
 
+//get userid from companyid
+db.getUserIDbyCompID = (id)=>{
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT adminId FROM Companies WHERE id=?`,[id], (err, results) => { 
+            if (err) {
+                console.log('ERROR: .getCompanies()');
+                return reject(err);
+            }
+            return resolve(results);
+        });
+    });
+};
 
 db.getEvents = () => {
     return new Promise((resolve, reject) => {
@@ -237,6 +249,18 @@ db.deleteEvent = (id) => {
     });
 };
 
+db.deleteCompany=(id)=>{
+
+    return new Promise((resolve, reject) => {
+        pool.query(`DELETE FROM Users WHERE uid = ?`, [id] ,(err, results) => {
+                if (err) {
+                    console.log('ERROR: .deleteCompany()');
+                    return reject(err);
+                }
+                return resolve({ message: 'company successfully deleted'});
+            });     
+    });
+};
 
 db.deleteTicket = (id,pnum,eid) => {
 
@@ -261,6 +285,19 @@ db.getEventByCompanyId = (id) => {
             if (err) {
                 console.log('ERROR: .getEventByCompanyId');
 
+                return reject(err);
+            }
+
+            return resolve(results);
+        });
+    });
+};
+
+db.getEventsbyType = (eventtype) => {
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM Events WHERE eType=?`, [eventtype], (err, results) => {
+            if (err) {
+                console.log('ERROR: .getEvents()');
                 return reject(err);
             }
 

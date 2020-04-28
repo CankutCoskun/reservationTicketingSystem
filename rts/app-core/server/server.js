@@ -212,13 +212,11 @@ app.get('/ticketPurchasePage',  async (req, res) => {
 app.get('/viewTicket/', async (req, res) => {
     try {
         if(req.session.loggedin){
-            console.log("IN VIEW TICKET");
             let tid = req.query.tid;
             let ticket = await db.getTicketById(tid);
             let event = await db.getEventById(ticket.eId);
             let user =  await db.getUserById(ticket.userid);
             console.log(ticket);
-            console.log(user);
             res.render('view-ticket.html' ,{
                 //<%=eDay%>
                 //<%=eMonth%>
@@ -239,6 +237,9 @@ app.get('/viewTicket/', async (req, res) => {
                 eImagePath: event.imagePath
             });
         }
+        else{
+                res.send("Please  login");
+        }
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
@@ -248,8 +249,6 @@ app.get('/viewTicket/', async (req, res) => {
 
 app.post('/createTicket',  async (req, res) => {
     try {
-        console.log("CREATE TICKET IS CALLED");  
-        console.log(req.body);
         let event = await db.getEventById(req.body.eid);
         let user = await db.getUserById(req.body.uid);
         if(event.remainingseat < req.body.peoplenumber){
@@ -340,22 +339,16 @@ app.get('/deleteTicket/', async (req, res) => {
 
 
 
-app.get('/gadmin', async function (req, res) {
+app.get('/gadmin', async function (req, res) {  
 
     try {  
         if (req.session.loggedin) {
-            //res.send('Welcome back, ' + req.session.username + '!');
-            console.log(req.session);
-            let uname = req.session.username;
-            console.log(uname);
-            let company = await db.getCompaines();
-            console.log(company);
-            res.render('global-admin.html', {
-                company: company
-            });
+            var etype= req.params.eventtype;
+            res.render('eventsbytype.html',{ eventtype: etype});
         }
         else {
-            res.send('Please login to view this page!');
+            //redirect to login/ homepage
+            res.redirect('/login');
         }
     } catch (e) {
         console.log(e);
@@ -383,8 +376,8 @@ app.get('/profile', async function (req, res) {
                 created: user.createdAt,
                 updated: user.updatedAt,
                 tickets: tickets
-
             });
+            
         }
         else {
             res.send('Please login to view this page!');
@@ -434,7 +427,6 @@ app.post('/updateUser', async function (request, response) {
 
     try {
         let results = await db.updateUser(uid, username, password, email, name, surname);
-        console.log(results)
 
         if (results.message.length > 0) {
 
@@ -443,7 +435,7 @@ app.post('/updateUser', async function (request, response) {
 
     }
     catch (e) {
-        response.send('Error in updating User');
+        response.send(500);
         response.end();
     }
 
@@ -523,6 +515,24 @@ app.post('/createUser', async function (request, response) {
     catch (e) {
         response.send('Already Registered User');
         response.end();
+    }
+});
+
+app.get('/gadmin', async function (req, res) {
+
+    try {
+        if (req.session.loggedin) {
+            let company = await db.getCompaines();
+            res.render('global-admin.html', {
+                company: company
+            });
+        }
+        else {
+            res.send('Please login to view this page!');
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
     }
 });
 
