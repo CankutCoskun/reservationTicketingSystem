@@ -3,26 +3,16 @@
 <head>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="rts">
+	<meta name="author" content="cankutcoskun@sabanciuniv.edu">
+	
 	<!-- Bootstrap CSS -->
-
 	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="/web-pages/home-page/home.css">
-	
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<!--Relative local paths-->
-	<script src="/web-pages/home-page/home.js"></script>
-	<script src="/bootstrap-resources/js/jquery.min.js"></script>
-	<script src="/bootstrap-resources/js/popper.min.js"></script>
-	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
-	<script src="/web-pages/event-pages/resources/scripts/holer.min.js"></script>
-	<!--Start-->
-	<script>
-		$('.carousel').carousel();
-	</script>
 
 	<!-- CHECK JQUERY 
 	<script type="text/javascript">
@@ -45,9 +35,9 @@
 	<title>RTS </title>
 </head>
 
-<body>
+<body> 
 	<header>
-		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
+		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm" style="margin-bottom: 0;">
 			<img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
@@ -142,54 +132,75 @@
 	</header>
 
 	<main role="main">
-		<section class="jumbotron text-center">
+		<section class="jumbotron text-center" style="margin-bottom: 0px;">
 			<br></br>
 			<div class="container">
-				<h1> Reservation & Ticketing System </h1>
-				<p class="lead text-muted">How a well maintained JIRA Project looks like with SCRUM based workflow?
-					- Pay attention to the following: Backlog, Sprint, Task Flow, Epics & Story Points, Burndown Chart
-					in the following set of screenshots</p>
-				<p>
-					<br>
-					<a href="/login" class="btn btn-secondary my-2">Login</a>
-					<a href="/signup" class="btn btn-primary my-2">Sign up</a>
-				</p>	
+				<h1 style="font-size: 45px"> Reservation & Ticketing System </h1>
+				<br>	
+				<br>
+				<div class="row">
+					<div class="col">
+						<a style="width: 200px; background-color: #343a40; border-color: white;" href="/signup" class="btn btn-primary">Sign up</a>
+					</div>
+				</div>
 			</div>
 		</section>
-		<div class="container">
-			<div class="row">
-				<div class="col-md" id="featured-events">
-					<h3 id="head3" style="text-align: center;">Featured Events</h3>
-					<div id="myCarousel" class="carousel slide" data-ride="carousel">
-						<ol class="carousel-indicators">
-							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-							<li data-target="#myCarousel" data-slide-to="1" class=""></li>
-							<li data-target="#myCarousel" data-slide-to="2" class=""></li>
-							<li data-target="#myCarousel" data-slide-to="3" class=""></li>
-							<li data-target="#myCarousel" data-slide-to="4" class=""></li>
-							<li data-target="#myCarousel" data-slide-to="5" class=""></li>
-					</ol>
-					
-					<!--CAROUSEL CODE -->			
+		<div style="background-color: #343a40;">
+			<div class="container">	
+				<div class="row">
+					<div class="col" id="featured-events">
+						<br>	
+						<h3 style="text-align: center; color: white; font-size: 30px;">Featured Events</h3>
+						<div id="myCarousel" class="carousel slide" data-ride="carousel">
+							<ol class="carousel-indicators">
+								<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+								<li data-target="#myCarousel" data-slide-to="1" class=""></li>
+								<li data-target="#myCarousel" data-slide-to="2" class=""></li>
+								<li data-target="#myCarousel" data-slide-to="3" class=""></li>
+								<li data-target="#myCarousel" data-slide-to="4" class=""></li>
+								<li data-target="#myCarousel" data-slide-to="5" class=""></li>
+						</ol>
 						
-
+						<!--CAROUSEL CODE -->			
+							
+	
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="album py-5 bg-light" style="margin-top: 30px;">
-			<div class="container">
-				<h2 style="text-align: center; margin-bottom: 60px;">EVENTS</h2>
-			  <div class="row" id="events">
-				<!--events.js FILL THIS PART-->
-
-			  </div>
-			</div>
-		  </div>
+		<br>
+		<div class="row" style="margin: 30px;">
+			<div class="col-md-6">
+				<h2 style="text-align: center; margin-bottom: 20px;">EVENTS</h2>
+				<div class="album py-5 bg-light" style="margin-top: 0px;">
+					<div class="container">
+					  <div class="row" id="events">
+						<!--home.js FILL THIS PART-->
 		
+					  </div>
+					</div>
+				  </div>
+			</div>
+			<div class="col-md-6" id="calendar">
+			
+			</div>
+		</div>
 
 	</main>
-
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS 	
+		<script src="/bootstrap-resources/js/jquery.min.js"></script>
+ -->
+	<!--Relative local paths-->
+	<script src="/web-pages/home-page/home.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="/bootstrap-resources/js/popper.min.js"></script>
+	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
+	<!--Start-->
+	<script>
+		$('.carousel').carousel();
+	</script>
 </body>
 
 </html>

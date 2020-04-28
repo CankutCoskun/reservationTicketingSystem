@@ -33,12 +33,6 @@
     left: auto;
     right: 0;
 }
-h1, h2{
-    font-family: 'Times New Roman', Times, serif; 
-    font-style: italic;
-    color: #0d5abe;
-    font-weight: 900;
-}
 .btn-primary {
     color: #fff;
     background: #0d5abe;

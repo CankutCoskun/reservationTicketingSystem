@@ -18,66 +18,67 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
   <title>Sabanci CS308 Project</title>
+  <style>
+    label{
+      color: white;
+    }
+    .btn.btn-primary{
+      background-color: #0d5abe;
+      width: 240px;
+    }
 
+    .btn.btn-secondary{
+      width: 240px;
+    }
+  </style>
 </head>
 
-<body style="background-color:#f0f8ff;">
+<body style="background-color:#d9dcdf;">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="index.php">
-      <img src="su1.jpg" width="80" height="30" class="d-inline-block align-top mr-3" alt="">
-      Sabanci CS308 Project
+    <a class="navbar-brand" href="/home ">
+      <img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top mr-3" alt=""> 
     </a>
-
-
-
-
+    <p style="color: white; font-size: large;">Reservation & Ticketing System </p>
   </nav>
   <div class="container mt-5 ">
     <div class="row ">
       <div class="col-3">
       </div>
 
-      <div class="col-5 bg-light text-dark rounded border border-primary p-5">
+      <div class="col-5 bg-dark text-dark rounded border border-white p-5">
 
         <form action='createUser' method='POST'>
       
           <div class="form-group">
-            <label for="exampleFormControlInput1">Your Name</label>
+            <label for="name">Your Name</label>
             <input type="text" class="form-control" name="name"placeholder="Name" required>
           </div>
           <div class="form-group">
-            <label for="exampleFormControlInput1">Your Surname</label>
+            <label for="surname">Your Surname</label>
             <input type="text" class="form-control" name="surname"placeholder="Surname"required>
           </div>
 
           <div class="form-group">
-            <label for="exampleFormControlInput1">Your Email</label>
+            <label for="email">Your Email</label>
             <input type="text" class="form-control" name="email"placeholder="name@example.com"required>
           </div>
           <div class="form-group">
-            <label for="exampleFormControlInput1">Your Username</label>
+            <label for="uname">Your Username</label>
             <input type="text" class="form-control" name="uname" placeholder="username"required>
           </div>
           <div class="form-group">
-            <label for="exampleFormControlInput1">Your Password</label>
+            <label for="password">Your Password</label>
             <input type="password" class="form-control" name="password" placeholder="********" required>
           </div>
 
-
-
-
-          
-
-
-
-          <div class="form-group">
-            <input type='submit' name='log1' class="btn btn-primary  active" role="button" aria-pressed="true"
+          <div class="form-group" style="text-align: center; margin-top: 30px;">
+            <input type='submit' name='log1' class="btn btn-primary" role="button" aria-pressed="true"
               value="Sign Up">
           </div>
-          <p> OR you have an account ? </p>
-
-          <a href="/login" class="btn btn-success">Sign In</a>
-
+          <div style="text-align: center; margin-top: 45px;">
+            <label for="login">Have an account already?</label>
+            <a name="login" href="/login" class="btn btn-secondary">Sign In</a>
+          </div>
         </form>
       </div>
     </div>

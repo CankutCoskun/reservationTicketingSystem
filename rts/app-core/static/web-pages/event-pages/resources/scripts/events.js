@@ -17,7 +17,7 @@ xhttp.onreadystatechange = function () {
 
                 var card_img = document.createElement('img');
                 card_img.setAttribute('class', 'card-img-top');
-                card_img.setAttribute('src', '/' + event.imagePath);
+                card_img.setAttribute('src', event.imagePath);
                 card_img.setAttribute('data-holder-rendered', true );
                 card_img.style.height = "225px";
                 card_img.style.width = "100%";

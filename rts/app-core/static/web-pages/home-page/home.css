@@ -1,17 +1,8 @@
-#head3 {
-  font-family:'Times New Roman', Times, serif;
-  font-style: italic;
-  font-weight: bold;
-  font-size: xx-large;
-  text-align: center;
-  color: #0d5abe;
-}
-
 h1, h2{
   font-family:'Times New Roman', Times, serif;
   font-style: italic;
   font-weight: bold;
-  color: #0d5abe;
+  color: #343a40;
 }
 
 .bd-placeholder-img {
@@ -71,9 +62,10 @@ h1, h2{
 }
 .navbar .nav li {
   position: relative;
+  color: #fff;
 }
 .navbar .nav li a {
-  color: #888;
+  color: white;
 }
 
 .navbar .nav .btn-primary,
@@ -95,6 +87,7 @@ h1, h2{
   padding-right: 30px;
 }
 .navbar .nav-item i {
+  color: white;
   font-size: 18px;
 }
 .navbar .dropdown-item i {
@@ -250,4 +243,15 @@ h1, h2{
 .item img {
   width: 100%;
   height: auto
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: white;
+}
+
+/* change the color of active or hovered links */
+.navbar-nav .nav-item.active .nav-link,
+.navbar-nav .nav-item:hover .nav-link {
+  color: white;
+
 }
