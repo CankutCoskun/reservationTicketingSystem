@@ -320,7 +320,7 @@ db.addNewTicket = (userid, peoplenumber, eId) => {
                     console.log('ERROR: .addNewTicket()');
                     return reject(err);
                 }
-                console.log({ message: 'ticket is purchased successfully' });
+                //console.log({ message: 'ticket is purchased successfully' });
                 return resolve(results[1]);
             });
     });

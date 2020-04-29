@@ -48,7 +48,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     //Session expires after a minute
-    cookie: { maxAge: 3600000 },
+    cookie: { maxAge: 36000000 },
 }));
 
 app.get('/', (req, res) => {
@@ -79,11 +79,11 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/auth', async (request, response) => {
-    console.log('Authentication request: ', request.body);
+    //console.log('Authentication request: ', request.body);
     var username = request.body.username;
     var password = request.body.password;
-    console.log(username);
-    console.log(password);
+    //console.log(username);
+    //console.log(password);
     if (username && password) {
         //Validation
         try {
@@ -188,8 +188,7 @@ app.get('/getEventDetailPage/:eid', async function (req, res) {
 
 app.get('/ticketPurchasePage',  async (req, res) => {
     try {  
-        console.log("Ticket purchase is called...");
-        console.log(req.query); 
+        //console.log(req.query); 
         let event = await db.getEventById(req.query.eid);
         let user = await db.getUserById(req.query.uid);
         res.render('ticket-purchase.html' ,{
@@ -257,24 +256,28 @@ app.post('/createTicket',  async (req, res) => {
             let result = await db.addNewTicket(req.body.uid,req.body.peoplenumber,req.body.eid);
             let email = user.email; 
             let tid = result.insertId;
-            let ticket =  db.getTicketById(tid);
+            let ticket = await db.getTicketById(tid);
+            console.log(ticket);
             var name = user.name;
             var surname = user.surname;
             var eventTitle = event.title;
             var eventDetail = event.detail;
             var eventAdress = event.address;
             var eventDate = event.date;
+            var eventImagePath = event.imagePath;
             var numPeople = ticket.peoplenumber;
             const output = `
-                <h3>Message</h3>
-                <p>Hi ${name} ${surname}, Your ticket is created please find details below:</p>
-                <h3>Event Details</h3>
-                <ul>  
-                <li><TITLE: ${eventTitle}</li>
+                <h3>Hi ${name} ${surname},</h3>
+                
+                <p> Your ticket is created please see details below:</p>
+                <h4>${eventTitle}</h4>
+                <ul>
+                <li>TICKET ID: ${ticket.id}</li>
+                <li>NUMBER: ${numPeople}</li>  
                 <li>DATE: ${eventDate}</li>
                 <li>DETAIL: ${eventDetail}</li>
-                <li>ADDRESS: ${eventAdress}</li>
                 </ul>
+                <img src='${eventImagePath}'></img>
             `;
 
             // create reusable transporter object using the default SMTP transport
@@ -337,7 +340,7 @@ app.get('/profile', async function (req, res) {
             let uname = req.session.username;
             let user = await db.getUserByUname(uname);
             let tickets = await db.getActiveTicketsById(user.uid);
-            console.log(tickets);
+            //console.log(tickets);
             //res.send('Welcome back, ' + req.session.username + '!');
             // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
             res.render('user_profile.html', {
