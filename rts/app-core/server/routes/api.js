@@ -36,7 +36,7 @@ require('dotenv').config();
 
 // CRUD Apis
 
-/******************************* USER *******************************/
+/********************* ********** USER *******************************/
 
 router.get('/users/', async (req, res) => {
 
@@ -135,6 +135,41 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
     }
 });
 
+// Add venue with image upload
+router.post('/venues/add', upload.single('myFile'), async (req, res, next) => {
+
+    try {
+        console.log("Attached file: ", req.file);
+        console.log("Request body: ", req.body);
+        const file = req.file;
+
+        if (!file) {
+            console.log("No file received");
+            res.send("No File is attached. Please add a file");
+        }
+
+        //Relative to static directory
+        console.log("file received: ", file.path); 
+        await gcClient.uploadFile(file.path).catch(console.error);
+        let db_result = await db.addNewVenue(req.body.compid, req.body.vname, 
+                                            req.body.Aname, req.body.Acap, 
+                                            req.body.Bname, req.body.Bcap, 
+                                            req.body.Cname, req.body.Ccap, 
+                                            req.body.Dname, req.body.Dcap, 
+                                            req.body.Ename, req.body.Ecap, 
+                                            req.body.Fname, req.body.Fcap, 
+                                            req.body.Gname, req.body.Gcap, 
+                                            req.body.Hname, req.body.Hcap, 
+                                            gcClient.getPublicUrlForItem(file.filename));
+
+        res.redirect("/company");
+        
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
+
 
 //delete event by id
 router.delete('/events/delete/:eId', async (req, res) => {
@@ -142,6 +177,16 @@ router.delete('/events/delete/:eId', async (req, res) => {
         let result = await db.deleteEvent(req.params.eId);
         console.log(result);
         res.send("event deleted");
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+})
+router.delete('/venues/delete/:vid', async (req, res) => {
+    try {
+        let result = await db.deleteVenue(req.params.vid);
+        console.log(result);
+        res.send("venue deleted");
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
@@ -266,7 +311,7 @@ router.post('/ticketBuy/:eid', async (req, res) => {
 })
 
 
-<<<<<<< HEAD
+
 //delete event by id 
 router.delete('/events/delete/:eId', async (req, res) => {
     try {
@@ -311,6 +356,4 @@ router.post('/events/add', upload.single('myFile'), async (req, res, next) => {
 });
 
 
-=======
->>>>>>> 796ea3f722d631c1de66d786e1e75d8364396cfa
 module.exports = router;

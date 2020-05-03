@@ -221,6 +221,23 @@ db.addNewEvent = (compid, title, venue, date, time, capacity, detail, imagePath)
             });
     });
 };
+db.addNewVenue = (compid, vname,Aname, Acap, Bname, Bcap, Cname, Ccap, Dname, Dcap, Ename, Ecap, Fname, Fcap, Gname, Gcap, Hname, Hcap,  imagepath) => {
+    return new Promise((resolve, reject) => {
+        
+
+        
+
+        pool.query(`INSERT INTO reservations.Venues (name, cid,imagePath, Aname,Acapacity,Bname,Bcapacity,Cname,Ccapacity,Dname,Dcapacity,Ename,Ecapacity,Fname,Fcapacity,Gname,Gcapacity,Hname,Hcapacity)     VALUES
+        (?,?,?,?, ?, ?, ?, ?,  ?,?,?,?,?, ?, ?, ?, ?,  ?,?);`  , [ vname,compid, imagepath,Aname, Acap, Aname, Acap, Bname, Bcap, Cname, Ccap, Dname, Dcap, Ename, Ecap, Fname, Fcap, Gname, Gcap, Hname, Hcap], (err, results) => {
+
+                if (err) {
+                    console.log('ERROR: .addNewVenue()');
+                    return reject(err);
+                }
+                return resolve({ message: 'new venue added successfully' });
+            });
+    });
+};
 
 //get ticket by tid
 db.getTicketById = (tid) => {
@@ -245,6 +262,19 @@ db.deleteEvent = (id) => {
                 return reject(err);
             }
             return resolve({ message: 'event successfully deleted' });
+        });
+    });
+};
+
+db.deleteVenue = (id) => {
+
+    return new Promise((resolve, reject) => {
+        pool.query(`DELETE FROM Venues WHERE vid = ?`, [id], (err, results) => {
+            if (err) {
+                console.log('ERROR: .deleteVenue()');
+                return reject(err);
+            }
+            return resolve({ message: 'venue successfully deleted' });
         });
     });
 };
@@ -284,6 +314,20 @@ db.getEventByCompanyId = (id) => {
         pool.query(`SELECT * FROM Events WHERE cId = ?`, [id], (err, results) => {
             if (err) {
                 console.log('ERROR: .getEventByCompanyId');
+
+                return reject(err);
+            }
+
+            return resolve(results);
+        });
+    });
+};
+db.getVenuesByCompanyId = (id) => {
+
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM Venues WHERE cid = ?`, [id], (err, results) => {
+            if (err) {
+                console.log('ERROR: .getVenuesByCompanyId');
 
                 return reject(err);
             }

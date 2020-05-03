@@ -245,7 +245,7 @@ app.get('/viewTicket/', async (req, res) => {
         res.sendStatus(500);
     }
 });
-
+ 
 
 app.post('/createTicket',  async (req, res) => {
     try {
@@ -394,17 +394,21 @@ app.get('/company', async function (req, res) {
             let uname = req.session.username;
             console.log(uname);
             let a = await db.getCompIDbyUsername(uname);
-
+            
             var string = JSON.stringify(a);
             var json = JSON.parse(string);
             let compid = json[0].id;
             let compname=json[0].name;
             console.log(a);
             let events = await db.getEventByCompanyId(compid);
+            let venues = await db.getVenuesByCompanyId(compid);
+            console.log(venues);
             res.render('local-admin.html', {
+                //async: true,
                 compid:compid,
                 compname:compname,
-                events: events
+                events: events,
+                venues:venues
             });
         }
         else {
