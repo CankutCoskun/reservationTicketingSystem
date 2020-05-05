@@ -107,6 +107,9 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
             Add Event
         </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addVenue">
+            Add Venue
+        </button>
 
         <!-- Modal -->
         <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" role="dialog"
@@ -162,6 +165,53 @@
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 <input type='submit' name='addcomp' class="btn btn-primary  active" role="button"
                                     aria-pressed="true" value="Add New Company">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addVenue" data-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Add Venue</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form action="/api/venues/add" enctype="multipart/form-data" method="POST">
+                            <div class="form-group">
+                                <label for="EventInformation">Venue Name</label>
+                                <input type="text" class="form-control" name="vname" id="vname"
+                                    placeholder="Venue Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Category A Name</label>
+                                <input type="text" class="form-control" name="Aname" id="Aname"
+                                    placeholder="Category A" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="EventInformation">Category A Capacity</label>
+                                <input type="text" class="form-control" name="Acap" id="Acap"
+                                    value=0 required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <h4 class="modal-title">Upload Image</h5>
+                                    <input type="file" name="myFile" class="form-control-file"
+                                        id="exampleFormControlFile1">
+                            </div>
+                            <input type="number" name="compid" value="<%= compid %>" style="display:none;"> 
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <input type='submit' name='addVenue' class="btn btn-primary  active" role="button"
+                                    aria-pressed="true" value="Add New Venue">
                             </div>
                         </form>
                     </div>

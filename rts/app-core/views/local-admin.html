@@ -107,6 +107,9 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" style="margin: 15px; background-color: #0d5abe;">
             Add Event
         </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addVenue">
+            Add Venue
+        </button>
 
         <!-- Modal -->
         <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" role="dialog"
@@ -168,6 +171,366 @@
                 </div>
             </div>
         </div>
+
+         <!-- Modal -->
+         <div class="modal fade" id="addVenue" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="staticBackdropLabel">Add Venue</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+                 <div class="modal-body">
+
+                     <form action="/api/venues/add" enctype="multipart/form-data" method="POST">
+                         <div class="form-group">
+                             <label for="EventInformation">Venue Name</label>
+                             <input type="text" class="form-control" name="vname" id="vname"
+                                 placeholder="Venue Name" required>
+                         </div>
+                         
+                         <div class="form-row">
+
+                            <div class="col-5">
+                                
+                                    <h4>Category A Name</h4>
+                                
+                                    <input type="text" class="form-control" name="Aname" id="Aname"
+                                    value="Category A" required>
+                            </div>
+                            <div class="col-5">
+                                
+                                    <h4>Category A Capacity</h4>
+                               
+                                    <input type="text" class="form-control" name="Acap" id="Acap"
+                                    value=0 required>                           
+                            </div>
+                        </div>
+                         <div class="form-row">
+
+                            <div class="col-5">
+                                
+                                    <h4>Category B Name</h4>
+                                
+                                    <input type="text" class="form-control" name="Bname" id="Bname"
+                                    value="Category B" required>
+                            </div>
+                            <div class="col-5">
+                                
+                                    <h4>Category B Capacity</h4>
+                               
+                                    <input type="text" class="form-control" name="Bcap" id="Bcap"
+                                    value=0 required>                           
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-5">
+                                
+                                    <h4>Category C Name</h4>
+                                
+                                    <input type="text" class="form-control" name="Cname" id="Cname"
+                                    value="Category C" required>
+                            </div>
+                            <div class="col-5">
+                                
+                                    <h4>Category C Capacity</h4>
+                               
+                                    <input type="text" class="form-control" name="Ccap" id="Ccap"
+                                    value=0 required>                           
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-5">
+                                
+                                    <h4>Category D Name</h4>
+                                
+                                    <input type="text" class="form-control" name="Dname" id="Dname"
+                                    value="Category D" required>
+                            </div>
+                            <div class="col-5">
+                                
+                                    <h4>Category D Capacity</h4>
+                               
+                                    <input type="text" class="form-control" name="Dcap" id="Dcap"
+                                    value=0 required>                           
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-5">
+                                
+                                    <h4>Category E Name</h4>
+                                
+                                    <input type="text" class="form-control" name="Ename" id="Ename"
+                                    value="Category E" required>
+                            </div>
+                            <div class="col-5">
+                                
+                                    <h4>Category E Capacity</h4>
+                               
+                                    <input type="text" class="form-control" name="Ecap" id="Ecap"
+                                    value=0 required>                           
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-5">
+                                
+                                    <h4>Category F Name</h4>
+                                
+                                    <input type="text" class="form-control" name="Fname" id="Fname"
+                                    value="Category F" required>
+                            </div>
+                            <div class="col-5">
+                                
+                                    <h4>Category F Capacity</h4>
+                               
+                                    <input type="text" class="form-control" name="Fcap" id="Fcap"
+                                    value=0 required>                           
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-5">
+                                
+                                    <h4>Category G Name</h4>
+                                
+                                    <input type="text" class="form-control" name="Gname" id="Gname"
+                                    value="Category G" required>
+                            </div>
+                            <div class="col-5">
+                                
+                                    <h4>Category G Capacity</h4>
+                               
+                                    <input type="text" class="form-control" name="Gcap" id="Gcap"
+                                    value=0 required>                           
+                            </div>
+                        </div>
+                        <div class="form-row">
+
+                            <div class="col-5">
+                                
+                                    <h4>Category H Name</h4>
+                                
+                                    <input type="text" class="form-control" name="Hname" id="Hname"
+                                    value="Category B" required>
+                            </div>
+                            <div class="col-5">
+                                
+                                    <h4>Category H Capacity</h4>
+                               
+                                    <input type="text" class="form-control" name="Hcap" id="Hcap"
+                                    value=0 required>                           
+                            </div>
+                        </div>
+                         
+                         <div class="form-group">
+                             <h4 class="modal-title">Upload Image</h5>
+                                 <input type="file" name="myFile" class="form-control-file"
+                                     id="exampleFormControlFile1">
+                         </div>
+                         <input type="number" name="compid" value="<%= compid %>" style="display:none;"> 
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                             <input type='submit' name='addVenue' class="btn btn-primary  active" role="button"
+                                 aria-pressed="true" value="Add New Venue">
+                         </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+
+
+
+
+     <div class="modal fade" id="updateVenue" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="staticBackdropLabel">Update Venue</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+
+                 <form action="/api/venues/update" enctype="multipart/form-data" method="POST">
+                     <div class="form-group">
+                         <label for="EventInformation">Venue Name</label>
+                         <input type="text" class="form-control" name="vname2" id="vname"
+                             placeholder="Venue Name" required>
+                     </div>
+                     
+                     <div class="form-row">
+
+                        <div class="col-5">
+                            
+                                <h4>Category A Name</h4>
+                            
+                                <input type="text" class="form-control" name="Aname2" id="Aname"
+                                value="Category A" required>
+                        </div>
+                        <div class="col-5">
+                            
+                                <h4>Category A Capacity</h4>
+                           
+                                <input type="text" class="form-control" name="Acap2" id="Acap"
+                                value=0 required>                           
+                        </div>
+                    </div>
+                     <div class="form-row">
+
+                        <div class="col-5">
+                            
+                                <h4>Category B Name</h4>
+                            
+                                <input type="text" class="form-control" name="Bname2" id="Bname"
+                                value="Category B" required>
+                        </div>
+                        <div class="col-5">
+                            
+                                <h4>Category B Capacity</h4>
+                           
+                                <input type="text" class="form-control" name="Bcap2" id="Bcap"
+                                value=0 required>                           
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="col-5">
+                            
+                                <h4>Category C Name</h4>
+                            
+                                <input type="text" class="form-control" name="Cname2" id="Cname"
+                                value="Category C" required>
+                        </div>
+                        <div class="col-5">
+                            
+                                <h4>Category C Capacity</h4>
+                           
+                                <input type="text" class="form-control" name="Ccap2" id="Ccap"
+                                value=0 required>                           
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="col-5">
+                            
+                                <h4>Category D Name</h4>
+                            
+                                <input type="text" class="form-control" name="Dname2" id="Dname"
+                                value="Category D" required>
+                        </div>
+                        <div class="col-5">
+                            
+                                <h4>Category D Capacity</h4>
+                           
+                                <input type="text" class="form-control" name="Dcap2" id="Dcap"
+                                value=0 required>                           
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="col-5">
+                            
+                                <h4>Category E Name</h4>
+                            
+                                <input type="text" class="form-control" name="Ename2" id="Ename"
+                                value="Category E" required>
+                        </div>
+                        <div class="col-5">
+                            
+                                <h4>Category E Capacity</h4>
+                           
+                                <input type="text" class="form-control" name="Ecap2" id="Ecap"
+                                value=0 required>                           
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="col-5">
+                            
+                                <h4>Category F Name</h4>
+                            
+                                <input type="text" class="form-control" name="Fname2" id="Fname"
+                                value="Category F" required>
+                        </div>
+                        <div class="col-5">
+                            
+                                <h4>Category F Capacity</h4>
+                           
+                                <input type="text" class="form-control" name="Fcap2" id="Fcap"
+                                value=0 required>                           
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="col-5">
+                            
+                                <h4>Category G Name</h4>
+                            
+                                <input type="text" class="form-control" name="Gname2" id="Gname"
+                                value="Category G" required>
+                        </div>
+                        <div class="col-5">
+                            
+                                <h4>Category G Capacity</h4>
+                           
+                                <input type="text" class="form-control" name="Gcap2" id="Gcap"
+                                value=0 required>                           
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="col-5">
+                            
+                                <h4>Category H Name</h4>
+                            
+                                <input type="text" class="form-control" name="Hname2" id="Hname"
+                                value="Category B" required>
+                        </div>
+                        <div class="col-5">
+                            
+                                <h4>Category H Capacity</h4>
+                           
+                                <input type="text" class="form-control" name="Hcap2" id="Hcap"
+                                value=0 required>                           
+                        </div>
+                    </div>
+                     
+                     <div class="form-group">
+                         <h4 class="modal-title">Upload Image</h5>
+                             <input type="file" name="myFile2" class="form-control-file"
+                                 id="exampleFormControlFile1">
+                     </div>
+                     <input type="number" name="compid2" value="<%= compid %>" style="display:none;"> 
+                     <input type="number" name="vid2"  style="display:none;">
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <input type='submit' name='updatevenue' class="btn btn-primary  active" role="button"
+                            aria-pressed="true" value="Update Venue">
+                    </div>
+                 </form>
+             </div>
+         </div>
+     </div>
+    </div>
+
+
+
+
+
+
+
+
 
         <!-- Modal for Edit Event-->
         <div class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog"
@@ -268,7 +631,57 @@
             </tbody>
         </table>
 
-        </div>
+
+        <table id=venuetable class="table table-striped">
+            <button class='btn btn-sm btn-info' data-toggle="collapse" data-target="#venues" class="clickable">Venues</button>
+            <thead id="venues" class="collapse">
+                <tr >
+                    
+                    <!--  <th scope="col">Company Image</th> -->
+                    <th scope="col">Venue ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Seating Plan</th>
+                    <th scope="col">Category A Name-Capacity</th>
+                    <th scope="col">Category B Name-Capacity</th>
+                    <th scope="col">Category C Name-Capacity</th>
+                    <th scope="col">Category D Name-Capacity</th>
+                    <th scope="col">Category E Name-Capacity</th>
+                    <th scope="col">Category F Name-Capacity</th>
+                    <th scope="col">Category G Name-Capacity</th>
+                    <th scope="col">Category H Name-Capacity</th>
+                </tr>
+            </thead>
+            <tbody id="venues" class="collapse">
+                
+                <% for( var i=0; i < venues.length; i++) { %>
+                <tr>
+                    <td><%= venues[i].vid %></td>
+                    <td><%= venues[i].name %></td>
+                    
+                    <td> <a href=<%= venues[i].imagePath %> >Plan </a></td>
+                    <td><%= venues[i].Aname %>-<%= venues[i].Acapacity %></td>
+                    
+                    <td><%= venues[i].Bname %>-<%= venues[i].Bcapacity %></td>
+                    <td><%= venues[i].Cname %>-<%= venues[i].Ccapacity %></td>
+                    <td><%= venues[i].Dname %>-<%= venues[i].Dcapacity %></td>
+                    <td><%= venues[i].Ename %>-<%= venues[i].Ecapacity %></td>
+                    <td><%= venues[i].Fname %>-<%= venues[i].Fcapacity %></td>
+                    <td><%= venues[i].Gname %>-<%= venues[i].Gcapacity %></td>
+                    <td><%= venues[i].Hname %>-<%= venues[i].Hcapacity %></td>
+                    <td>
+                        <input type='submit' name='edit2' class='btn btn-sm btn-info' role='button' value='Edit'   onclick="updateVenue(<%= venues[i].vid %>,<%= venues[i].name %>,
+                        <%= venues[i].Aname %>,<%= venues[i].Acapacity %>,<%= venues[i].Bname %>,<%= venues[i].Bcapacity %> , <%= venues[i].Cname %>,<%= venues[i].Ccapacity %>,
+                        <%= venues[i].Dname %>,<%= venues[i].Dcapacity %>,<%= venues[i].Ename %>,<%= venues[i].Ecapacity %>,<%= venues[i].Fname %>,<%= venues[i].Fcapacity %>,
+                        <%= venues[i].Gname %>,<%= venues[i].Gcapacity %>,<%= venues[i].Hname %>,<%= venues[i].Hcapacity %>)" >
+                        <input type='submit' name='delete' class='btn btn-sm btn-danger' role='button' value='Delete' onclick="deleteVenue(<%= venues[i].vid %>)"  >
+                    </td>
+                </tr>
+                <% } %>
+
+            </tbody>
+        </table>
+
+        
 
     </main>
 
@@ -286,6 +699,14 @@
             xmlhttp.send();
             window.location.reload();
         }
+        function deleteVenue(vid) {
+
+        var xmlhttp = new XMLHttpRequest();
+        var a = "/api/venues/delete/" + String(vid);
+        xmlhttp.open("DELETE", a, true);
+        xmlhttp.send();
+        window.location.reload();
+        }
 
         function updateFunc(eId, title, venue, date, time, capacity, detail) {
             var myModal = $('#updateModal');
@@ -297,6 +718,16 @@
             $("#eventdetail2", myModal).val(detail);
             //$("#eventid", myModal).val(eId);
             $('#updateModal').modal('show');
+        }
+        function updateVenue(vid, name, A,Ac,B,Bc,C,Cc,D,Dc,E,Ec,F,Fc,G,Gc,H,Hc) {
+            var myModal2 = $('#updateVenue');
+            $("#vid2", myModal2).val(vid);
+            $("#vname2", myModal2).val(name);
+            $("#Aname2", myModal2).val(A);
+            $("#Acap2", myModal2).val(Ac);
+            
+            //$("#eventid", myModal).val(eId);
+            $('#updateVenue').modal('show');
         }
 
 

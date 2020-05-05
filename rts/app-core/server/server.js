@@ -277,6 +277,7 @@ app.get('/viewTicket/', async (req, res) => {
         res.sendStatus(500);
     }
 });
+ 
 
 app.post('/createTicket',  async (req, res) => {
     try {
@@ -344,11 +345,35 @@ app.post('/createTicket',  async (req, res) => {
         
     } catch (error) {
         console.log(error);
+    } 
+});
+
+app.get('/deleteTicket/', async (req, res) => {
+    try {
+        
+        console.log("aaaa")
+        let tid = req.query.tid;
+        let pnum = req.query.pnum;
+        let eid = req.query.eid;   
+            let result = await db.deleteTicket(tid,pnum,eid);
+            //let result = await db.deleteTicket(tid);
+            console.log(result);
+            
+            res.redirect('/profile');
+        
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
     }
 });
 
-app.get('/eventsbytype/:eventtype', async function (req, res) {
-    try {
+
+
+
+
+app.get('/gadmin', async function (req, res) {  
+
+    try {  
         if (req.session.loggedin) {
             var etype= req.params.eventtype;
             res.render('eventsbytype.html',{ eventtype: etype});
@@ -369,7 +394,7 @@ app.get('/profile', async function (req, res) {
             let uname = req.session.username;
             let user = await db.getUserByUname(uname);
             let tickets = await db.getActiveTicketsById(user.uid);
-            console.log(tickets);
+            console.log(tickets)
             //res.send('Welcome back, ' + req.session.username + '!');
             // res.sendFile(path.resolve('static/web-pages/user_profile.html'));
             res.render('user_profile.html', {
@@ -401,17 +426,21 @@ app.get('/company', async function (req, res) {
             let uname = req.session.username;
             console.log(uname);
             let a = await db.getCompIDbyUsername(uname);
-
+            
             var string = JSON.stringify(a);
             var json = JSON.parse(string);
             let compid = json[0].id;
             let compname=json[0].name;
             console.log(a);
             let events = await db.getEventByCompanyId(compid);
+            let venues = await db.getVenuesByCompanyId(compid);
+            console.log(venues);
             res.render('local-admin.html', {
+                //async: true,
                 compid:compid,
                 compname:compname,
-                events: events
+                events: events,
+                venues:venues
             });
         }
         else {
