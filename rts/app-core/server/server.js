@@ -102,6 +102,9 @@ app.post('/auth', async (request, response) => {
                     request.session.loggedin = true;
                     request.session.username = username;
                     request.session.utype = utype;
+                    if(request.session.eid!=null){
+                        response.redirect('/getEventDetailPage/'+ String(request.session.eid) );
+                    }
                     response.redirect('/events');
 
                 }
@@ -161,8 +164,9 @@ app.get('/events', function (req, res) {
 });
 
 app.get('/getEventDetailPage/:eid', async function (req, res) {
-
+   
     try {
+        console.log(req.session.username);
         let uname = req.session.username;
         let user = await db.getUserByUname(uname);
         let eid = req.params.eid;
@@ -170,6 +174,34 @@ app.get('/getEventDetailPage/:eid', async function (req, res) {
         //If you render relative path /views/
         res.render('event-detail.html', {
             uId: user.uid,
+            eId: event.eId,
+            eTitle: event.title,
+            eDetail: event.detail,
+            eAddress: event.address,
+            eDate: event.date,
+            eCapacity: event.capacity,
+            eStatus: event.status,
+            eImagePath: event.imagePath
+            //cId: event.cId;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
+});
+
+app.get('/getEventDetailPageNoLogin/:eid', async function (req, res) {
+
+    try {
+        //let uname = req.session.username;
+        //let user = await db.getUserByUname(uname);
+        let eid = req.params.eid;
+        req.session.eid= eid; 
+        console.log('berko',req.session.eventid);
+        let event = await db.getEventById(eid);
+        //If you render relative path /views/
+        res.render('event-detail-no-login.html', {
+            //uId: user.uid,
             eId: event.eId,
             eTitle: event.title,
             eDetail: event.detail,

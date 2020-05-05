@@ -20,6 +20,7 @@ xhttp.onreadystatechange = function () {
             }
             item.setAttribute('class', class_name);
                 var img = document.createElement('img');
+                console.log('event.imagePath: '+ event.imagePath);
                 img.src = event.imagePath;
                 img.alt = 'Slide ' + counter.toString();
                 var text = document.createElement('div');
@@ -41,8 +42,6 @@ xhttp.onreadystatechange = function () {
 
         var carousel = document.getElementById('myCarousel');
         carousel.appendChild(items);
-
-
         let controlInnerHTML = "<a class='carousel-control-prev' href='#myCarousel' role='button' data-slide='prev'>\n" +
                                     "\t<span class='carousel-control-prev-icon' aria-hidden='true'></span>\n" +
                                     "\t<span class='sr-only'>Previous</span>\n"+
@@ -67,7 +66,7 @@ xhttp.onreadystatechange = function () {
     
                     var card_img = document.createElement('img');
                     card_img.setAttribute('class', 'card-img-top');
-                    card_img.setAttribute('src', '/' + event.imagePath);
+                    card_img.setAttribute('src', event.imagePath);
                     card_img.setAttribute('data-holder-rendered', true );
                     card_img.style.height = "225px";
                     card_img.style.width = "100%";
@@ -90,8 +89,39 @@ xhttp.onreadystatechange = function () {
             document.getElementById("events").appendChild(col);
     
         });
-
         
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+       plugins: [ 'dayGrid', 'timeGrid', 'list','bootstrap'],
+       themesystem: 'bootstrap',
+       height: 500,
+       eventSources: [
+          {
+            url: '/api/calendarevents',
+            type: 'GET',
+            error: function() {
+              alert('there was an error while fetching events!');
+            },
+            color: 'yellow',   // a non-ajax option
+            textColor: 'black' // a non-ajax option
+          }],
+
+          eventClick: function(eventObj) {
+
+            if (eventObj.url) {
+              alert(
+                'Clicked ' + eventObj.title + '.\n' +
+                'Will open ' + eventObj.url + ' in a new tab'
+              );
+              el.style.borderColor = 'red';
+              window.open(eventObj.url);
+            }
+        }
+          
+
+        });
+
+        calendar.render();
     }
 }
 

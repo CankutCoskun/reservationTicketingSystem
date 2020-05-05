@@ -84,6 +84,28 @@ router.get('/events/', async (req, res, next) => {
     }
 });
 
+router.get('/calendarevents/', async (req, res, next) => {
+    try {
+
+        let results = await db.getEvents();
+        console.log(results.length);
+        let events =[];
+        for (i=0; i<2 ;i++) {
+            //console.log(r[0]);
+            event = new Object()
+            event.title = String(results[i].title);
+            event.start = results[i].date;
+            event.url='/getEventDetailPageNoLogin/'+ String(results[i].eId) ;
+            events.push(event);
+          }
+        
+        res.json(events);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 router.get('/events/:id', async (req, res) => {
     try {
         let result = await db.getEventById(req.params.id);
