@@ -371,16 +371,17 @@ app.get('/deleteTicket/', async (req, res) => {
 
 
 
-app.get('/gadmin', async function (req, res) {  
+app.get('/gadmin', async function (req, res) {
 
-    try {  
+    try {
         if (req.session.loggedin) {
-            var etype= req.params.eventtype;
-            res.render('eventsbytype.html',{ eventtype: etype});
+            let company = await db.getCompaines();
+            res.render('global-admin.html', {
+                company: company
+            });
         }
         else {
-            //redirect to login/ homepage
-            res.redirect('/login');
+            res.send('Please login to view this page!');
         }
     } catch (e) {
         console.log(e);
