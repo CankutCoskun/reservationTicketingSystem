@@ -4,53 +4,31 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-	<!-- Bootstrap CSS -->
 	
 	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
 	<link rel="stylesheet" href="/web-pages/event-pages/resources/stylesheets/events.css">
-
 </head>
 
 <body>
 	<header>
 		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
-			<img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
+			<a href="/home"><img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt=""></a>
 			<div class="collapse navbar-collapse"	>
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
 						<a class="nav-link" class="active" href="#"><i class="fa fa-fw fa-home"></i> Home</a>
 					</li>
-					<li class="nav-item dropdown">
-						<a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Events</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="/eventsbytype/concert">Concerts</a>
-							<a class="dropdown-item" href="/eventsbytype/theatre">Theatre</a>
-							<a class="dropdown-item" href="/eventsbytype/dance">Dance</a>
-							<a class="dropdown-item" href="/eventsbytype/standup">Stand-up Comedy</a>
-							<a class="dropdown-item" href="/eventsbytype/opera">Opera</a>
-							<a class="dropdown-item" href="/eventsbytype/ballet">Ballet</a>
-							<a class="dropdown-item" href="/eventsbytype/musical">Musical</a>
-						</div>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">About</a>
-					</li>
-
+					
 				</ul>
 				<ul class="nav navbar-nav navbar-right ml-auto">
 					<li class="nav-item">
 						<form class="form-inline">
-							<button class="btn btn-primary" type="submit">
-								<i class="fa fa-fw fa-search"></i>Search</button>
-							<input class="form-control" type="search" placeholder="Search" aria-label="Search">
+							<input type="date">
 						</form>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a>
-					</li>
+
 					<li class="nav-item ">
 						<a class="nav-link" href="/profile"><i class="fa fa-fw fa-user"></i>Profile</a>
 					</li>
@@ -62,8 +40,7 @@
 			</div>
 		</nav>
 	</header>
-	<main role="main">
-		
+	<main role="main">	
 		<div class="album py-5 bg-light" style="margin-top: 90px;">
 			<div class="container">
 				<h2 style="text-align: center; margin-bottom: 60px;">EVENTS</h2>
@@ -81,7 +58,10 @@
 	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
 
 	<script src="/web-pages/event-pages/resources/scripts/events.js"></script>
-	<script src="/web-pages/event-pages/resources/scripts/holer.min.js"></script>
+	<script src="/web-pages/event-pages/resources/scripts/holder.min.js"></script>
+	<script src="/web-pages/event-pages/resources/scripts/choices.js"></script>
+    <script src="/web-pages/event-pages/resources/scripts/flatpickr.js"></script>
+
 </body>
 
 </html>

@@ -47,7 +47,6 @@ app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    //Session expires after a minute
     cookie: { maxAge: 36000000 },
 }));
 
@@ -89,7 +88,7 @@ app.post('/auth', async (request, response) => {
         try {
 
             let results = await db.authLogin(username, password);
-            console.log(results);
+            //console.log(results);
 
             if (results.length > 0) {
 
@@ -139,7 +138,7 @@ app.post('/auth', async (request, response) => {
 });
 
 app.get('/logout', (req, res) => {
-    console.log('Log out request is recieved');
+    //console.log('Log out request is recieved');
     req.session.destroy();
     res.redirect('/home');
 });
@@ -215,7 +214,7 @@ app.get('/viewTicket/', async (req, res) => {
             let ticket = await db.getTicketById(tid);
             let event = await db.getEventById(ticket.eId);
             let user =  await db.getUserById(ticket.userid);
-            console.log(ticket);
+            //console.log(ticket);
             res.render('view-ticket.html' ,{
                 //<%=eDay%>
                 //<%=eMonth%>
@@ -257,7 +256,7 @@ app.post('/createTicket',  async (req, res) => {
             let email = user.email; 
             let tid = result.insertId;
             let ticket = await db.getTicketById(tid);
-            console.log(ticket);
+            //console.log(ticket);
             var name = user.name;
             var surname = user.surname;
             var eventTitle = event.title;

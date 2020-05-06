@@ -12,8 +12,6 @@ gc = {}
 
 gc.uploadFile = async function (filepath) {
   // Uploads a local file to the bucket
-  console.log("****IN CLOUD CLIENT UPLOAD FILE****" )
-  console.log(filepath)
   await storage.bucket(BUCKET_NAME).upload(filepath, {
     // Support for HTTP requests made with `Accept-Encoding: gzip`
     gzip: true,

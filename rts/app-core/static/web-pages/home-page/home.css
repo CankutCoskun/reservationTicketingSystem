@@ -1,9 +1,3 @@
-h1, h2{
-  font-family:'Times New Roman', Times, serif;
-  font-style: italic;
-  font-weight: bold;
-  color: #343a40;
-}
 
 .bd-placeholder-img {
   font-size: 1.125rem;
@@ -254,4 +248,9 @@ h1, h2{
 .navbar-nav .nav-item:hover .nav-link {
   color: white;
 
+}
+
+section.jumbotron.text-center{
+  margin-bottom: 0px;
+  padding-bottom: 15px;
 }

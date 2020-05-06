@@ -3,16 +3,18 @@
 <head>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="rts">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="rts">
 	<meta name="author" content="cankutcoskun@sabanciuniv.edu">
-	
+
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="/web-pages/home-page/home.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<!-- CHECK JQUERY 
 	<script type="text/javascript">
@@ -30,15 +32,14 @@
 -->
 	</script>
 
-	
+
 
 	<title>RTS </title>
 </head>
 
-<body> 
+<body>
 	<header>
 		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm" style="margin-bottom: 0;">
-			<img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
 				aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,26 +47,11 @@
 			</button>
 
 			<div class="collapse navbar-collapse" id="navbarColor02">
+				<img style="margin-right: 10px;" src="/image-assets/ticket.png" width="60" height="60"
+					class="d-inline-block align-top" alt="">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Events
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="#">Concerts</a>
-							<a class="dropdown-item" href="#">Theatre</a>
-							<a class="dropdown-item" href="#">Dance</a>
-							<a class="dropdown-item" href="#">Stand-up Comedy</a>
-							<a class="dropdown-item" href="#">Opera/Ballet</a>
-							<a class="dropdown-item" href="#">Musical</a>
-						</div>
-					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">About</a>
+						<h3 style="color: white;">RTS</h3>
 					</li>
 				</ul>
 
@@ -130,27 +116,59 @@
 			</div>
 		</nav>
 	</header>
+	<div style="background-color:whitesmoke;">
+		<ul class="nav justify-content-center" style="padding: 20px; margin-top: 75px;">
+			<li class="nav-item">
+				<form class="" action="/">
+					<div class="row">
+						<div class="col">
+							<img src="/image-assets/theater-masks-solid.svg" height="36px" width="36px"
+								style="margin-bottom: 5px;">
+							<label for="location" style="font-size: large;">Kind</label>
+							<select class="form-control" id="location" name="location">
+								<option>Theatre</option>
+								<option>Opera</option>
+								<option>Concert</option>
+								<option>Dance</option>
+								<option>Stand-up show</option>
+							</select>
+						</div>
+						<div class="col">
+							<i class="fa fa-fw fa-calendar" style="font-size: 30px;"></i>
+							<label for="date" style="font-size: large;"> Date:</label>
+							<input class="datepicker" id="date" name="date" style="width: 150px">
+						</div>
+						<div class="col">
+							<i class="fa fa-map-marker" aria-hidden="true" style="font-size: 30px;"></i>
+							<label for="location" style="font-size: large;">Location</label>
+							<select class="form-control" id="location" name="location">
+								<option>Antalya</option>
+								<option>Ankara</option>
+								<option>İstanbul</option>
+								<option>İzmir</option>
+							</select></div>
+						<div class="col">
+							<input type="text" class="form-control" placeholder="Search"
+								style="margin-top: 42px; width: 150px;">
+						</div>
+						<div class="col">
+							<div class="input-group-btn">
+								<button class="btn btn-primary" type="submit" style="margin-top: 42px; width: 150px;">
+									<i class="fa fa-search" aria-hidden="true" style="font-size: 20px;"></i> Find
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</li>
+		</ul>
+	</div>
 
 	<main role="main">
-		<section class="jumbotron text-center" style="margin-bottom: 0px;">
-			<br></br>
-			<div class="container">
-				<h1 style="font-size: 45px"> Reservation & Ticketing System </h1>
-				<br>	
-				<br>
-				<div class="row">
-					<div class="col">
-						<a style="width: 200px; background-color: #343a40; border-color: white;" href="/signup" class="btn btn-primary">Sign up</a>
-					</div>
-				</div>
-			</div>
-		</section>
-		<div style="background-color: #343a40;">
-			<div class="container">	
-				<div class="row">
+		<div class="container">
+				<div class="row" style="background-color: #343a40;">
 					<div class="col" id="featured-events">
-						<br>	
-						<h3 style="text-align: center; color: white; font-size: 30px;">Featured Events</h3>
+						<h1 style="color: white; text-align: center;">FEATURED EVENTS</h1>
 						<div id="myCarousel" class="carousel slide" data-ride="carousel">
 							<ol class="carousel-indicators">
 								<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -159,45 +177,44 @@
 								<li data-target="#myCarousel" data-slide-to="3" class=""></li>
 								<li data-target="#myCarousel" data-slide-to="4" class=""></li>
 								<li data-target="#myCarousel" data-slide-to="5" class=""></li>
-						</ol>
-						
-						<!--CAROUSEL CODE -->			
-							
-	
+							</ol>
+
+							<!--CAROUSEL CODE -->
+
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<br>
-		<div class="row" style="margin: 30px;">
-			<div class="col-md-6">
-				<h2 style="text-align: center; margin-bottom: 20px;">EVENTS</h2>
-				<div class="album py-5 bg-light" style="margin-top: 0px;">
-					<div class="container">
-					  <div class="row" id="events">
-						<!--home.js FILL THIS PART-->
-		
-					  </div>
+				<div class="row"  style="background-color:whitesmoke;">
+					<div class="col" style="margin: 30px; margin-left: 60px; text-align: left;">
+						<h2 style="color: #343a40; margin: 15px; text-align: center;">EVENTS</h2>
+						<div class="row" id="events" style="margin-top: 45px; ">
+							<!--home.js FILL THIS PART-->
+						</div>
 					</div>
-				  </div>
-			</div>
-			<div class="col-md-6" id="calendar">
-			
-			</div>
+				</div>
 		</div>
-
 	</main>
+
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS 	
 		<script src="/bootstrap-resources/js/jquery.min.js"></script>
  -->
 	<!--Relative local paths-->
 	<script src="/web-pages/home-page/home.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="/bootstrap-resources/js/popper.min.js"></script>
 	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
 	<!--Start-->
+	<script>
+		$('.datepicker').datepicker();
+		$("#datepicker").datepicker({
+			format: 'dd/mm/yyyy'
+		});
+	</script>
 	<script>
 		$('.carousel').carousel();
 	</script>

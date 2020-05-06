@@ -60,7 +60,7 @@ xhttp.onreadystatechange = function () {
 
         data.forEach(function(event){
             var col = document.createElement('div');
-            col.setAttribute('class', 'col-md-6');
+            col.setAttribute('class', 'col-md-3');
             
                 var card = document.createElement('div');
                 card.setAttribute('class', 'card mb-4 box-shadow');
@@ -69,7 +69,7 @@ xhttp.onreadystatechange = function () {
                     card_img.setAttribute('class', 'card-img-top');
                     card_img.setAttribute('src',  event.imagePath);
                     card_img.setAttribute('data-holder-rendered', true );
-                    card_img.style.height = "175px";
+                    card_img.style.height = "125px";
                     card_img.style.width = "100%";
                     card_img.style.display = "block";
     
