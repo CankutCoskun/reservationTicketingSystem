@@ -55,9 +55,12 @@
 					</li>
 				</ul>
 
-				<ul class="nav navbar-nav navbar-right ml-auto">
-					<li class="nav-item">
-						<a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Login</a>
+				<ul class="nav navbar-nav navbar-right ml-auto" style="text-align: center;">
+					<li class="nav-item" >
+						<a href="#" data-toggle="dropdown"
+							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
+							style="border-color: white;"> <i class="fa fa-sign-in" aria-hidden="true"></i>
+							Login</a>
 						<ul class="dropdown-menu form-wrapper">
 							<li>
 								<form action='auth' method='POST'>
@@ -70,7 +73,7 @@
 										<input type="password" name="password" class="form-control"
 											placeholder="Password" required="required">
 									</div>
-									<input type="submit" class="btn btn-primary btn-block" value="Login">
+									<input type="submit" class="btn btn-dark btn-block" value="Login">
 									<div class="form-footer">
 										<a href="#">Forgot Your password?</a>
 									</div>
@@ -78,13 +81,12 @@
 							</li>
 						</ul>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item"  style="margin-left: 20px;" >
 						<a href="#" data-toggle="dropdown"
-							class="btn btn-primary dropdown-toggle get-started-btn mt-1 mb-1">Sign up</a>
+							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
+							style="border-color: white;">Sign up</a>
 						<ul class="dropdown-menu form-wrapper">
 							<li>
-
-
 								<form action='createUser' method='POST'>
 									<p class="hint-text">Fill in this form to create your account!</p>
 									<div class="form-group">
@@ -107,7 +109,7 @@
 										<input type="password" class="form-control" name="password"
 											placeholder="********" required>
 									</div>
-									<input type="submit" class="btn btn-primary btn-block" value="Sign up">
+									<input type="submit" class="btn btn-dark btn-block" value="Sign up">
 								</form>
 							</li>
 						</ul>
@@ -149,11 +151,11 @@
 							</select></div>
 						<div class="col">
 							<input type="text" class="form-control" placeholder="Search"
-								style="margin-top: 42px; width: 150px;">
+								style="margin-top: 42px; width: 210px;">
 						</div>
 						<div class="col">
 							<div class="input-group-btn">
-								<button class="btn btn-primary" type="submit" style="margin-top: 42px; width: 150px;">
+								<button class="btn-dark" type="submit" style="margin-top: 42px; width: 150px;">
 									<i class="fa fa-search" aria-hidden="true" style="font-size: 20px;"></i> Find
 								</button>
 							</div>
