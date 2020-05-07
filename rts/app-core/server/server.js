@@ -365,6 +365,26 @@ app.get('/profile', async function (req, res) {
     }
 });
 
+app.post('/events/search', async (req, res) => {
+    try {
+        //console.log("IN EVENTS SEARCH")
+        //console.log(req.body);
+        let results = await db.searchEvents(req.body.type, req.body.date, req.body.location, req.body.text);
+        let date = new Date(req.body.date);
+        //console.log(results);
+        res.render('search-events.html', {
+            type: req.body.type,
+            date: date.toDateString(),
+            city: req.body.location,
+            events: results
+        });
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
+
+
 app.get('/company', async function (req, res) {
     try {
         if (req.session.loggedin) {
@@ -531,6 +551,10 @@ app.get('/new-event', (req, res) => {
     } catch (er) {
         throw er;
     }
+});
+
+app.get('/searchEvents', (req, res) =>{
+
 });
 
 app.listen(process.env.PORT || '3000', () => {

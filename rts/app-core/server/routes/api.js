@@ -9,7 +9,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 const fs = require('fs');
 //Google cloud client
 var gcClient = require('../gcp');
-
 var multer = require('multer');
 
 // const multerGoogleStorage = require("multer-google-storage");
@@ -30,7 +29,6 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
@@ -96,7 +94,7 @@ router.get('/events/:id', async (req, res) => {
 
 router.get('/eventsbytype/:eventtype', async (req, res, next) => {
     try {
-        console.log(req.params.eventtype);
+        //console.log(req.params.eventtype);
         let results = await db.getEventsbyType(req.params.eventtype);       
         res.json(results);
     } catch (e) {
@@ -105,6 +103,18 @@ router.get('/eventsbytype/:eventtype', async (req, res, next) => {
     }
 });
 
+router.post('/events/search', async (req, res) => {
+    try {
+        //console.log("IN EVENTS SEARCH")
+        //console.log(req.body);
+        let results = await db.searchEvents(req.body.type, req.body.date, req.body.location, req.body.text);
+        //console.log(results);
+        res.json(results);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
 
 // Add events with image upload
 router.post('/events/add', upload.single('myFile'), async (req, res, next) => {

@@ -46,9 +46,6 @@ xhttp.onreadystatechange = function () {
         col.append(card);
 
         document.getElementById("events").appendChild(col);
-        console.log(col);
-        console.log("ege");
-
     });
   }
 }
@@ -56,5 +53,5 @@ var variableJSON = JSON.parse($('#variableJSON').text());
 $('#variableJSON').remove();
 //var eventtype =   "<%= JSON.stringify(results[0].eType) %>";  
 console.log(variableJSON) ;
-xhttp.open("GET", "/api/eventsbytype/"+ variableJSON , true)
+xhttp.open("GET", "/api/events/bytype/"+ variableJSON , true)
 xhttp.send()
