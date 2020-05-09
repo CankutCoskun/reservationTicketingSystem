@@ -196,7 +196,6 @@ app.get('/getEventDetailPageNoLogin/:eid', async function (req, res) {
         //let user = await db.getUserByUname(uname);
         let eid = req.params.eid;
         req.session.eid= eid; 
-        console.log('berko',req.session.eventid);
         let event = await db.getEventById(eid);
         //If you render relative path /views/
         res.render('event-detail-no-login.html', {

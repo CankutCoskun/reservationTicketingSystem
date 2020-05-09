@@ -216,18 +216,25 @@
 
 .carousel {
   background-color: #343a40;
-  width: 630px;
-  height: 400px;
+  width: 550px;
+  height: 375px;
   text-align: center;
   margin: auto;
   position: relative;
 }
 
 .carousel-inner > .carousel-item > img{
-  height: 275px;
-  width: 500px;
+  height: 245px;
+  width: 400px;
   margin-top: 15px;
   }
+
+#calendar {
+   margin-top: 45px; 
+  margin-left: 0px;
+  margin-bottom: 20 px; 
+  margin-right: 30px;
+}
 
 #carousel-text{
   color: white;

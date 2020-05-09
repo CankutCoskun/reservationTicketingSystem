@@ -86,10 +86,8 @@ router.get('/calendarevents/', async (req, res, next) => {
     try {
 
         let results = await db.getEvents();
-        console.log(results.length);
         let events =[];
         for (i=0; i<2 ;i++) {
-            //console.log(r[0]);
             event = new Object()
             event.title = String(results[i].title);
             event.start = results[i].date;
@@ -184,15 +182,7 @@ router.post('/venues/add', upload.single('myFile'), async (req, res, next) => {
         console.log("file received: ", file.path); 
         await gcClient.uploadFile(file.path).catch(console.error);
         let db_result = await db.addNewVenue(req.body.compid, req.body.vname, 
-                                            req.body.Aname, req.body.Acap, 
-                                            req.body.Bname, req.body.Bcap, 
-                                            req.body.Cname, req.body.Ccap, 
-                                            req.body.Dname, req.body.Dcap, 
-                                            req.body.Ename, req.body.Ecap, 
-                                            req.body.Fname, req.body.Fcap, 
-                                            req.body.Gname, req.body.Gcap, 
-                                            req.body.Hname, req.body.Hcap, 
-                                            gcClient.getPublicUrlForItem(file.filename));
+                                                gcClient.getPublicUrlForItem(file.filename));
 
         res.redirect("/company");
         

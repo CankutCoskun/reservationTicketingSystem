@@ -28,7 +28,7 @@ xhttp.onreadystatechange = function () {
                     var heading = document.createElement('h5');
                     heading.innerText = event.title;
                     var par = document.createElement('p');
-                    par.innerText = event.date;
+                    par.innerText = new Date(event.date).toDateString();
                     text.appendChild(heading);
                     text.appendChild(par);
                 item.appendChild(img);
@@ -68,7 +68,7 @@ xhttp.onreadystatechange = function () {
                     card_img.setAttribute('class', 'card-img-top');
                     card_img.setAttribute('src', event.imagePath);
                     card_img.setAttribute('data-holder-rendered', true );
-                    card_img.style.height = "125px";
+                    card_img.style.height = "155px";
                     card_img.style.width = "100%";
                     card_img.style.display = "block";
     

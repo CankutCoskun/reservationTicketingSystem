@@ -156,16 +156,16 @@ db.getCompaines = () => {
     });
 };
 
-db.deleteCompany=(id)=>{
+db.deleteCompany = (id) => {
 
     return new Promise((resolve, reject) => {
-        pool.query(`DELETE FROM Users WHERE uid = ?`, [id] ,(err, results) => {
-                if (err) {
-                    console.log(err);
-                    return reject(err);
-                }
-                return resolve({ message: 'company successfully deleted'});
-            });     
+        pool.query(`DELETE FROM Users WHERE uid = ?`, [id], (err, results) => {
+            if (err) {
+                console.log(err);
+                return reject(err);
+            }
+            return resolve({ message: 'company successfully deleted' });
+        });
     });
 };
 
@@ -183,9 +183,9 @@ db.getCompIDbyUsername = (uname) => {
 };
 
 //get userid from companyid
-db.getUserIDbyCompID = (id)=>{
+db.getUserIDbyCompID = (id) => {
     return new Promise((resolve, reject) => {
-        pool.query(`SELECT adminId FROM Companies WHERE id=?`,[id], (err, results) => { 
+        pool.query(`SELECT adminId FROM Companies WHERE id=?`, [id], (err, results) => {
             if (err) {
                 console.log(err);
                 return reject(err);
@@ -241,14 +241,11 @@ db.addNewEvent = (compid, title, venue, date, time, capacity, detail, imagePath)
             });
     });
 };
-db.addNewVenue = (compid, vname,Aname, Acap, Bname, Bcap, Cname, Ccap, Dname, Dcap, Ename, Ecap, Fname, Fcap, Gname, Gcap, Hname, Hcap,  imagepath) => {
+db.addNewVenue = (compid, vname, imagepath) => {
     return new Promise((resolve, reject) => {
-        
 
-        
-
-        pool.query(`INSERT INTO reservations.Venues (name, cid,imagePath, Aname,Acapacity,Bname,Bcapacity,Cname,Ccapacity,Dname,Dcapacity,Ename,Ecapacity,Fname,Fcapacity,Gname,Gcapacity,Hname,Hcapacity)     VALUES
-        (?,?,?,?, ?, ?, ?, ?,  ?,?,?,?,?, ?, ?, ?, ?,  ?,?);`  , [ vname,compid, imagepath,Aname, Acap, Aname, Acap, Bname, Bcap, Cname, Ccap, Dname, Dcap, Ename, Ecap, Fname, Fcap, Gname, Gcap, Hname, Hcap], (err, results) => {
+        pool.query(`INSERT INTO reservations.Venues (name, cid, imagePath) VALUES (?,?,?);`,
+            [vname, compid, imagepath], (err, results) => {
 
                 if (err) {
                     console.log('ERROR: .addNewVenue()');
@@ -286,16 +283,16 @@ db.deleteVenue = (id) => {
     });
 };
 
-db.deleteCompany=(id)=>{
+db.deleteCompany = (id) => {
 
     return new Promise((resolve, reject) => {
-        pool.query(`DELETE FROM Users WHERE uid = ?`, [id] ,(err, results) => {
-                if (err) {
-                    console.log('ERROR: .deleteCompany()');
-                    return reject(err);
-                }
-                return resolve({ message: 'company successfully deleted'});
-            });     
+        pool.query(`DELETE FROM Users WHERE uid = ?`, [id], (err, results) => {
+            if (err) {
+                console.log('ERROR: .deleteCompany()');
+                return reject(err);
+            }
+            return resolve({ message: 'company successfully deleted' });
+        });
     });
 };
 
@@ -342,13 +339,13 @@ db.getEventsbyType = (eventtype) => {
     });
 };
 
-db.searchEvents = (type, date, location, text) =>{
+db.searchEvents = (type, date, location, text) => {
     //console.log(type, date, location);
     let d = new Date(date);
     let formatted_date = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
         pool.query(`SELECT * FROM Events WHERE eType=? AND city=? AND date=?`, [type, location, formatted_date], (err, results) => {
-            if(err){
+            if (err) {
                 console.log(err);
                 return reject(err);
             }
@@ -407,10 +404,10 @@ db.addNewTicket = (userid, peoplenumber, eId) => {
     });
 };
 
-db.deleteTicket = (id,pnum,eid) => {
+db.deleteTicket = (id, pnum, eid) => {
 
     return new Promise((resolve, reject) => {
-        pool.query(`DELETE FROM Tickets WHERE id = ?;UPDATE Events SET remainingseat = remainingseat + ? WHERE Events.eId =? ;`, [id,pnum,eid], (err, results) => {
+        pool.query(`DELETE FROM Tickets WHERE id = ?;UPDATE Events SET remainingseat = remainingseat + ? WHERE Events.eId =? ;`, [id, pnum, eid], (err, results) => {
             if (err) {
                 console.log('ERROR: .deleteTicket()');
                 return reject(err);

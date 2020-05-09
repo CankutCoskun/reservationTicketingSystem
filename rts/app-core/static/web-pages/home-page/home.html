@@ -15,28 +15,12 @@
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="/web-pages/home-page/home.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+
 	<link href='web-pages/fullcalendar/core/main.css' rel='stylesheet' />
-    <link href='web-pages/fullcalendar/daygrid/main.css' rel='stylesheet' />
-    <link href='web-pages/fullcalendar/timegrid/main.css' rel='stylesheet' />
+	<link href='web-pages/fullcalendar/daygrid/main.css' rel='stylesheet' />
+	<link href='web-pages/fullcalendar/timegrid/main.css' rel='stylesheet' />
 	<link href='web-pages/fullcalendar/list/main.css' rel='stylesheet' />
 	<link href='web-pages/fullcalendar/bootstrap/main.css' rel='stylesheet' />
-	
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<!--Relative local paths-->
-	<script src="/web-pages/home-page/home.js"></script>
-	<script src="/bootstrap-resources/js/jquery.min.js"></script>
-	<script src="/bootstrap-resources/js/popper.min.js"></script>
-	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
-	<script src="/web-pages/event-pages/resources/scripts/holer.min.js"></script>
-
-
-    <script src='web-pages/fullcalendar/core/main.js'></script>
-    <script src='web-pages/fullcalendar/daygrid/main.js'></script>
-    <script src='web-pages/fullcalendar/timegrid/main.js'></script>
-	<script src='web-pages/fullcalendar/list/main.js'></script>
-	<script src='web-pages/fullcalendar/bootstrap/main.js'></script>
 
 	<!--Start-->
 	<script>
@@ -64,7 +48,7 @@
 
 <body>
 	<header>
-		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm" style="margin-bottom: 0;">
+		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm" style="margin-bottom: 0; color: white;">
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
 				aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,11 +68,11 @@
 					<li class="nav-item" >
 						<a href="#" data-toggle="dropdown"
 							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
-							style="border-color: white;"> <i class="fa fa-sign-in" aria-hidden="true"></i>
+							style="border-color: white; color: white;"> <i class="fa fa-sign-in" aria-hidden="true"></i>
 							Login</a>
 						<ul class="dropdown-menu form-wrapper">
 							<li>
-								<form action='auth' method='POST'>
+								<form action='/auth' method='POST'>
 
 									<div class="form-group">
 										<input type="text" name="username" class="form-control" placeholder="Username"
@@ -109,7 +93,7 @@
 					<li class="nav-item"  style="margin-left: 20px;" >
 						<a href="#" data-toggle="dropdown"
 							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
-							style="border-color: white;">Sign up</a>
+							style="border-color: white; color: white;">Sign up</a>
 						<ul class="dropdown-menu form-wrapper">
 							<li>
 								<form action='createUser' method='POST'>
@@ -142,7 +126,7 @@
 				</ul>
 			</div>
 		</nav>
-		<div style="background-color:whitesmoke;">			
+		<div style="background-color:whitesmoke;">
 			<ul class="nav justify-content-center" style="padding: 20px; margin-top: 75px;">
 				<li class="nav-item">
 					<form class="" action="/events/search" method="POST">
@@ -195,10 +179,12 @@
 		</div>
 	</header>
 	<main role="main">
-		<div class="container">
-				<div class="row" style="background-color: #343a40;">
-					<div class="col" id="featured-events">
-						<h1 style="color: white; text-align: center;">FEATURED EVENTS</h1>
+		<div class="container" style="background-color: whitesmoke;">
+			<div class="row">
+				<div class="col-md-6" id="featured-events" style="background-color: #343a40">
+					<div style="margin-top: 60px;">
+						<h1 style="color:white ; text-align: center;">FEATURED EVENTS</h1>
+						<br>
 						<div id="myCarousel" class="carousel slide" data-ride="carousel">
 							<ol class="carousel-indicators">
 								<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -208,33 +194,47 @@
 								<li data-target="#myCarousel" data-slide-to="4" class=""></li>
 								<li data-target="#myCarousel" data-slide-to="5" class=""></li>
 							</ol>
-
+	
 							<!--CAROUSEL CODE -->
-
+	
 						</div>
 					</div>
 				</div>
-				<div class="row"  style="background-color:whitesmoke;">
-					<div class="col" style="margin: 30px; margin-left: 60px; text-align: left;">
-						<h2 style="color: #343a40; margin: 15px; text-align: center;">EVENTS</h2>
-						<div class="row" id="events" style="margin-top: 45px; ">
-							<!--home.js FILL THIS PART-->
-						</div>
-					</div>
+				<div class="col-md-6">
+					<div id="calendar"></div>
 				</div>
+			</div>
+			<div style="padding-top: 35px;">
+				<h2 style="text-align: center; color: #343a40;" >EVENTS</h2>
+				<br>
+				<div class="row" id="events"></div>
+			</div>
 		</div>
+		<br>
+		<br>
+		<br>
+
 	</main>
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS 	
 		<script src="/bootstrap-resources/js/jquery.min.js"></script>
  -->
 	<!--Relative local paths-->
-	<script src="/web-pages/home-page/home.js"></script>
+	<script src="/bootstrap-resources/js/jquery.min.js"></script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="/bootstrap-resources/js/popper.min.js"></script>
 	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script src="/web-pages/event-pages/resources/scripts/holder.min.js"></script>
+	<script src="/bootstrap-resources/js/popper.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script src="/web-pages/home-page/home.js"></script>
+
+	<script src='web-pages/fullcalendar/core/main.js'></script>
+	<script src='web-pages/fullcalendar/daygrid/main.js'></script>
+	<script src='web-pages/fullcalendar/timegrid/main.js'></script>
+	<script src='web-pages/fullcalendar/list/main.js'></script>
+	<script src='web-pages/fullcalendar/bootstrap/main.js'></script>
 	<!--		
 		$("#datepicker").datepicker({
 			format: 'dd/mm/yyyy'
@@ -242,6 +242,8 @@
 	-->
 	<script>
 		$('.datepicker').datepicker();
+	</script>
+	<script>
 		$('.carousel').carousel();
 	</script>
 </body>

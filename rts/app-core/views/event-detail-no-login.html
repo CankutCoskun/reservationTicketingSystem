@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/w3.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <script src="../../bootstrap-resources/js/jquery.min.js"></script>
-    <script src="../../bootstrap-resources/js/popper.min.js"></script>
-    <script src="../../bootstrap-resources/js/bootstrap.min.js"></script>
+    <script src="/bootstrap-resources/js/jquery.min.js"></script>
+    <script src="/bootstrap-resources/js/popper.min.js"></script>
+    <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
 
     <script>
         function func(){	
@@ -27,60 +27,7 @@
         })
     </script>
     <style>
-        .navbar-nav>.nav-item {
-            color: white;
-            margin-left: 10px;
-            margin-right: 5px;
-        }
-
-        .navbar ul.nav li.open>a.get-started-btn {
-            color: #fff;
-            background: white;
-        }
-
-        /* change the brand and text color */
-        .navbar .navbar-brand,
-        .navbar .navbar-text {
-            color: white;
-        }
-
-        /* change the link color */
-        .navbar-nav .nav-item .nav-link {
-            color: white;
-        }
-
-        /* change the color of active or hovered links */
-        .navbar-nav .nav-item.active .nav-link,
-        .navbar-nav .nav-item:hover .nav-link {
-            color: white;
-
-        }
-
-        .panel-heading {
-            padding: 10px 15px;
-            border-bottom: 1px solid transparent;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px
-        }
-
-        #profile-section {
-            width: 280px;
-            padding: 20px;
-            left: auto;
-            right: 0;
-        }
-
-        h1,
-        h2 {
-            font-family: 'Times New Roman', Times, serif;
-            font-style: italic;
-            color: #0d5abe;
-            font-weight: 450;
-        }
-
-        h3, p{ font-family: 'Times New Roman', Times, serif;
-            font-style: italic;
-        }
+        
     </style>
 </head>
 
@@ -141,7 +88,7 @@
                                     border-color: black;"">
                     <h1 style=" margin: 15px;"><%= eTitle %></h1>
                     <div class="col-md-6">
-                        <img src="/<%=eImagePath %>" height="252" width="452" style="margin-top: 20px;">
+                        <img src="  <%=eImagePath %>" height="252" width="452" style="margin-top: 20px;">
                         <br></br>
                         <p><%= eDetail%></p>
                     </div>
@@ -164,7 +111,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <h3><%= eTitle %></h3>
-                                        <img src="/<%= eImagePath%>" width="100%">
+                                        <img src="<%= eImagePath%>" width="100%">
                                         <br></br>
                                         <p><%= eDetail %></p>
                                     </div>
@@ -186,7 +133,7 @@
                         <h1 style="text-align: left;">Coming Soon</h1>
                             <div class="col-md-4" style="margin-bottom: 15px;">
                                 <div class="card" style="width:min-content; ">
-                                    <img src="/<%= eImagePath%>" height="125px" width="225px" id="featured-card-img">
+                                    <img src="<%= eImagePath%>" height="125px" width="225px" id="featured-card-img">
                                     <div class="card-body">
                                         <p class="card-text"></p>Tolgshow premiere onJanuary 23rd</p>
                                         <div class="d-flex justify-content-between align-items-center">
@@ -201,7 +148,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="card" style="width:min-content; ">
-                                    <img src="/<%= eImagePath%>" height="125px" width="225px" id="featured-card-img">
+                                    <img src="<%= eImagePath%>" height="125px" width="225px" id="featured-card-img">
                                     <div class="card-body">
                                         <p class="card-text"></p>Tolgshow premiere on January 23rd</p>
                                         <div class="d-flex justify-content-between align-items-center">
