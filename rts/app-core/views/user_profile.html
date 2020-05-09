@@ -17,10 +17,7 @@
     <script src="/bootstrap-resources/js/popper.min.js"></script>
     <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
 
-    <script>
-        $('#exampleModalCenter').on('shown.bs.modal', function () {
-        })
-    </script>
+
     <style>
         .navbar-nav>.nav-item {
             color: white;
@@ -76,6 +73,31 @@
 </head>
 
 <body>
+    <div class="modal fade" id="exampleModalCenter">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="exampleModalCenterTitle">Ticket Cancelling </h1>
+                </div>
+                <div class="modal-body">
+                    <h3 id="etitle"></h3>
+                    <p id="edate"></p>
+                    <p id="people"></p>
+                    <p id="remainday"></p>
+                    <p id="about"></p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a id="canceltheticket" href="">
+                        <input type='submit' name='edit' class='btn btn-secondary btn-sl'
+                            style="background-color: #0d5abe;" role='button' value='Cancel Ticket'>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
     <header>
         <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
@@ -191,10 +213,52 @@
                                             </a>
                                             <br>
                                             <br>
-                                            <a href="">
-                                                <input type='submit' name='edit' class='btn btn-secondary btn-sl'
-                                                    role='button' value='Cancel'>
-                                            </a>
+                                            <!-- <a href="/deleteTicket?tid=<%=tickets[i].id%>&pnum=<%=tickets[i].peoplenumber%>&eid=<%=tickets[i].eid%>">-->
+
+                                            <!-- <a href="/deleteTicket?tid=<%=tickets[i].id%>&pnum=<%=tickets[i].peoplenumber%>&eid=<%=tickets[i].eid%>"> -->
+                                            <input type='submit' name='delete' class='btn btn-secondary btn-sl'
+                                                role='button' value='Cancel'
+                                                onclick=' cancelticket( "<%= tickets[i].eventdate %>" ,"<%= tickets[i].title %>","<%=tickets[i].id%>","<%=tickets[i].peoplenumber%>","<%=tickets[i].eid%>" ); '>
+
+                                            <script>
+
+
+                                                var cancelticket = function (edate, title, id, pnum, eid) {
+                                                    document.getElementById("canceltheticket").href = "/deleteTicket?tid=" + id + "&pnum=" + pnum + "&eid=" + eid;
+
+
+                                                    const evntdate = Date.parse(edate);
+                                                    const today = new Date();
+                                                    const td = Date.parse(today);
+
+                                                    var dif = (evntdate - td) / 1000 / 3600 / 24;
+                                                    // expected output: 818035920000
+                                                    console.log(dif / 60 / 60 / 24 / 1000)
+
+                                                    if (dif < 3) {
+                                                        document.getElementById("about").innerHTML = "You will be getting no payment as  the remaining day to event is less than 3";
+                                                    }
+                                                    else if (dif < 7) {
+                                                        document.getElementById("about").innerHTML = "You will be getting repayment as %50 of your ticket price as the remaining day is less than 7";
+                                                    }
+
+                                                    else {
+                                                        document.getElementById("about").innerHTML = "You will be getting repayment as your ticket price as the remaining day is more than 7";
+                                                    }
+                                                    document.getElementById("about").style.color = "red";
+                                                    //document.getElementById("remainday").innerHTML = dif;
+                                                    document.getElementById("edate").innerHTML = "Event date : " + edate;
+                                                    document.getElementById("etitle").innerHTML = "Event Name : " + title;
+                                                    document.getElementById("people").innerHTML = "Number of seats in this ticket: " + pnum;
+
+                                                    document.getElementById("about").innerHTML
+                                                    $('#exampleModalCenter').modal("show");
+                                                }
+
+
+
+
+                                            </script>
                                         </td>
                                     </tr>
                                     <% } %>
@@ -303,6 +367,9 @@
                     </div>
 
                     <script>
+
+
+
                         var check = function () {
                             if (document.getElementById("password").value == document.getElementById("password2").value) {
                                 document.getElementById("message").style.color = "green";

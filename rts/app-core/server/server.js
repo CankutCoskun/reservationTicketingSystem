@@ -101,6 +101,9 @@ app.post('/auth', async (request, response) => {
                     request.session.loggedin = true;
                     request.session.username = username;
                     request.session.utype = utype;
+                    if(request.session.eid!=null){
+                        response.redirect('/getEventDetailPage/'+ String(request.session.eid) );
+                    }
                     response.redirect('/events');
 
                 }
@@ -160,8 +163,9 @@ app.get('/events', function (req, res) {
 });
 
 app.get('/getEventDetailPage/:eid', async function (req, res) {
-
+   
     try {
+        console.log(req.session.username);
         let uname = req.session.username;
         let user = await db.getUserByUname(uname);
         let eid = req.params.eid;
@@ -169,6 +173,34 @@ app.get('/getEventDetailPage/:eid', async function (req, res) {
         //If you render relative path /views/
         res.render('event-detail.html', {
             uId: user.uid,
+            eId: event.eId,
+            eTitle: event.title,
+            eDetail: event.detail,
+            eAddress: event.address,
+            eDate: event.date,
+            eCapacity: event.capacity,
+            eStatus: event.status,
+            eImagePath: event.imagePath
+            //cId: event.cId;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
+});
+
+app.get('/getEventDetailPageNoLogin/:eid', async function (req, res) {
+
+    try {
+        //let uname = req.session.username;
+        //let user = await db.getUserByUname(uname);
+        let eid = req.params.eid;
+        req.session.eid= eid; 
+        console.log('berko',req.session.eventid);
+        let event = await db.getEventById(eid);
+        //If you render relative path /views/
+        res.render('event-detail-no-login.html', {
+            //uId: user.uid,
             eId: event.eId,
             eTitle: event.title,
             eDetail: event.detail,
@@ -243,6 +275,7 @@ app.get('/viewTicket/', async (req, res) => {
         res.sendStatus(500);
     }
 });
+ 
 
 app.post('/createTicket',  async (req, res) => {
     try {
@@ -314,18 +347,40 @@ app.post('/createTicket',  async (req, res) => {
         
     } catch (error) {
         console.log(error);
+    } 
+});
+
+app.get('/deleteTicket/', async (req, res) => {
+    try {
+        
+        console.log("aaaa")
+        let tid = req.query.tid;
+        let pnum = req.query.pnum;
+        let eid = req.query.eid;   
+            let result = await db.deleteTicket(tid,pnum,eid);
+            //let result = await db.deleteTicket(tid);
+            console.log(result);
+            
+            res.redirect('/profile');
+        
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
     }
 });
 
-app.get('/eventsbytype/:eventtype', async function (req, res) {
+
+app.get('/gadmin', async function (req, res) {
+
     try {
         if (req.session.loggedin) {
-            var etype= req.params.eventtype;
-            res.render('eventsbytype.html',{ eventtype: etype});
+            let company = await db.getCompaines();
+            res.render('global-admin.html', {
+                company: company
+            });
         }
         else {
-            //redirect to login/ homepage
-            res.redirect('/login');
+            res.send('Please login to view this page!');
         }
     } catch (e) {
         console.log(e);
@@ -384,24 +439,27 @@ app.post('/events/search', async (req, res) => {
     }
 });
 
-
 app.get('/company', async function (req, res) {
     try {
         if (req.session.loggedin) {
             let uname = req.session.username;
             console.log(uname);
             let a = await db.getCompIDbyUsername(uname);
-
+            
             var string = JSON.stringify(a);
             var json = JSON.parse(string);
             let compid = json[0].id;
             let compname=json[0].name;
             console.log(a);
             let events = await db.getEventByCompanyId(compid);
+            let venues = await db.getVenuesByCompanyId(compid);
+            console.log(venues);
             res.render('local-admin.html', {
+                //async: true,
                 compid:compid,
                 compname:compname,
-                events: events
+                events: events,
+                venues:venues
             });
         }
         else {
@@ -554,7 +612,6 @@ app.get('/new-event', (req, res) => {
 });
 
 app.get('/searchEvents', (req, res) =>{
-
 });
 
 app.listen(process.env.PORT || '3000', () => {

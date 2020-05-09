@@ -114,7 +114,6 @@ db.addNewLocalAdmin = (cuname, cpassword, cemail, atype) => {
     });
 }
 
-
 /* COMPANY */
 
 db.addNewCompany = (cuname, cname, caddress, imagePath) => {
@@ -242,6 +241,23 @@ db.addNewEvent = (compid, title, venue, date, time, capacity, detail, imagePath)
             });
     });
 };
+db.addNewVenue = (compid, vname,Aname, Acap, Bname, Bcap, Cname, Ccap, Dname, Dcap, Ename, Ecap, Fname, Fcap, Gname, Gcap, Hname, Hcap,  imagepath) => {
+    return new Promise((resolve, reject) => {
+        
+
+        
+
+        pool.query(`INSERT INTO reservations.Venues (name, cid,imagePath, Aname,Acapacity,Bname,Bcapacity,Cname,Ccapacity,Dname,Dcapacity,Ename,Ecapacity,Fname,Fcapacity,Gname,Gcapacity,Hname,Hcapacity)     VALUES
+        (?,?,?,?, ?, ?, ?, ?,  ?,?,?,?,?, ?, ?, ?, ?,  ?,?);`  , [ vname,compid, imagepath,Aname, Acap, Aname, Acap, Bname, Bcap, Cname, Ccap, Dname, Dcap, Ename, Ecap, Fname, Fcap, Gname, Gcap, Hname, Hcap], (err, results) => {
+
+                if (err) {
+                    console.log('ERROR: .addNewVenue()');
+                    return reject(err);
+                }
+                return resolve({ message: 'new venue added successfully' });
+            });
+    });
+};
 
 //delete event
 db.deleteEvent = (id) => {
@@ -257,12 +273,55 @@ db.deleteEvent = (id) => {
     });
 };
 
+db.deleteVenue = (id) => {
+
+    return new Promise((resolve, reject) => {
+        pool.query(`DELETE FROM Venues WHERE vid = ?`, [id], (err, results) => {
+            if (err) {
+                console.log('ERROR: .deleteVenue()');
+                return reject(err);
+            }
+            return resolve({ message: 'venue successfully deleted' });
+        });
+    });
+};
+
+db.deleteCompany=(id)=>{
+
+    return new Promise((resolve, reject) => {
+        pool.query(`DELETE FROM Users WHERE uid = ?`, [id] ,(err, results) => {
+                if (err) {
+                    console.log('ERROR: .deleteCompany()');
+                    return reject(err);
+                }
+                return resolve({ message: 'company successfully deleted'});
+            });     
+    });
+};
+
+
+//get all tickets of a company
 db.getEventByCompanyId = (id) => {
 
     return new Promise((resolve, reject) => {
         pool.query(`SELECT * FROM Events WHERE cId = ?`, [id], (err, results) => {
             if (err) {
                 console.log(err);
+                return reject(err);
+            }
+
+            return resolve(results);
+        });
+    });
+};
+
+db.getVenuesByCompanyId = (id) => {
+
+    return new Promise((resolve, reject) => {
+        pool.query(`SELECT * FROM Venues WHERE cid = ?`, [id], (err, results) => {
+            if (err) {
+                console.log('ERROR: .getVenuesByCompanyId');
+
                 return reject(err);
             }
 
@@ -298,7 +357,7 @@ db.searchEvents = (type, date, location, text) =>{
     });
 };
 
-/*TICKET */
+/* TICKET */
 
 //get ticket by tid
 db.getTicketById = (tid) => {
@@ -318,7 +377,7 @@ db.getActiveTicketsById = (id) => {
 
     return new Promise((resolve, reject) => {
 
-        querystr = `SELECT T.id, E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
+        querystr = `SELECT T.id, E.eID as eid, E.eType as eventtype ,E.date as eventdate ,E.title, E.address as eventaddress,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
             FROM Tickets T JOIN Events E ON T.eId=E.eId JOIN Companies AS C ON C.id = E.cId 
             where T.userid=? and T.status='ACTIVE' ; ` ;
         pool.query(querystr, [id], (err, results) => {
@@ -345,6 +404,19 @@ db.addNewTicket = (userid, peoplenumber, eId) => {
                 //console.log({ message: 'ticket is purchased successfully' });
                 return resolve(results[1]);
             });
+    });
+};
+
+db.deleteTicket = (id,pnum,eid) => {
+
+    return new Promise((resolve, reject) => {
+        pool.query(`DELETE FROM Tickets WHERE id = ?;UPDATE Events SET remainingseat = remainingseat + ? WHERE Events.eId =? ;`, [id,pnum,eid], (err, results) => {
+            if (err) {
+                console.log('ERROR: .deleteTicket()');
+                return reject(err);
+            }
+            return resolve({ message: 'ticket successfully deleted' });
+        });
     });
 };
 
