@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
@@ -136,6 +137,7 @@ router.post('/events/search', async (req, res) => {
 	}
 });
 
+// TO-DO
 // Add events with image upload
 router.post('/events/add', upload.single('myFile'), async (req, res) => {
 
@@ -180,6 +182,7 @@ router.delete('/events/delete/:eId', async (req, res) => {
 
 /******************************* VENUE *******************************/
 
+// TO-DO
 // Add venue with image upload
 router.post('/venues/add', upload.single('myFile'), async (req, res) => {
 
@@ -216,6 +219,39 @@ router.delete('/venues/delete/:vid', async (req, res) => {
 		res.send("venue deleted");
 	} catch (e) {
 		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
+
+// TO-DO
+router.post('/venues/category/add/:vid', async (req, res) => {
+	try {
+		//console.log(req.body);
+		var name_lst = req.body.name;
+		var cap_lst = req.body.ccapacity;
+
+		for (var i = 0; i < name_lst.length; i++) {
+			await db.addCategory(parseInt(req.params.vid, 10), name_lst[i], parseInt(cap_lst[i], 10));
+		}
+		console.log({ "message": "Category is added" });
+		res.redirect('/company');
+	} catch (error) {
+		console.log(error);
+		res.sendStatus(500);
+	}
+
+});
+
+router.get('/venues/category/all/:vid', async (req, res) => {
+	try {
+		//console.log(req.params.vid);
+		// eslint-disable-next-line no-unused-vars
+		let results = await db.getAllCategoriesByVenueId(req.params.vid);
+		//console.log(results);
+		res.json(results);
+	} catch (error) {
+		console.log(error);
 		res.sendStatus(500);
 	}
 });
@@ -317,6 +353,7 @@ router.delete('/companies/delete/:id', async (req, res) => {
 
 /******************************* TICKET *******************************/
 
+// TO-DO
 router.post('/ticketBuy/:eid', async (req, res) => {
 	try {
 		console.log('Request Body: ', req.body);

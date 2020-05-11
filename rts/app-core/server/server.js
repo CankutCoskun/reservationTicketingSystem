@@ -164,6 +164,7 @@ app.get('/events', function (req, res) {
 	}
 });
 
+// TO-DO
 app.get('/getEventDetailPage/:eid', async function (req, res) {
 
 	try {
@@ -191,6 +192,7 @@ app.get('/getEventDetailPage/:eid', async function (req, res) {
 
 });
 
+// TO-DO
 app.get('/getEventDetailPageNoLogin/:eid', async function (req, res) {
 
 	try {
@@ -218,6 +220,7 @@ app.get('/getEventDetailPageNoLogin/:eid', async function (req, res) {
 
 });
 
+// TO-DO
 app.get('/ticketPurchasePage', async (req, res) => {
 	try {
 		//console.log(req.query); 
@@ -239,6 +242,8 @@ app.get('/ticketPurchasePage', async (req, res) => {
 	}
 });
 
+
+// TO-DO
 //viewTciket?tid=12
 app.get('/viewTicket/', async (req, res) => {
 	try {
@@ -277,6 +282,8 @@ app.get('/viewTicket/', async (req, res) => {
 	}
 });
 
+
+// TO-DO
 app.post('/createTicket', async (req, res) => {
 	try {
 		let event = await db.getEventById(req.body.eid);
@@ -368,7 +375,7 @@ app.get('/deleteTicket/', async (req, res) => {
 	}
 });
 
-
+// TO-DO
 app.get('/profile', async function (req, res) {
 	try {
 		if (req.session.loggedin) {
@@ -420,6 +427,7 @@ app.post('/events/search', async (req, res) => {
 	}
 });
 
+// TO-DO
 app.get('/company', async function (req, res) {
 	try {
 		if (req.session.loggedin) {
@@ -580,6 +588,7 @@ app.get('/admin', (req, res) => {
 	}
 });
 
+// TO-DO
 //Call admin dashboard page TO ADD NEW EVENT
 app.get('/new-event', (req, res) => {
 	res.sendFile(path.resolve('static/web-pages/admin-dashboard/add_event.html'));

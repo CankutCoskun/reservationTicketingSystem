@@ -217,6 +217,7 @@ db.getEventById = (id) => {
 	});
 };
 
+// TO-DO
 db.addNewEvent = (compid, title, venue, date, time, capacity, detail, imagePath) => {
 	return new Promise((resolve, reject) => {
 		console.log(capacity);
@@ -246,7 +247,6 @@ db.deleteEvent = (id) => {
 	});
 };
 
-//get all tickets of a company
 db.getEventByCompanyId = (id) => {
 
 	return new Promise((resolve, reject) => {
@@ -289,6 +289,7 @@ db.searchEvents = (type, date, location, _text) => {
 
 /* VENUE */
 
+// TO-DO
 db.addNewVenue = (compid, vname, capacity, imagepath) => {
 	return new Promise((resolve, reject) => {
 
@@ -324,11 +325,38 @@ db.getVenuesByCompanyId = (id) => {
 			if (err) {
 				return reject(err);
 			}
-
 			return resolve(results);
 		});
 	});
 };
+
+//TO-DO
+db.getAllCategoriesByVenueId = async (vid) => {
+	return new Promise((resolve, reject) => {
+		pool.query(`SELECT * FROM Categories WHERE venueid = ?`, [vid], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
+// TO-DO
+db.addCategory = (vid, cname, ccap) => {
+
+	return new Promise((resolve, reject) => {
+		pool.query(`INSERT INTO Categories (venueid, cname, ccapacity) 
+					VALUES (?, ?, ?);`, [vid, cname, ccap], (err, result) => {
+
+			if (err) {
+				return reject(err);
+			}
+			return resolve(result);
+		});
+	});
+};
+
 
 /* TICKET */
 
@@ -344,6 +372,7 @@ db.getTicketById = (tid) => {
 	});
 };
 
+// TO-DO
 /*Get all tickets of a customer by user id */
 db.getActiveTicketsById = (id) => {
 
@@ -363,14 +392,14 @@ db.getActiveTicketsById = (id) => {
 	});
 };
 
+// TO-DO
 //decrease remaining capacity of event and create tickets for the user
 db.addNewTicket = (userid, peoplenumber, eId) => {
 	return new Promise((resolve, reject) => {
 		pool.query(`UPDATE Events SET remainingseat = remainingseat - ? WHERE Events.eId =? ;
-                    INSERT INTO Tickets (userid, peoplenumber,status, eId) VALUES( ?, ?, 'ACTIVE',?);`
-		, [peoplenumber, eId, userid, peoplenumber, eId], (err, results) => {
+                    INSERT INTO Tickets (userid, peoplenumber,status, eId) VALUES( ?, ?, 'ACTIVE',?);` ,
+		[peoplenumber, eId, userid, peoplenumber, eId], (err, results) => {
 			if (err) {
-
 				return reject(err);
 			}
 			//console.log({ message: 'ticket is purchased successfully' });
