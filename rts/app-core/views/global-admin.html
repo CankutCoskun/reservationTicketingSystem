@@ -19,93 +19,40 @@
     <meta name="theme-color" content="#563d7c">
 
     <style>
-        .navbar-nav>.nav-item {
-            color: white;
-            margin-left: 10px;
-            margin-right: 5px;
-        }
-
-        .navbar ul.nav li.open>a.get-started-btn {
-            color: #fff;
-            background: white;
-        }
-
-        /* change the brand and text color */
-        .navbar .navbar-brand,
-        .navbar .navbar-text {
-            color: white;
-        }
-
-        /* change the link color */
-        .navbar-nav .nav-item .nav-link {
-            color: white;
-        }
-
-        /* change the color of active or hovered links */
-        .navbar-nav .nav-item.active .nav-link,
-        .navbar-nav .nav-item:hover .nav-link {
-            color: white;
-
-        }
-
-        .panel-heading {
-            padding: 10px 15px;
-            border-bottom: 1px solid transparent;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px
-        }
-
-        #profile-section {
-            width: 280px;
-            padding: 20px;
-            left: auto;
-            right: 0;
-        }
-
-        h1,
-        h2 {
-            font-family: 'Times New Roman', Times, serif;
-            font-style: italic;
-            color: #0d5abe;
-            font-weight: bold;
-        }
     </style>
 </head>
 
 <body>
+   <header>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
-        <h5 class="modal-title" id="title" style="color: white; border-color: white;">Global Admin</h5>
-        <div class="collapse navbar-collapse" id="navbarColor02">
-            <ul class="nav navbar-nav navbar-right ml-auto">
-                <li class="nav-item">
-                    <form class="form-inline">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"
-                            style="color: white; border-color: white;">
-                            <i class="fa fa-fw fa-search"></i>Search</button>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
-                </li>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
+        <a href="/home">
+         <img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
+        </a>
+         <h5 class="modal-title" id="title" style="color: white; margin: 15px;">Global Admin</h5>
+         <div class="collapse navbar-collapse" id="navbarColor02">
+             <ul class="nav navbar-nav navbar-right ml-auto">
+                 <li class="nav-item">
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="/logout" style="color: white;"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+                 </li>
+                 </li>
+             </ul>
+         </div>
+     </nav>
+   </header>
 
     <main role="main" class="">
         <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Edit Company</h1>
         </div>
-
+        <br>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal" 
+                style="margin-bottom: 30px; margin-left: 30px; background-color: #0d5abe;" >
             Add Company
         </button>
-
         <!-- Modal -->
         <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" role="dialog"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -113,7 +60,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Add Company</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close " data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -127,7 +74,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="CompanyCredentails">Company Email</label>
-                                <input type="text" class="form-control" name="companyemail" id="companyemail"
+                                <input type="email" class="form-control" name="companyemail" id="companyemail"
                                     placeholder="Company Email" required>
                             </div>
                             <div class="form-group">
@@ -137,7 +84,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="CompanyCredentails">Company Password</label>
-                                <input type="text" class="form-control" name="companypassword" id="companypassword"
+                                <input type="password" class="form-control" name="companypassword" id="companypassword"
                                     placeholder="Company Password" required>
                             </div>
                             <div class="form-group">
@@ -154,7 +101,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 <input type='submit' name='addcomp' class="btn btn-primary  active" role="button"
-                                    aria-pressed="true"  value="Add New Company">
+                                    aria-pressed="true"  value="Add New Company" style="background-color: #0d5abe;">
                             </div>
                         </form>
                     </div>
@@ -162,12 +109,13 @@
             </div>
         </div>
 
-
+       <div  style=" margin-left:30px; margin-right: 60px;">
         <table id=companytable class="table table-striped">
             <thead>
                 <tr>
                     <!--  <th scope="col">Company Image</th> -->
-                    <th scope="col">Company ID</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Logo</th>
                     <th scope="col">Company Name</th>
                     <th scope="col">Company Email</th>
                     <th scope="col">Company Username</th>
@@ -179,14 +127,18 @@
                 <% for(var i=0; i < company.length; i++) { %>
                 <tr>
                     <td><%= company[i].id %></td>
+                    <td class="w-25">
+                        <a href=""><img src="<%= company[i].imagePath%>" class="img-fluid img-thumbnail"></a>
+                    </td>
                     <td><%= company[i].name %></td>
                     <td><%= company[i].email %></td>
                     <td><%= company[i].username %></td>
                     <td><%= company[i].password %></td>
                     <td><%= company[i].companyAddress %></td>
                     <td>
-                        <input type='submit' name='edit' class='btn btn-sm btn-info' role='button' value='Edit'>
-                        <input type='submit' name='delete' class='btn btn-sm btn-danger' role='button' value='Delete'
+                        <input type='submit' name='edit' class='btn btn-primary' role='button' value='Edit' 
+                        style="width: 75px; background-color: #0d5abe; margin-bottom: 30px;" >
+                        <input type='submit' name='delete' class='btn btn-dark' role='button' value='Delete'
                         onclick="deleteFunc(<%= company[i].id %>)">
                         
                     </td>
@@ -195,8 +147,7 @@
 
             </tbody>
         </table>
-
-        </div>
+       </div>
 
     </main>
 

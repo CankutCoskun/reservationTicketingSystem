@@ -1,17 +1,9 @@
-#head3 {
-  font-family:'Times New Roman', Times, serif;
-  font-style: italic;
-  font-weight: bold;
-  font-size: xx-large;
-  text-align: center;
-  color: #0d5abe;
-}
 
 h1, h2{
   font-family:'Times New Roman', Times, serif;
   font-style: italic;
   font-weight: bold;
-  color: #0d5abe;
+  color: #343a40;;
 }
 
 .bd-placeholder-img {

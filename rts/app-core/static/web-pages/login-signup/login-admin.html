@@ -14,11 +14,11 @@
 
 </head>
 
-<body style="background-color:#f0f8ff;">
+<body style="background-color:whitesmoke;">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" style="color: white;">
+    <a href="/home" class="navbar-brand" style="color: white;">
       <img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top mr-3" alt="">
-      Sabanci CS308 Project
+       Admin Dashboard
     </a>
   </nav>
 
@@ -28,25 +28,23 @@
 
       </div>
 
-      <div class="col-4 bg-light text-dark rounded border border-primary p-5 ">
+      <div class="col-4 bg-light text-dark rounded border border-dark p-5 ">
 
 
         <form action='auth' method='POST'>
           <div class="md-form mb-5">
             <label data-error="wrong" data-success="right">Your Username</label>
-            <i class="fas fa-envelope prefix grey-text"></i>
             <input type="text" name="username" class="form-control validate">
           </div>
 
           <div class="md-form mb-4">
-            <i class="fas fa-lock prefix grey-text"></i>
             <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
             <input type="password" name="password" class="form-control validate">
           </div>
 
-          <div class="form-group">
-            <input type='submit' name="log" class="btn btn-primary btn-sm active mr-3" role="button" aria-pressed="true"
-              value="Sign in">
+          <div class="form-group" style="text-align: center;">
+            <input type='submit' name="log" class="btn btn-dark btn-sm active mr-3" role="button" aria-pressed="true"
+              value="Sign in" style="width: 120px;">
 
           </div>
 

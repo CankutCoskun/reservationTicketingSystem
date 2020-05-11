@@ -1,5 +1,5 @@
 
-const BUCKET_NAME = 'rts-event-images';
+const BUCKET_NAME = 'rts-files';
 const KEY = 'cs308-rts-af8045b0ad06.json';
 // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
