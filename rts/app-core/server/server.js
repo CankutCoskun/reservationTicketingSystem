@@ -362,10 +362,59 @@ app.get('/deleteTicket/', async (req, res) => {
 
 		let tid = req.query.tid;
 		let pnum = req.query.pnum;
-		let eid = req.query.eid;
-		let result = await db.deleteTicket(tid, pnum, eid);
+		let categoryid = req.query.categoryid;
+		let invoice = req.query.invoice;
+		let result = await db.deleteTicket(tid, pnum, categoryid);
 		//let result = await db.deleteTicket(tid);
 		console.log(result);
+
+		let user = await db.getUserById(req.body.uid);
+		let email = user.email;
+		
+			var name = user.name;
+			var surname = user.surname;
+			
+
+		const output = `
+		<h3>Hi ${name} ${surname},</h3>
+		
+		<p> Your ticket is deleted please see details below:</p>
+		
+		<ul>
+		<li>TICKET ID: ${tid}</li>
+		<li>NUMBER OF SEATS: ${pnum}</li>  
+		<a href='${invoice}'> SEE Invoice </a>
+		</ul>
+		<img src='${invoice}'></img>
+	`;
+
+	// create reusable transporter object using the default SMTP transport
+	var transporter = nodemailer.createTransport({
+		service: "gmail",
+		auth: {
+			user: process.env.EMAIL,
+			pass: process.env.PASSWORD
+		}
+	});
+
+	// setup email data with unicode symbols
+	let mailOptions = {
+		from: 'cs308reservationsystem@gmail.com', // sender address
+		to: email, // list of receivers
+		subject: 'Ticket Deleted', // Subject line
+		html: output // html body
+	};
+
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, (error, info) => {
+		if (error) {
+			return console.log(error);
+		}
+		console.log('Message sent: %s', info.messageId);
+	});
+
+
+
 
 		res.redirect('/profile');
 
@@ -381,8 +430,8 @@ app.get('/profile', async function (req, res) {
 		if (req.session.loggedin) {
 			let uname = req.session.username;
 			let user = await db.getUserByUname(uname);
-			let tickets = await db.getActiveTicketsById(user.uid);
-			//console.log(tickets);
+			let tickets = await db.getTicketsByUserId(user.uid);
+			console.log("Tİckets ===" +tickets);
 			//res.send('Welcome back, ' + req.session.username + '!');
 			// res.sendFile(path.resolve('static/web-pages/user_profile.html'));
 			res.render('user_profile.html', {

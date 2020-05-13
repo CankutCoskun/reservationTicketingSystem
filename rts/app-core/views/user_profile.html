@@ -193,6 +193,7 @@
                                         <th>Company</th>
                                         <th>Venue</th>
                                         <th>Time</th>
+                                        <th>Status</th>
                                         <th>Activity</th>
 
                                     </tr>
@@ -204,8 +205,9 @@
                                         <td><%= tickets[i].title %></td>
                                         <td><%= tickets[i].eventtype %></td>
                                         <td><%= tickets[i].companyname %></td>
-                                        <td><%= tickets[i].eventaddress %></td>
+                                        <td><%= tickets[i].venue %></td>
                                         <td><%= tickets[i].eventdate %></td>
+                                        <td><%= tickets[i].status %></td>
                                         <td>
                                             <a href="/viewTicket?tid=<%=tickets[i].id%>">
                                                 <input type='submit' name='edit' class='btn btn-secondary btn-sl'
@@ -218,13 +220,13 @@
                                             <!-- <a href="/deleteTicket?tid=<%=tickets[i].id%>&pnum=<%=tickets[i].peoplenumber%>&eid=<%=tickets[i].eid%>"> -->
                                             <input type='submit' name='delete' class='btn btn-secondary btn-sl'
                                                 role='button' value='Cancel'
-                                                onclick=' cancelticket( "<%= tickets[i].eventdate %>" ,"<%= tickets[i].title %>","<%=tickets[i].id%>","<%=tickets[i].peoplenumber%>","<%=tickets[i].eid%>" ); '>
+                                                onclick=' cancelticket( "<%= tickets[i].eventdate %>" ,"<%= tickets[i].title %>","<%=tickets[i].id%>","<%=tickets[i].peoplenumber%>","<%=tickets[i].categoryid%>","<%=tickets[i].invoice%>" ); '>
 
                                             <script>
 
 
-                                                var cancelticket = function (edate, title, id, pnum, eid) {
-                                                    document.getElementById("canceltheticket").href = "/deleteTicket?tid=" + id + "&pnum=" + pnum + "&eid=" + eid;
+                                                var cancelticket = function (edate, title, id, pnum, categoryid,invoice) {
+                                                    document.getElementById("canceltheticket").href = "/deleteTicket?tid=" + id + "&pnum=" + pnum + "&categoryid=" + categoryid +  "&invoice=" + invoice;
 
 
                                                     const evntdate = Date.parse(edate);

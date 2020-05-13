@@ -374,13 +374,32 @@ db.getTicketById = (tid) => {
 
 // TO-DO
 /*Get all tickets of a customer by user id */
-db.getActiveTicketsById = (id) => {
+db.getTicketsByUserId = (id) => {
 
 	return new Promise((resolve, reject) => {
 
-		let querystr = `SELECT T.id, E.eID as eid, T.userid as uid, E.eType as eventtype ,E.date as eventdate ,E.title,T.peoplenumber, T.createdAt as purchasedate , C.name as companyname
-        FROM Tickets AS T, Events AS E, Companies AS C 
-        where T.userid=? and T.status='ACTIVE' AND T.eId=E.eId ; ` ;
+		let querystr = `SELECT T.id, 
+						T.status as status,
+						T.peoplenumber,						
+						E.eType as eventtype ,
+						E.date as eventdate ,
+						E.title as title,						 						 
+						C.name as companyname,
+						I.invoicepath as invoice,
+						V.name as venue,
+						Ct.categoryid as categoryid
+		FROM Tickets AS T, 
+		Events AS E, 
+		Venues AS V,
+		Companies AS C, 
+		Categories AS Ct,
+		Invoice AS I
+		where T.userid=?  AND 		
+		Ct.categoryid= T.categoryid AND 
+		E.eID = Ct.eventid AND
+		V.vid = E.venueId AND
+		C.id = E.cID AND 
+		I.tid = T.id ; ` ;
 
 		pool.query(querystr, [id], (err, results) => {
 			if (err) {
@@ -408,10 +427,11 @@ db.addNewTicket = (userid, peoplenumber, eId) => {
 	});
 };
 
-db.deleteTicket = (id, _pnum, eid) => {
+db.deleteTicket = (id, pnum, categoryid) => {
 
 	return new Promise((resolve, reject) => {
-		pool.query(`DELETE FROM Tickets WHERE id = ?;`, [id, eid], (err, _results) => {
+		pool.query(`DELETE FROM Tickets WHERE id = ?;
+					UPDATE Categories SET remaining = remaining + ? WHERE categoryid = ?`, [id,,pnum, categoryid], (err, _results) => {
 			if (err) {
 				return reject(err);
 			}
