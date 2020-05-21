@@ -156,7 +156,7 @@ router.post('/events/add', upload.single('myFile'), async (req, res) => {
 		await gcClient.uploadFile(file.path).catch(console.error);
 		await db.addNewEvent(req.body.compid, req.body.eventtitle,
 			req.body.eventvenue, req.body.eventdate,
-			req.body.eventtime, req.body.eventcapacity,
+			req.body.eventtime, req.body.eventtype,
 			req.body.eventdetail, gcClient.getPublicUrlForItem(file.filename));
 
 		res.redirect("/company");

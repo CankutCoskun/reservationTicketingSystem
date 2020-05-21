@@ -218,18 +218,19 @@ db.getEventById = (id) => {
 };
 
 // TO-DO
-db.addNewEvent = (compid, title, venue, date, time, capacity, detail, imagePath) => {
+db.addNewEvent = (compid, title, venue, date, time, type, detail, imagePath) => {
 	return new Promise((resolve, reject) => {
-		console.log(capacity);
-		pool.query(`INSERT INTO Events (cId,remainingseat,title, venue, date, time, capacity,detail,status, imagePath)
-                    VALUES(?,?,?,?, ?, ?, ?, ?, 'ACTIVE', ?);`
-		, [compid, capacity, title, venue, date, time, capacity, detail, imagePath], (err, result) => {
+		
+		pool.query(`INSERT INTO Events (cId,title, venueId, date, time,detail,eType,status, imagePath)
+                    VALUES(?,?,?,?, ?, ?,?, 'ACTIVE', ?);`
+		, [compid,  title, venue, date, time,  detail,type, imagePath], (err, result) => {
 
 			if (err) {
 
 				return reject(err);
 			}
-			return resolve(result.JSON());
+			console.log(result);
+			//return resolve(result.JSON());
 		});
 	});
 };
@@ -342,6 +343,16 @@ db.getAllCategoriesByVenueId = async (vid) => {
 	});
 };
 
+db.getAllCategoriesByEventId = async (eid) => {
+	return new Promise((resolve, reject) => {
+		pool.query(`SELECT * FROM Categories WHERE eventid = ?`, [eid], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
 // TO-DO
 db.addCategory = (vid, cname, ccap) => {
 
@@ -413,16 +424,17 @@ db.getTicketsByUserId = (id) => {
 
 // TO-DO
 //decrease remaining capacity of event and create tickets for the user
-db.addNewTicket = (userid, peoplenumber, eId) => {
+db.addNewTicket = (userid, peoplenumber, eId,cid) => {
 	return new Promise((resolve, reject) => {
-		pool.query(`UPDATE Events SET remainingseat = remainingseat - ? WHERE Events.eId =? ;
-                    INSERT INTO Tickets (userid, peoplenumber,status, eId) VALUES( ?, ?, 'ACTIVE',?);` ,
-		[peoplenumber, eId, userid, peoplenumber, eId], (err, results) => {
+		pool.query(`
+                    INSERT INTO Tickets (userid, peoplenumber,status, categoryid) VALUES( ?, ?, 'ACTIVE',?);` ,
+		[ userid, peoplenumber, cid], (err, results) => {
 			if (err) {
 				return reject(err);
 			}
-			//console.log({ message: 'ticket is purchased successfully' });
-			return resolve(results[1]);
+			console.log({ message: 'ticket is purchased successfully' });
+			console.log(results);
+			return resolve(results);
 		});
 	});
 };

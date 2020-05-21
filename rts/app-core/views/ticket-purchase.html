@@ -106,9 +106,11 @@
                       <br></br>
                       <label for="cars">Choose a category:</label>
                       <select id="category" name="category" required>
-                        <option value="A">FIRST CATEGORY</option>
-                        <option value="B">SECOND CATEGORY</option>
-                        <option value="C">THIRD CATEGORY</option>
+                      <% for(var i=0; i < categories.length; i++) { %>
+                                                
+                      
+                        <option value="<%= categories[i].categoryid %>"><%= categories[i].categoryname %></option>
+                        <% }  %>
                       </select>
                     </div>
                     <div class="col-50">

@@ -226,6 +226,7 @@ app.get('/ticketPurchasePage', async (req, res) => {
 		//console.log(req.query); 
 		let event = await db.getEventById(req.query.eid);
 		let user = await db.getUserById(req.query.uid);
+		let categories = await db.getAllCategoriesByEventId(req.query.eid);
 		res.render('ticket-purchase.html', {
 			uId: user.uid,
 			eId: event.eId,
@@ -235,7 +236,8 @@ app.get('/ticketPurchasePage', async (req, res) => {
 			eDate: event.date,
 			eCapacity: event.capacity,
 			eStatus: event.status,
-			eImagePath: event.imagePath
+			eImagePath: event.imagePath,
+			categories:categories
 		});
 	} catch (error) {
 		console.log(error);
@@ -292,7 +294,7 @@ app.post('/createTicket', async (req, res) => {
 			res.send("no seats left for this event");
 		}
 		else {
-			let result = await db.addNewTicket(req.body.uid, req.body.peoplenumber, req.body.eid);
+			let result = await db.addNewTicket(req.body.uid, req.body.peoplenumber, req.body.eid,req.body.category);
 			let email = user.email;
 			let tid = result.insertId;
 			let ticket = await db.getTicketById(tid);

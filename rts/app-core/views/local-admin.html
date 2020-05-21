@@ -70,7 +70,7 @@
                                         placeholder="Event Title" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="EventInformation">Event Venue</label>
+                                    <label for="EventInformation">Event Venue ID</label>
                                     <input type="text" class="form-control" name="eventvenue" id="eventvenue"
                                         placeholder="Event Venue" required>
                                 </div>
@@ -85,9 +85,16 @@
                                         placeholder="Event Time" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="EventInformation">Event Capacity</label>
-                                    <input type="number" class="form-control" name="eventcapacity" id="eventcapacity"
-                                        placeholder="Event Capacity" required>
+                                    <label for="EventInformation">Event Type</label>
+                                        <select type="text" class="form-control" name="eventtype" id="eventtype" required>
+                                            <option value ="CONCERT">CONCERT</option>
+                                            <option value ="THEATRE">THEATRE</option>
+                                            <option value ="DANCE">DANCE</option>
+                                            <option value ="STANDUP">STANDUP</option>
+                                            <option value ="OPERA">OPERA</option>
+                                            <option value ="MUSICAL">MUSICAL</option>
+                                            <option value ="BALLET">BALLET</option>
+                                            </select> 
                                 </div>
                                 <div class="form-group">
                                     <label for="EventInformation">Event Detail</label>
@@ -261,7 +268,7 @@
                         <th scope="col">Event Venue</th>
                         <th scope="col">Event Date</th>
                         <th scope="col">Event Time</th>
-                        <th scope="col">Event Capacity</th>
+                        <th scope="col">Event Type</th>
                         <th scope="col">Event Detail</th>
 
                     </tr>
@@ -271,10 +278,10 @@
                     <tr>
                         <td><%= events[i].eId %></td>
                         <td><%= events[i].title %></td>
-                        <td><%= events[i].venue %></td>
+                        <td><%= events[i].venueId %></td>
                         <td><%= events[i].date %></td>
                         <td><%= events[i].time %></td>
-                        <td><%= events[i].capacity %></td>
+                        <td><%= events[i].eType %></td>
                         <td><%= events[i].detail %></td>
                         <td>
                             <input type='submit' name='edit' class='btn btn-sm btn-info' role='button' value='Edit'
