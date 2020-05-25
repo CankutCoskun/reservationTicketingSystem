@@ -48,7 +48,8 @@
 
 <body>
 	<header>
-		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm" style="margin-bottom: 0; color: white;">
+		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm"
+			style="margin-bottom: 0; color: white;">
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
 				aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +66,7 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right ml-auto" style="text-align: center;">
-					<li class="nav-item" >
+					<li class="nav-item">
 						<a href="#" data-toggle="dropdown"
 							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
 							style="border-color: white; color: white;"> <i class="fa fa-sign-in" aria-hidden="true"></i>
@@ -90,7 +91,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="nav-item"  style="margin-left: 20px;" >
+					<li class="nav-item" style="margin-left: 20px;">
 						<a href="#" data-toggle="dropdown"
 							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
 							style="border-color: white; color: white;">Sign up</a>
@@ -194,9 +195,9 @@
 								<li data-target="#myCarousel" data-slide-to="4" class=""></li>
 								<li data-target="#myCarousel" data-slide-to="5" class=""></li>
 							</ol>
-	
+
 							<!--CAROUSEL CODE -->
-	
+
 						</div>
 					</div>
 				</div>
@@ -205,7 +206,7 @@
 				</div>
 			</div>
 			<div style="padding-top: 35px;">
-				<h2 style="text-align: center; color: #343a40;" >EVENTS</h2>
+				<h2 style="text-align: center; color: #343a40;">EVENTS</h2>
 				<br>
 				<div class="row" id="events"></div>
 			</div>
@@ -235,6 +236,38 @@
 	<script src='web-pages/fullcalendar/timegrid/main.js'></script>
 	<script src='web-pages/fullcalendar/list/main.js'></script>
 	<script src='web-pages/fullcalendar/bootstrap/main.js'></script>
+	<script>
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			plugins: ['dayGrid', 'timeGrid', 'list', 'bootstrap'],
+			themesystem: 'bootstrap',
+			height: 500,
+			eventSources: [
+				{
+					url: '/api/calendarevents',
+					type: 'GET',
+					error: function () {
+						alert('there was an error while fetching events!');
+					},
+					color: 'yellow',   // a non-ajax option
+					textColor: 'black' // a non-ajax option
+				}],
+
+			eventClick: function (eventObj) {
+
+				if (eventObj.url) {
+					alert(
+						'Clicked ' + eventObj.title + '.\n' +
+						'Will open ' + eventObj.url + ' in a new tab'
+					);
+					el.style.borderColor = 'red';
+					window.open(eventObj.url);
+				}
+			}
+		});
+
+		calendar.render();
+	</script>
 	<!--		
 		$("#datepicker").datepicker({
 			format: 'dd/mm/yyyy'

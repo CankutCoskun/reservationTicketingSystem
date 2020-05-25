@@ -85,18 +85,22 @@ router.get('/events/', async (req, res) => {
 
 router.get('/calendarevents/', async (req, res) => {
 	try {
-
 		let results = await db.getEvents();
-		let events = [];
-		for (var i = 0; i < 2; i++) {
-			var event = new Object();
-			event.title = String(results[i].title);
-			event.start = results[i].date;
-			event.url = '/getEventDetailPageNoLogin/' + String(results[i].eId);
-			events.push(event);
+		
+		if(results){ 
+			res.json({});
 		}
-
-		res.json(events);
+		else{
+			let events = [];
+			for (var i = 0; i < 2; i++) {
+				var event = new Object();
+				event.title = String(results[i].title);
+				event.start = results[i].date;
+				event.url = '/getEventDetailPageNoLogin/' + String(results[i].eId);
+				events.push(event);
+			}
+			res.json(events);
+		}
 	} catch (e) {
 		console.log(e);
 		res.sendStatus(500);
