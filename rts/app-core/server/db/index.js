@@ -218,20 +218,20 @@ db.getEventById = (id) => {
 };
 
 // TO-DO
-db.addNewEvent = (compid, title, venue, date, time, type, detail, imagePath) => {
+db.addNewEvent = (compid, title, venue, date, time, type, detail, city, imagePath) => {
 	return new Promise((resolve, reject) => {
+		
+		pool.query(`INSERT INTO Events (cId,title, venueId, date, time,detail,eType, city, status, imagePath)
+                    VALUES(?,?,?,?,?,?,?,?, 'ACTIVE', ?);`
+		, [compid, title, venue, date, time, detail, type, city, imagePath], (err, result) => {
 
-		pool.query(`INSERT INTO Events (cId,title, venueId, date, time,detail,eType,status, imagePath)
-                    VALUES(?,?,?,?, ?, ?,?, 'ACTIVE', ?);`
-			, [compid, title, venue, date, time, detail, type, imagePath], (err, result) => {
+			if (err) {
 
-				if (err) {
-
-					return reject(err);
-				}
-				console.log(result);
-				//return resolve(result.JSON());
-			});
+				return reject(err);
+			}
+			//console.log(result);
+			return resolve(result.JSON());
+		});
 	});
 };
 
@@ -298,7 +298,6 @@ db.addNewVenue = (compid, vname, capacity, imagepath) => {
 			[vname, compid, imagepath, capacity], (err, results) => {
 
 				if (err) {
-
 					return reject(err);
 				}
 				return resolve({ message: 'new venue added successfully' });
@@ -311,7 +310,6 @@ db.deleteVenue = (id) => {
 	return new Promise((resolve, reject) => {
 		pool.query(`DELETE FROM Venues WHERE vid = ?`, [id], (err, results) => {
 			if (err) {
-				console.log('ERROR: .deleteVenue()');
 				return reject(err);
 			}
 			return resolve({ message: 'venue successfully deleted' });
@@ -331,18 +329,6 @@ db.getVenuesByCompanyId = (id) => {
 	});
 };
 
-//TO-DO
-db.getAllCategoriesByVenueId = async (vid) => {
-	return new Promise((resolve, reject) => {
-		pool.query(`SELECT * FROM Categories WHERE vid = ?`, [vid], (err, results) => {
-			if (err) {
-				return reject(err);
-			}
-			return resolve(results);	
-		});
-	});
-};
-
 db.getAllCategoriesByEventId = async (eid) => {
 	return new Promise((resolve, reject) => {
 		pool.query(`SELECT * FROM Categories WHERE eventid = ?`, [eid], (err, results) => {
@@ -353,12 +339,12 @@ db.getAllCategoriesByEventId = async (eid) => {
 		});
 	});
 };
-// TO-DO
-db.addCategory = (vid, cname, ccap) => {
+
+db.addCategory = (eid, cname, ccap, cprice) => {
 
 	return new Promise((resolve, reject) => {
-		pool.query(`INSERT INTO Categories (vid, cname, ccapacity) 
-					VALUES (?, ?, ?);`, [vid, cname, ccap], (err, result) => {
+		pool.query(`INSERT INTO Categories (eventid, categoryname, capacity, price, remaining ) 
+					VALUES (?, ?, ?, ?, ?);`, [eid, cname, ccap, cprice, ccap], (err, result) => {
 
 			if (err) {
 				return reject(err);
@@ -368,6 +354,16 @@ db.addCategory = (vid, cname, ccap) => {
 	});
 };
 
+db.deleteCategory = (categoryid) => {
+	return new Promise((resolve, reject) => {
+		pool.query(`DELETE FROM Categories WHERE categoryid = ?`, [categoryid], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve({ message: 'category successfully deleted' });
+		});
+	});
+};
 
 /* TICKET */
 
@@ -428,14 +424,14 @@ db.addNewTicket = (userid, peoplenumber, eId, cid) => {
 	return new Promise((resolve, reject) => {
 		pool.query(`
                     INSERT INTO Tickets (userid, peoplenumber,status, categoryid) VALUES( ?, ?, 'ACTIVE',?);` ,
-			[userid, peoplenumber, cid], (err, results) => {
-				if (err) {
-					return reject(err);
-				}
-				console.log({ message: 'ticket is purchased successfully' });
-				console.log(results);
-				return resolve(results);
-			});
+		[userid, peoplenumber, cid], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			console.log({ message: 'ticket is purchased successfully' });
+			console.log(results);
+			return resolve(results);
+		});
 	});
 };
 

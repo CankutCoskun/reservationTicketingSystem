@@ -44,11 +44,18 @@
 
     <main role="main" class="">
 
-        <div class=" container" style="margin-top: 100px;">
+        <div class=" container" style="margin-top: 100px; margin-left: 30px;">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal"
                 style="margin: 15px; background-color: #0d5abe;">
                 Add Event
             </button>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addVenue"
+                style="margin: 15px;">
+                Add Venue
+            </button>
+
+            <br>
+            <br>
 
             <!-- Add Event Modal -->
             <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" role="dialog"
@@ -62,7 +69,6 @@
                             </button>
                         </div>
                         <div class="modal-body">
-
                             <form action="/api/events/add" enctype="multipart/form-data" method="POST">
                                 <div class="form-group">
                                     <label for="EventInformation">Event Title</label>
@@ -85,16 +91,26 @@
                                         placeholder="Event Time" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="EventInformation">Event Type</label>
-                                        <select type="text" class="form-control" name="eventtype" id="eventtype" required>
-                                            <option value ="CONCERT">CONCERT</option>
-                                            <option value ="THEATRE">THEATRE</option>
-                                            <option value ="DANCE">DANCE</option>
-                                            <option value ="STANDUP">STANDUP</option>
-                                            <option value ="OPERA">OPERA</option>
-                                            <option value ="MUSICAL">MUSICAL</option>
-                                            <option value ="BALLET">BALLET</option>
-                                            </select> 
+                                    <label for="eventtype">Event Type</label>
+                                    <select type="text" class="form-control" name="eventtype" id="eventtype" required>
+                                        <option value="CONCERT">CONCERT</option>
+                                        <option value="THEATRE">THEATRE</option>
+                                        <option value="DANCE">DANCE</option>
+                                        <option value="STANDUP">STANDUP</option>
+                                        <option value="OPERA">OPERA</option>
+                                        <option value="MUSICAL">MUSICAL</option>
+                                        <option value="BALLET">BALLET</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <select type="text" class="form-control" name="city" id="city" required>
+                                        <option value="ANKARA">ANKARA</option>
+                                        <option value="ANTALYA">ANTALYA</option>
+                                        <option value="ISTANBUL">ISTANBUL</option>
+                                        <option value="IZMIR">IZMIR</option>
+                                        <option value="BURSA">BURSA</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="EventInformation">Event Detail</label>
@@ -161,186 +177,58 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="updateVenue" data-backdrop="static" tabindex="-1" role="dialog"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Update Venue</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-
-                            <form action="/api/venues/update" enctype="multipart/form-data" method="POST">
-                                <div class="form-group">
-                                    <label for="EventInformation">Venue Name</label>
-                                    <input type="text" class="form-control" name="vname2" id="vname"
-                                        placeholder="Venue Name" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <h4 class="modal-title">Upload Image</h5>
-                                        <input type="file" name="myFile2" class="form-control-file"
-                                            id="exampleFormControlFile1">
-                                </div>
-                                <input type="number" name="compid2" value="<%= compid %>" style="display:none;"> 
-                                <input type="number" name="vid2" style="display:none;">
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <input type='submit' name='updatevenue' class="btn btn-primary  active"
-                                        role="button" aria-pressed="true" value="Update Venue">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal for Edit Event-->
-            <div class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Update Event</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-
-                            <form action="/api/events/update/" enctype="multipart/form-data" method="POST">
-                                <div class="form-group">
-                                    <label for="EventInformation">Event Title</label>
-                                    <input type="text" class="form-control" name="eventtitle2" id="eventtitle2"
-                                        placeholder="Event Title" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="EventInformation">Event Venue</label>
-                                    <input type="text" class="form-control" name="eventvenue2" id="eventvenue2"
-                                        placeholder="Event Venue" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="EventInformation">Event Date</label>
-                                    <input type="text" class="form-control" name="eventdate2" id="eventdate2"
-                                        placeholder="Event Date" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="EventInformation">Event Time</label>
-                                    <input type="text" class="form-control" name="eventtime2" id="eventtime2"
-                                        placeholder="Event Time" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="EventInformation">Event Capacity</label>
-                                    <input type="number" class="form-control" name="eventcapacity2" id="eventcapacity2"
-                                        placeholder="Event Capacity" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="EventInformation">Event Detail</label>
-                                    <input type="text" class="form-control" name="eventdetail2" id="eventdetail2"
-                                        placeholder="Event Detail" required>
-                                </div>
-                                <!-- <div class="form-group">
-                            <h4 class="modal-title">Upload Image</h5>
-                                <input type="file" name="myFile" class="form-control-file"
-                                    id="exampleFormControlFile1">
-                        </div> -->
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <input type='submit' name='updateevent' class="btn btn-primary  active"
-                                        role="button" aria-pressed="true" value="Update Event">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <table id=eventtable class="table table-striped">
+            <table id=eventtable class="table table-striped" style="width: 130%;">
                 <thead>
                     <tr>
                         <!--  <th scope="col">Company Image</th> -->
-                        <th scope="col">Event ID</th>
-                        <th scope="col">Event Title</th>
-                        <th scope="col">Event Venue</th>
-                        <th scope="col">Event Date</th>
-                        <th scope="col">Event Time</th>
-                        <th scope="col">Event Type</th>
-                        <th scope="col">Event Detail</th>
+                        <th scope="col">Poster</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Venue</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">City</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Detail</th>
+                        <th scope="col">Display categories</th>
+                        <th scope="col">Add new category</th>
+                        <th scope="col">Delete event</th>
 
                     </tr>
                 </thead>
                 <tbody id="events">
                     <% for(var i=0; i < events.length; i++) { %>
                     <tr>
+                        <td class="w-25">
+                            <a href="<%= events[i].imagePath %>">
+                                <img src="<%= events[i].imagePath%>" class="img-fluid img-thumbnail">
+                            </a>
+                        </td>
                         <td><%= events[i].eId %></td>
                         <td><%= events[i].title %></td>
                         <td><%= events[i].venueId %></td>
-                        <td><%= events[i].date %></td>
+                        <td><%= new Date(events[i].date).toDateString()%></td>
                         <td><%= events[i].time %></td>
+                        <td><%= events[i].city %></td>
                         <td><%= events[i].eType %></td>
                         <td><%= events[i].detail %></td>
-                        <td>
-                            <input type='submit' name='edit' class='btn btn-sm btn-info' role='button' value='Edit'
-                                id="a"
-                                onclick="updateFunc(<%= events[i].eId %>,'<%= events[i].title %>','<%= events[i].venue %>','<%= events[i].date %>','<%= events[i].time %>',<%= events[i].capacity %>,'<%= events[i].detail %>')">
-                            <input type='submit' name='delete' class='btn btn-sm btn-danger' role='button'
-                                value='Delete' onclick="deleteFunc(<%= events[i].eId %>)">
-                        </td>
-                    </tr>
-                    <% } %>
-
-                </tbody>
-            </table>
-
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addVenue"
-                style="margin: 15px;">
-                Add Venue
-            </button>
-
-            <table id=venuetable class="table table-striped">
-
-                <thead id="venues">
-                    <tr>
-                        <!--  <th scope="col">Company Image</th> -->
-                        <th scope="col">Venue ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Capacity</th>
-                        <th scope="col">Seating Plan</th>
-                    </tr>
-                </thead>
-
-                <tbody id="venues">
-
-                    <% for( var i=0; i < venues.length; i++) { %>
-                    <tr>
-                        <td><%= venues[i].vid %></td>
-                        <td><%= venues[i].name %></td>
-                        <td><%= venues[i].vcapacity %></td>
-
-                        <td style="text-align: center;" class="w-25">
-                            <a href="<%= venues[i].imagePath %>"><img src="<%= venues[i].imagePath%>"
-                                    class="img-fluid img-thumbnail"></a>
-                        </td>
-
                         <td>
                             <div class="container">
                                 <a href="#demo" class="btn btn-primary" data-toggle="collapse"
                                     style="background-color: #0d5abe; height: 35px;"
-                                    onclick="displayCategories(<%= venues[i].vid %>)">
-                                    Display Categories
+                                    onclick="displayCategories(<%= events[i].eId %>)">
+                                    Categories
                                 </a>
 
                                 <div id="demo" class="collapse">
-                                    <table class="table">
+                                    <table class="table" id="categoryTable">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">name</th>
                                                 <th scope="col">capacity</th>
+                                                <th scope="col">remaining</th>
+                                                <th scope="col">price</th>
                                             </tr>
                                         </thead>
                                         <tbody id="categories">
@@ -352,24 +240,12 @@
                                 </div>
                             </div>
                         </td>
-
                         <td>
-                            <form action="" id="needs-validation" novalidate>
-                                <div class="form-row">
-                                    <div class="form-group col-md-3">
-                                        <input type="number" name="" class="input form-control" id="cnum"
-                                            style="width: 60px;" required>
-                                    </div>
-                                    <div class="form-group col-md-9">
-                                        <div class="text-md-left">
-                                            <!-- Button trigger modal -->
-                                            <button id="cbtn" type="submit" class="btn btn-dark generate"
-                                                data-toggle="modal" data-target="#exampleModal">
-                                                Add Category
-                                            </button>
-                                        </div>
-                                    </div>
-                            </form>
+                            <div class="text-md-left">
+                                <!-- Button trigger modal -->
+                                <input id="cbtn" value="Add Category" type="submit" class="btn btn-dark generate"
+                                    data-toggle="modal" data-target="#exampleModal">
+                            </div>
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -381,12 +257,25 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form action="/api/venues/category/add/<%= venues[i].vid %>" method="POST">
+                                        <form action="/api/events/category/add/<%= events[i].eId %>" method="POST">
                                             <div class="modal-body">
-                                                <div id="forms">
-                                                    <!--
-                                                            CATEGORY FORM DYNAMICALLY CREATED
-                                                        -->
+                                                <!--
+                                                        CATEGORY FORM DYNAMICALLY CREATED
+                                                    -->
+                                                <div class="form-group">
+                                                    <label>Category Name</label>
+                                                    <input type="text" name="cname" class="form-control"
+                                                        placeholder="name" required="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label> Capacity</label>
+                                                    <input type="number" name="ccap" class="form-control"
+                                                        placeholder="capacity" required="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label> Price ₺</label>
+                                                    <input type="number" name="cprice" class="form-control"
+                                                        placeholder="price" required="">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -401,6 +290,40 @@
                         </td>
                         <td>
                             <input type='submit' name='delete' class='btn btn-sm btn-danger' role='button'
+                                value='Delete' onclick="deleteFunc(<%= events[i].eId %>)">
+                        </td>
+                    </tr>
+                    <% } %>
+
+                </tbody>
+            </table>
+            <br>
+            <br>
+            <table id=venuetable class="table table-striped">
+
+                <thead id="venues">
+                    <tr>
+                        <th scope="col">Seating Plan</th>
+                        <th scope="col">Venue ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Capacity</th>
+                        <th scope="col">Delete venue</th>
+                    </tr>
+                </thead>
+
+                <tbody id="venues">
+
+                    <% for( var i=0; i < venues.length; i++) { %>
+                    <tr>
+                        <td class="w-25">
+                            <a href="<%= venues[i].imagePath %>"><img src="<%= venues[i].imagePath%>"
+                                    class="img-fluid img-thumbnail"></a>
+                        </td>
+                        <td><%= venues[i].vid %></td>
+                        <td><%= venues[i].name %></td>
+                        <td><%= venues[i].vcapacity %></td>
+                        <td>
+                            <input type='submit' name='delete' class='btn btn-sm btn-danger' role='button'
                                 value='Delete' onclick="deleteVenue(<%= venues[i].vid %>)" style='height: 35px;'>
                         </td>
                     </tr>
@@ -412,48 +335,20 @@
 
     </main>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#cbtn').click(function (e) {
-                e.preventDefault();
-                let input = $('#cnum').val();
-                let temp_html = '';
-                for (i = 0; i < input; i++) {
-                    temp_html +=
-                        '<div class="row">\n' +
-                        '<div class="col-md-4">\n' +
-                        '<div class="form-group">\n' +
-                        '<label>Category Name</label>\n' +
-                        '<input type="text" name="name" class="form-control" placeholder="name" required="">\n' +
-                        '</div>\n' +
-                        '</div>\n' +
-                        '<div class="col-md-4">\n' +
-                        '<div class="form-group">\n' +
-                        '<label> Capacity</label>\n' +
-                        '<input type="number" name="ccapacity" class="form-control" placeholder="capacity" required="">\n' +
-                        '</div>\n' +
-                        '</div>\n' +
-                        '</div>';
-                }
-                $('#forms').append(temp_html);
-            });
-        }); 
-    </script>
-
     <script>
 
-        function deleteFunc(eId) {
-
+        function deleteCategory(cid) {
+            alert(cid);
             var xmlhttp = new XMLHttpRequest();
-            var a = "/api/events/delete/" + String(eId);
+            var a = "api/events/category/delete/" + String(cid);
             xmlhttp.open("DELETE", a, true);
             xmlhttp.send();
             window.location.reload();
         }
 
-        function deleteVenue(vid) {
+        function deleteFunc(eId) {
             var xmlhttp = new XMLHttpRequest();
-            var a = "/api/venues/delete/" + String(vid);
+            var a = "/api/events/delete/" + String(eId);
             xmlhttp.open("DELETE", a, true);
             xmlhttp.send();
             window.location.reload();
@@ -468,57 +363,53 @@
             window.location.reload();
         }
 
-        function displayCategories(vid) {
+        function displayCategories(eid) {
             var xmlhttp = new XMLHttpRequest();
 
             xmlhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-
+                    var rowCount = $('#categoryTable >tbody >tr').length;
                     const data = JSON.parse(this.responseText);
-                    console.log(data);
-                    var table_body = document.getElementById('categories');
-
-                    data.forEach(function (category) {
-                        console.log(category);
-                        var row = document.createElement('tr');
-                        var id = document.createElement('td');
-                        id.innerText = category.categoryid;
-                        var name = document.createElement('td');
-                        name.innerText = category.cname;
-                        var capacity = document.createElement('td');
-                        capacity.innerText = category.ccapacity;
-                        row.appendChild(id);
-                        row.appendChild(name);
-                        row.appendChild(capacity);
-                        table_body.appendChild(row);
-                    });
+                    if (rowCount != data.length) {
+                        var table_body = document.getElementById('categories');
+                        data.forEach(function (category) {
+                            console.log(category);
+                            var row = document.createElement('tr');
+                            var id = document.createElement('td');
+                            id.innerText = category.categoryid;
+                            var name = document.createElement('td');
+                            name.innerText = category.categoryname;
+                            var capacity = document.createElement('td');
+                            capacity.innerText = category.capacity;
+                            var price = document.createElement('td');
+                            price.innerText = category.price;
+                            var rem = document.createElement('td');
+                            rem.innerText = category.remaining;
+                            var dlt = document.createElement('td');
+                            var dltbtn = document.createElement("input");
+                            dltbtn.setAttribute("type", "submit");
+                            dltbtn.setAttribute("class", "btn btn-sm btn-danger");
+                            dltbtn.setAttribute("value", "del");
+                            var cid = category.categoryid;
+                            dltbtn.setAttribute("onclick", "deleteCategory(" + cid.toString() + ")");
+                            dlt.appendChild(dltbtn);
+                            //"<input type='submit' class='btn btn-sm btn-danger' role='button' value = 'X' onclick ='deleteCategory()' >" 
+                            row.appendChild(id);
+                            row.appendChild(name);
+                            row.appendChild(capacity);
+                            row.appendChild(rem);
+                            row.appendChild(price);
+                            row.appendChild(dlt);
+                            table_body.appendChild(row);
+                        });
+                    }
                 }
             };
 
-            var targetApi = "/api/venues/category/all/" + String(vid);
+            var targetApi = "/api/events/category/all/" + String(eid);
             xmlhttp.open("GET", targetApi, true);
             xmlhttp.send();
 
-        }
-
-        function updateFunc(eId, title, venue, date, time, capacity, detail) {
-            var myModal = $('#updateModal');
-            $("#eventtitle2", myModal).val(title);
-            $("#eventvenue2", myModal).val(venue);
-            $("#eventdate2", myModal).val(date);
-            $("#eventtime2", myModal).val(time);
-            $("#eventcapacity2", myModal).val(capacity);
-            $("#eventdetail2", myModal).val(detail);
-            //$("#eventid", myModal).val(eId);
-            $('#updateModal').modal('show');
-        }
-
-        function updateVenue(vid, name) {
-            var myModal2 = $('#updateVenue');
-            $("#vid2", myModal2).val(vid);
-            $("#vname2", myModal2).val(name);
-            //$("#eventid", myModal).val(eId);
-            $('#updateVenue').modal('show');
         }
 
     </script>

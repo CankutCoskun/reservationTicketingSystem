@@ -86,11 +86,11 @@ router.get('/events/', async (req, res) => {
 router.get('/calendarevents/', async (req, res) => {
 	try {
 		let results = await db.getEvents();
-		
-		if(results){ 
+
+		if (results) {
 			res.json({});
 		}
-		else{
+		else {
 			let events = [];
 			for (var i = 0; i < 2; i++) {
 				var event = new Object();
@@ -147,7 +147,7 @@ router.post('/events/add', upload.single('myFile'), async (req, res) => {
 
 	try {
 		//console.log("Attached file: ", req.file);
-		//console.log("Request body: ", req.body);
+		console.log("Request body: ", req.body);
 		const file = req.file;
 
 		if (!file) {
@@ -156,13 +156,13 @@ router.post('/events/add', upload.single('myFile'), async (req, res) => {
 		}
 
 		//Relative to static directory
-		console.log("file received: ", file.path);
+		//console.log("file received: ", file.path);
 		await gcClient.uploadFile(file.path).catch(console.error);
 		await db.addNewEvent(req.body.compid, req.body.eventtitle,
 			req.body.eventvenue, req.body.eventdate,
 			req.body.eventtime, req.body.eventtype,
-			req.body.eventdetail, gcClient.getPublicUrlForItem(file.filename));
-
+			req.body.eventdetail, req.body.city, gcClient.getPublicUrlForItem(file.filename));
+		console.log("???????");
 		res.redirect("/company");
 
 	} catch (error) {
@@ -227,18 +227,21 @@ router.delete('/venues/delete/:vid', async (req, res) => {
 	}
 });
 
+router.delete('/events/category/delete/:cid', async (req, res) => {
+	try {
+		await db.deleteCategory(req.params.cid);
+		res.send("category deleted");
+	} catch (error) {
+		console.log(error);
+		res.sendStatus(500);
+	}
+});
 
-// TO-DO
-router.post('/venues/category/add/:vid', async (req, res) => {
+router.post('/events/category/add/:eid', async (req, res) => {
 	try {
 		//console.log(req.body);
-		var name_lst = req.body.name;
-		var cap_lst = req.body.ccapacity;
-
-		for (var i = 0; i < name_lst.length; i++) {
-			await db.addCategory(parseInt(req.params.vid, 10), name_lst[i], parseInt(cap_lst[i], 10));
-		}
-		console.log({ "message": "Category is added" });
+		await db.addCategory(req.params.eid, req.body.cname, req.body.ccap, req.body.cprice);
+		//console.log({ "message": "Category is added" });
 		res.redirect('/company');
 	} catch (error) {
 		console.log(error);
@@ -247,12 +250,10 @@ router.post('/venues/category/add/:vid', async (req, res) => {
 
 });
 
-router.get('/venues/category/all/:vid', async (req, res) => {
+router.get('/events/category/all/:eid', async (req, res) => {
 	try {
-		//console.log(req.params.vid);
 		// eslint-disable-next-line no-unused-vars
-		let results = await db.getAllCategoriesByVenueId(req.params.vid);
-		//console.log(results);
+		let results = await db.getAllCategoriesByEventId(req.params.eid);
 		res.json(results);
 	} catch (error) {
 		console.log(error);
