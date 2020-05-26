@@ -220,18 +220,18 @@ db.getEventById = (id) => {
 // TO-DO
 db.addNewEvent = (compid, title, venue, date, time, type, detail, imagePath) => {
 	return new Promise((resolve, reject) => {
-		
+
 		pool.query(`INSERT INTO Events (cId,title, venueId, date, time,detail,eType,status, imagePath)
                     VALUES(?,?,?,?, ?, ?,?, 'ACTIVE', ?);`
-		, [compid,  title, venue, date, time,  detail,type, imagePath], (err, result) => {
+			, [compid, title, venue, date, time, detail, type, imagePath], (err, result) => {
 
-			if (err) {
+				if (err) {
 
-				return reject(err);
-			}
-			console.log(result);
-			//return resolve(result.JSON());
-		});
+					return reject(err);
+				}
+				console.log(result);
+				//return resolve(result.JSON());
+			});
 	});
 };
 
@@ -334,11 +334,11 @@ db.getVenuesByCompanyId = (id) => {
 //TO-DO
 db.getAllCategoriesByVenueId = async (vid) => {
 	return new Promise((resolve, reject) => {
-		pool.query(`SELECT * FROM Categories WHERE venueid = ?`, [vid], (err, results) => {
+		pool.query(`SELECT * FROM Categories WHERE vid = ?`, [vid], (err, results) => {
 			if (err) {
 				return reject(err);
 			}
-			return resolve(results);
+			return resolve(results);	
 		});
 	});
 };
@@ -357,7 +357,7 @@ db.getAllCategoriesByEventId = async (eid) => {
 db.addCategory = (vid, cname, ccap) => {
 
 	return new Promise((resolve, reject) => {
-		pool.query(`INSERT INTO Categories (venueid, cname, ccapacity) 
+		pool.query(`INSERT INTO Categories (vid, cname, ccapacity) 
 					VALUES (?, ?, ?);`, [vid, cname, ccap], (err, result) => {
 
 			if (err) {
@@ -424,18 +424,18 @@ db.getTicketsByUserId = (id) => {
 
 // TO-DO
 //decrease remaining capacity of event and create tickets for the user
-db.addNewTicket = (userid, peoplenumber, eId,cid) => {
+db.addNewTicket = (userid, peoplenumber, eId, cid) => {
 	return new Promise((resolve, reject) => {
 		pool.query(`
                     INSERT INTO Tickets (userid, peoplenumber,status, categoryid) VALUES( ?, ?, 'ACTIVE',?);` ,
-		[ userid, peoplenumber, cid], (err, results) => {
-			if (err) {
-				return reject(err);
-			}
-			console.log({ message: 'ticket is purchased successfully' });
-			console.log(results);
-			return resolve(results);
-		});
+			[userid, peoplenumber, cid], (err, results) => {
+				if (err) {
+					return reject(err);
+				}
+				console.log({ message: 'ticket is purchased successfully' });
+				console.log(results);
+				return resolve(results);
+			});
 	});
 };
 
@@ -443,7 +443,7 @@ db.deleteTicket = (id, pnum, categoryid) => {
 
 	return new Promise((resolve, reject) => {
 		pool.query(`DELETE FROM Tickets WHERE id = ?;
-					UPDATE Categories SET remaining = remaining + ? WHERE categoryid = ?`, [id,,pnum, categoryid], (err, _results) => {
+					UPDATE Categories SET remaining = remaining + ? WHERE categoryid = ?`, [id, , pnum, categoryid], (err, _results) => {
 			if (err) {
 				return reject(err);
 			}
