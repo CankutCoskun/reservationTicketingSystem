@@ -252,7 +252,11 @@ app.get('/viewTicket/', async (req, res) => {
 		if (req.session.loggedin) {
 			let tid = req.query.tid;
 			let ticket = await db.getTicketById(tid);
-			let event = await db.getEventById(ticket.eId);
+			let category = await db.getCategoryById(ticket.categoryid);
+
+			let event = await db.getEventById(category.eventid);
+			let venue = await db.getVenueById(event.venueId);
+
 			let user = await db.getUserById(ticket.userid);
 			//console.log(ticket);
 			res.render('view-ticket.html', {
@@ -265,14 +269,17 @@ app.get('/viewTicket/', async (req, res) => {
 				//ticket category will be added into db
 				uId: user.uid,
 				uName: user.name,
+				uSurname:user.surname,
 				eId: event.eId,
 				eTitle: event.title,
 				eDetail: event.detail,
-				eAddress: event.address,
+				eVenue: venue.name,
 				eDate: event.date,
 				eCapacity: event.capacity,
 				eStatus: event.status,
-				eImagePath: event.imagePath
+				eImagePath: event.imagePath,
+				categoryName:category.categoryname,
+				price:category.price
 			});
 		}
 		else {
