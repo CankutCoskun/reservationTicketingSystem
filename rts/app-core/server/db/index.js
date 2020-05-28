@@ -257,8 +257,7 @@ db.addNewEvent = (compid, title, venue, date, time, type, detail, city, imagePat
 
 				return reject(err);
 			}
-			//console.log(result);
-			return resolve(result.JSON());
+			return resolve(JSON.stringify(result) );
 		});
 	});
 };
