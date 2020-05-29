@@ -54,6 +54,7 @@ xhttp.onreadystatechange = function () {
 			plugins: ['dayGrid', 'timeGrid', 'list', 'bootstrap'],
 			themesystem: 'bootstrap',
 			height: 500,
+			eventlimit: true,
 			eventSources: [
 				{
 					url: '/api/calendarevents',
@@ -61,21 +62,10 @@ xhttp.onreadystatechange = function () {
 					error: function () {
 						alert('there was an error while fetching events!');
 					},
-					color: 'yellow',   // a non-ajax option
+					color: 'green',   // a non-ajax option
 					textColor: 'black' // a non-ajax option
 				}],
 
-			eventClick: function (eventObj) {
-
-				if (eventObj.url) {
-					alert(
-						'Clicked ' + eventObj.title + '.\n' +
-            'Will open ' + eventObj.url + ' in a new tab'
-					);
-					el.style.borderColor = 'red';
-					window.open(eventObj.url);
-				}
-			}
 
 		});
 

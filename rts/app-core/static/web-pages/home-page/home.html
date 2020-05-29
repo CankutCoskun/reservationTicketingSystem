@@ -74,17 +74,18 @@
 							Login</a>
 						<ul class="dropdown-menu form-wrapper">
 							<li>
-								<form action='/auth' method='POST'>
+								<form action='/auth' method='POST' id='loginform'>
+
 
 									<div class="form-group">
-										<input type="text" name="username" class="form-control" placeholder="Username"
+										<input type="text" id="loginusername" name="username" class="form-control" placeholder="Username"
 											required="required">
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" class="form-control"
+										<input type="password"  id="loginpassword" name="password" class="form-control"
 											placeholder="Password" required="required">
 									</div>
-									<input type="submit" class="btn btn-dark btn-block" value="Login">
+									<input type="" id="loginbutton" class="btn btn-dark btn-block"  value="Login">
 									<div class="form-footer">
 										<a href="#">Forgot Your password?</a>
 									</div>
@@ -250,12 +251,12 @@
 			
 			eventRender: function(info) {
 				$(info.el).tooltip({ 
-    title: info.event.extendedProps.description,
-    placement: "top",
-    trigger: "hover",
-    container: "body"
-  });
-	},
+    			title: 'In: ' + info.event.extendedProps.city ,
+				placement: "top",
+				trigger: "hover",
+				container: "body"
+				});
+			},
 			eventSources: [
 				{
 					url: '/api/calendarevents',
@@ -271,18 +272,52 @@
 		});
 
 		calendar.render();
+		
 	</script>
 	<!--		
 		$("#datepicker").datepicker({
 			format: 'dd/mm/yyyy'
 		});
 	-->
+
+	
 	<script>
 		$('.datepicker').datepicker();
 	</script>
 	<script>
 		$('.carousel').carousel();
+				
+	
+		console.log('doc is ready');
+		
+		$('#loginbutton').click(function (){
+		event.preventDefault();
+		console.log('hadi: '+ $('#loginusername').val()  );
+
+        var data = {
+        }; 
+
+		data.username = $('#loginusername').val();
+		data.password = $('#loginpassword').val();
+		$.ajax({
+		  type: 'POST',
+		  data: JSON.stringify(data),
+		  cache: false,
+		  contentType: 'application/json; charset=utf-8' ,
+		  datatype: "json",
+		  url: '/auth',
+		  success: function() {
+                   $('#loginform').submit();
+              },
+		  error: function(xhr, status, error){
+			alert("Error: incorrect password-username");
+     }
+
+		   
+		}); } )  
+		
 	</script>
+
 </body>
 
 </html>

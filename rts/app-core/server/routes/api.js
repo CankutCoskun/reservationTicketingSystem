@@ -87,18 +87,21 @@ router.get('/calendarevents/', async (req, res) => {
 	try {
 		let results = await db.getEvents();
 
-		if (results) {
+		if (results.length==0) {
 			res.json({});
 		}
 		else {
 			let events = [];
-			for (var i = 0; i < 2; i++) {
+			for (var i = 0; i < results.length; i++) {
 				var event = new Object();
 				event.title = String(results[i].title);
 				event.start = results[i].date;
 				event.url = '/getEventDetailPageNoLogin/' + String(results[i].eId);
+				event.city =String(results[i].city);
+				event.detail = String(results[i].detail);
 				events.push(event);
 			}
+			
 			res.json(events);
 		}
 	} catch (e) {

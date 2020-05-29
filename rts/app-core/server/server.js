@@ -5,6 +5,8 @@ const db = require('./db');
 var path = require('path');
 const url = require('url');
 const nodemailer = require('nodemailer');
+const flash = require('express-flash');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 // TO-DO Encrypt password before sending to database
 //const bcrypt = require('bcrypt');
@@ -21,7 +23,7 @@ const app = express();
 //In html syntax <%= var %>
 app.set('views', process.cwd() + '/views');
 app.engine('html', require('ejs').renderFile);
-
+app.set('view engine', 'html');
 
 //Servin api calls
 app.use('/api', apiRouter);
@@ -30,8 +32,28 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+
 //Html static file root 
 app.use(express.static(process.cwd() + '/static'));
+
+
+
+/*
+app.use(function(req, res, next){
+	// if there's a flash message in the session request, make it available in the response, then delete it
+	res.locals.sessionFlash = req.session.sessionFlash;
+	delete req.session.sessionFlash;
+	next();
+});
+
+app.all('/session-flash', function( req, res ) {
+	req.session.sessionFlash = {
+		type: 'success',
+		message: 'This is a flash message using custom middleware and express-session.'
+	}
+	res.redirect(301, '/');
+});*/
+
 
 
 app.get('/check', async (req, res) => {
@@ -51,6 +73,8 @@ app.use(session({
 	saveUninitialized: true,
 	cookie: { maxAge: 36000000 },
 }));
+
+
 
 app.get('/', (req, res) => {
 	try {
@@ -81,6 +105,7 @@ app.get('/login', (req, res) => {
 
 app.post('/auth', async (request, response) => {
 	//console.log('Authentication request: ', request.body);
+
 	var username = request.body.username;
 	var password = request.body.password;
 	//console.log(username);
@@ -100,6 +125,7 @@ app.post('/auth', async (request, response) => {
 				let utype = json[0].usertype;
 
 				if (utype == "CUSTOMER") {
+					console.log('berko');
 					request.session.loggedin = true;
 					request.session.username = username;
 					request.session.utype = utype;
@@ -126,8 +152,10 @@ app.post('/auth', async (request, response) => {
 				}
 
 			} else {
-				//response.json({warning: "Incorrect credentials"});
-				response.send('Incorrect Username and/or Password!');
+				console.log('incorrect in içinde');
+				response.status(500).send({error: 'Incorrect username or password'}); 
+				
+				//response.send('Incorrect Username and/or Password!');
 			}
 
 			response.end();
@@ -380,8 +408,8 @@ app.get('/deleteTicket/', async (req, res) => {
 		let user = await db.getUserById(req.body.uid);
 		let email = user.email;
 		
-			var name = user.name;
-			var surname = user.surname;
+		var name = user.name;
+		var surname = user.surname;
 			
 
 		const output = `
@@ -397,30 +425,30 @@ app.get('/deleteTicket/', async (req, res) => {
 		<img src='${invoice}'></img>
 	`;
 
-	// create reusable transporter object using the default SMTP transport
-	var transporter = nodemailer.createTransport({
-		service: "gmail",
-		auth: {
-			user: process.env.EMAIL,
-			pass: process.env.PASSWORD
-		}
-	});
+		// create reusable transporter object using the default SMTP transport
+		var transporter = nodemailer.createTransport({
+			service: "gmail",
+			auth: {
+				user: process.env.EMAIL,
+				pass: process.env.PASSWORD
+			}
+		});
 
-	// setup email data with unicode symbols
-	let mailOptions = {
-		from: 'cs308reservationsystem@gmail.com', // sender address
-		to: email, // list of receivers
-		subject: 'Ticket Deleted', // Subject line
-		html: output // html body
-	};
+		// setup email data with unicode symbols
+		let mailOptions = {
+			from: 'cs308reservationsystem@gmail.com', // sender address
+			to: email, // list of receivers
+			subject: 'Ticket Deleted', // Subject line
+			html: output // html body
+		};
 
-	// send mail with defined transport object
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			return console.log(error);
-		}
-		console.log('Message sent: %s', info.messageId);
-	});
+		// send mail with defined transport object
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				return console.log(error);
+			}
+			console.log('Message sent: %s', info.messageId);
+		});
 
 
 
