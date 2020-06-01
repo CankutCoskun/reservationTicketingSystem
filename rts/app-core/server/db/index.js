@@ -217,6 +217,34 @@ db.getEventById = (id) => {
 	});
 };
 
+
+db.getCategoryById = (id) => {
+
+	return new Promise((resolve, reject) => {
+		pool.query(`SELECT * FROM Categories WHERE categoryid = ?`, [id], (err, results) => {
+			if (err) {
+
+				return reject(err);
+			}
+
+			return resolve(results[0]);
+		});
+	});
+};
+db.getVenueById = (id) => {
+
+	return new Promise((resolve, reject) => {
+		pool.query(`SELECT * FROM Venues WHERE vid = ?`, [id], (err, results) => {
+			if (err) {
+
+				return reject(err);
+			}
+
+			return resolve(results[0]);
+		});
+	});
+};
+
 // TO-DO
 db.addNewEvent = (compid, title, venue, date, time, type, detail, city, imagePath) => {
 	return new Promise((resolve, reject) => {
@@ -229,8 +257,7 @@ db.addNewEvent = (compid, title, venue, date, time, type, detail, city, imagePat
 
 				return reject(err);
 			}
-			//console.log(result);
-			return resolve(result.JSON());
+			return resolve(JSON.stringify(result) );
 		});
 	});
 };

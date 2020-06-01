@@ -10,8 +10,7 @@
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="/web-pages/home-page/home.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -21,11 +20,13 @@
 	<link href='web-pages/fullcalendar/timegrid/main.css' rel='stylesheet' />
 	<link href='web-pages/fullcalendar/list/main.css' rel='stylesheet' />
 	<link href='web-pages/fullcalendar/bootstrap/main.css' rel='stylesheet' />
-
+	
 	<!--Start-->
 	<script>
 		$('.carousel').carousel();
 	</script>
+
+
 
 	<!-- CHECK JQUERY 
 	<script type="text/javascript">
@@ -73,17 +74,18 @@
 							Login</a>
 						<ul class="dropdown-menu form-wrapper">
 							<li>
-								<form action='/auth' method='POST'>
+								<form action='/auth' method='POST' id='loginform'>
+
 
 									<div class="form-group">
-										<input type="text" name="username" class="form-control" placeholder="Username"
+										<input type="text" id="loginusername" name="username" class="form-control" placeholder="Username"
 											required="required">
 									</div>
 									<div class="form-group">
-										<input type="password" name="password" class="form-control"
+										<input type="password"  id="loginpassword" name="password" class="form-control"
 											placeholder="Password" required="required">
 									</div>
-									<input type="submit" class="btn btn-dark btn-block" value="Login">
+									<input type="" id="loginbutton" class="btn btn-dark btn-block"  value="Login">
 									<div class="form-footer">
 										<a href="#">Forgot Your password?</a>
 									</div>
@@ -222,26 +224,39 @@
  -->
 	<!--Relative local paths-->
 	<script src="/bootstrap-resources/js/jquery.min.js"></script>
+	<script src="/bootstrap-resources/js/popper.min.js"></script>
+
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
 	<script src="/web-pages/event-pages/resources/scripts/holder.min.js"></script>
-	<script src="/bootstrap-resources/js/popper.min.js"></script>
+	
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 	<script src="/web-pages/home-page/home.js"></script>
-
 	<script src='web-pages/fullcalendar/core/main.js'></script>
 	<script src='web-pages/fullcalendar/daygrid/main.js'></script>
 	<script src='web-pages/fullcalendar/timegrid/main.js'></script>
 	<script src='web-pages/fullcalendar/list/main.js'></script>
 	<script src='web-pages/fullcalendar/bootstrap/main.js'></script>
+	
 	<script>
 		var calendarEl = document.getElementById('calendar');
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			plugins: ['dayGrid', 'timeGrid', 'list', 'bootstrap'],
 			themesystem: 'bootstrap',
 			height: 500,
+			eventLimit: true,
+			displayEventTime: false,
+			
+			eventRender: function(info) {
+				$(info.el).tooltip({ 
+    			title: 'In: ' + info.event.extendedProps.city ,
+				placement: "top",
+				trigger: "hover",
+				container: "body"
+				});
+			},
 			eventSources: [
 				{
 					url: '/api/calendarevents',
@@ -249,36 +264,60 @@
 					error: function () {
 						alert('there was an error while fetching events!');
 					},
-					color: 'yellow',   // a non-ajax option
+					color: 'green',   // a non-ajax option
 					textColor: 'black' // a non-ajax option
-				}],
+					
 
-			eventClick: function (eventObj) {
-
-				if (eventObj.url) {
-					alert(
-						'Clicked ' + eventObj.title + '.\n' +
-						'Will open ' + eventObj.url + ' in a new tab'
-					);
-					el.style.borderColor = 'red';
-					window.open(eventObj.url);
-				}
-			}
+				}]
 		});
 
 		calendar.render();
+		
 	</script>
 	<!--		
 		$("#datepicker").datepicker({
 			format: 'dd/mm/yyyy'
 		});
 	-->
+
+	
 	<script>
 		$('.datepicker').datepicker();
 	</script>
 	<script>
 		$('.carousel').carousel();
+				
+	
+		console.log('doc is ready');
+		
+		$('#loginbutton').click(function (){
+		event.preventDefault();
+		console.log('hadi: '+ $('#loginusername').val()  );
+
+        var data = {
+        }; 
+
+		data.username = $('#loginusername').val();
+		data.password = $('#loginpassword').val();
+		$.ajax({
+		  type: 'POST',
+		  data: JSON.stringify(data),
+		  cache: false,
+		  contentType: 'application/json; charset=utf-8' ,
+		  datatype: "json",
+		  url: '/auth',
+		  success: function() {
+                   $('#loginform').submit();
+              },
+		  error: function(xhr, status, error){
+			alert("Error: incorrect password-username");
+     }
+
+		   
+		}); } )  
+		
 	</script>
+
 </body>
 
 </html>
