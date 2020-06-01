@@ -373,8 +373,8 @@ app.get('/deleteTicket/', async (req, res) => {
 		let user = await db.getUserById(req.body.uid);
 		let email = user.email;
 		
-			var name = user.name;
-			var surname = user.surname;
+		var name = user.name;
+		var surname = user.surname;
 			
 
 		const output = `
@@ -390,30 +390,30 @@ app.get('/deleteTicket/', async (req, res) => {
 		<img src='${invoice}'></img>
 	`;
 
-	// create reusable transporter object using the default SMTP transport
-	var transporter = nodemailer.createTransport({
-		service: "gmail",
-		auth: {
-			user: process.env.EMAIL,
-			pass: process.env.PASSWORD
-		}
-	});
+		// create reusable transporter object using the default SMTP transport
+		var transporter = nodemailer.createTransport({
+			service: "gmail",
+			auth: {
+				user: process.env.EMAIL,
+				pass: process.env.PASSWORD
+			}
+		});
 
-	// setup email data with unicode symbols
-	let mailOptions = {
-		from: 'cs308reservationsystem@gmail.com', // sender address
-		to: email, // list of receivers
-		subject: 'Ticket Deleted', // Subject line
-		html: output // html body
-	};
+		// setup email data with unicode symbols
+		let mailOptions = {
+			from: 'cs308reservationsystem@gmail.com', // sender address
+			to: email, // list of receivers
+			subject: 'Ticket Deleted', // Subject line
+			html: output // html body
+		};
 
-	// send mail with defined transport object
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			return console.log(error);
-		}
-		console.log('Message sent: %s', info.messageId);
-	});
+		// send mail with defined transport object
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				return console.log(error);
+			}
+			console.log('Message sent: %s', info.messageId);
+		});
 
 
 
@@ -433,7 +433,7 @@ app.get('/profile', async function (req, res) {
 			let uname = req.session.username;
 			let user = await db.getUserByUname(uname);
 			let tickets = await db.getTicketsByUserId(user.uid);
-			console.log("Tİckets ===" +tickets);
+			//console.log("Tİckets ===" +tickets);
 			//res.send('Welcome back, ' + req.session.username + '!');
 			// res.sendFile(path.resolve('static/web-pages/user_profile.html'));
 			res.render('user_profile.html', {

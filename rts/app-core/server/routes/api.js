@@ -162,7 +162,6 @@ router.post('/events/add', upload.single('myFile'), async (req, res) => {
 			req.body.eventvenue, req.body.eventdate,
 			req.body.eventtime, req.body.eventtype,
 			req.body.eventdetail, req.body.city, gcClient.getPublicUrlForItem(file.filename));
-		console.log("???????");
 		res.redirect("/company");
 
 	} catch (error) {
