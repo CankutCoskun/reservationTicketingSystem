@@ -6,9 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<!-- Bootstrap CSS -->
-	
+
 	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
 	<link rel="stylesheet" href="/web-pages/event-pages/resources/stylesheets/events.css">
 	<link rel="stylesheet"
@@ -16,10 +16,10 @@
 	<script>
 
 		var type = "<%= type%>";
-        var date = "<%= date%>";
-        var city = "<%= city%>";
+		var date = "<%= date%>";
+		var city = "<%= city%>";
 		//console.log(type, date, city);
-		
+
 	</script>
 	<style>
 
@@ -28,7 +28,8 @@
 
 <body>
 	<header>
-		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm" style="margin-bottom: 0; color: white;">
+		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm"
+			style="margin-bottom: 0; color: white;">
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
 				aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +46,7 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right ml-auto" style="text-align: center;">
-					<li class="nav-item" >
+					<li class="nav-item">
 						<a href="#" data-toggle="dropdown"
 							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
 							style="border-color: white; color: white;"> <i class="fa fa-sign-in" aria-hidden="true"></i>
@@ -70,7 +71,7 @@
 							</li>
 						</ul>
 					</li>
-					<li class="nav-item"  style="margin-left: 20px;" >
+					<li class="nav-item" style="margin-left: 20px;">
 						<a href="#" data-toggle="dropdown"
 							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
 							style="border-color: white; color: white;">Sign up</a>
@@ -106,7 +107,7 @@
 				</ul>
 			</div>
 		</nav>
-		<div style="background-color:#343a4077;">			
+		<div style="background-color:#343a4077;">
 			<ul class="nav justify-content-center" style="padding: 20px; margin-top: 75px;">
 				<li class="nav-item">
 					<form class="" action="/events/search" method="POST">
@@ -162,47 +163,47 @@
 		<br>
 		<div class="container">
 			<div class="row">
-			  <div class="col-12">
-				  <table class="table table-image" style="text-align: center;">
-					<thead class="thead-dark">
-					  <tr>
-						<th scope="col">#</th>
-						<th scope="col"></th>
-						<th scope="col">Name</th>
-						<th scope="col">Date</th>
-						<th scope="col">Time</th>
-						<th scope="col">Venue</th>
-						<th scope="col">Remaining Seats</th>
-						<th scope="col">Price</th>
-					  </tr>
-					</thead>
-					<tbody id="events">
-						<% for(var i=0; i < events.length; i++) { %>
-					  <tr>
-						<th scope="row"><%=events[i].eId%></th>
-						<td class="w-25">
-							<a href="/signup"><img src="<%=events[i].imagePath%>" class="img-fluid img-thumbnail"></a>
-						</td>
-						<td><%=events[i].title%></td>
-						<td><%=date%></td>
-						<td><%=events[i].time%></td>
-						<td><%=events[i].venue%></td>
-						<td><%=events[i].remainingseat%></td>
-						<td><%=events[i].detail%></td>
-					  </tr>
-					  <% } %>
-					</tbody>
-				  </table>   
-			  </div>
+				<div class="col-12">
+					<table class="table table-image" style="text-align: center;">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col"></th>
+								<th scope="col">Name</th>
+								<th scope="col">Date</th>
+								<th scope="col">Time</th>
+								<th scope="col">Status</th>
+								<th scope="col">Detail</th>
+							</tr>
+						</thead>
+						<tbody id="events">
+							<% for(var i=0; i < events.length; i++) { %>
+							<tr>
+								<th scope="row"><%=events[i].eId%></th>
+								<td class="w-25">
+									<a href="/signup"><img src="<%=events[i].imagePath%>"
+											class="img-fluid img-thumbnail"></a>
+								</td>
+								<td><%=events[i].title%></td>
+								<td><%=date%></td>
+								<td><%=events[i].time%></td>
+								<td><%=events[i].status%></td>
+								<td><%=events[i].detail%></td>
+							</tr>
+							<% } %>
+						</tbody>
+					</table>
+				</div>
 			</div>
-		  </div>
+		</div>
 	</main>
 
 	<!--	Bootstrap Script-->
 	<script src="/bootstrap-resources/js/jquery.min.js"></script>
-	<script src="/bootstrap-resources/js/popper.min.js"></script>	
+	<script src="/bootstrap-resources/js/popper.min.js"></script>
 	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 	<script>
 		$('.datepicker').datepicker();
 
