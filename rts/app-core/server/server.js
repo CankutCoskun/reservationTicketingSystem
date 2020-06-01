@@ -133,8 +133,9 @@ app.post('/auth', async (request, response) => {
 					if (request.session.eid != null) {
 						response.redirect('/getEventDetailPage/' + String(request.session.eid));
 					}
-					response.redirect('/events');
-
+					else {
+						response.redirect('/events');
+					}
 				}
 
 				else if (utype == "GLOBAL") {
