@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require('express');
 const session = require('express-session');
 const apiRouter = require('./routes/api');
@@ -6,6 +7,7 @@ var path = require('path');
 const url = require('url');
 const nodemailer = require('nodemailer');
 const flash = require('express-flash');
+// eslint-disable-next-line no-unused-vars
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 // TO-DO Encrypt password before sending to database
@@ -125,7 +127,6 @@ app.post('/auth', async (request, response) => {
 				let utype = json[0].usertype;
 
 				if (utype == "CUSTOMER") {
-					console.log('berko');
 					request.session.loggedin = true;
 					request.session.username = username;
 					request.session.utype = utype;
@@ -152,9 +153,7 @@ app.post('/auth', async (request, response) => {
 				}
 
 			} else {
-				console.log('incorrect in içinde');
-				response.status(500).send({error: 'Incorrect username or password'}); 
-				
+				response.status(500).send({ error: 'Incorrect username or password' });
 				//response.send('Incorrect Username and/or Password!');
 			}
 
@@ -196,7 +195,7 @@ app.get('/events', function (req, res) {
 app.get('/getEventDetailPage/:eid', async function (req, res) {
 
 	try {
-		console.log(req.session.username);
+		//console.log(req.session.username);
 		let uname = req.session.username;
 		let user = await db.getUserByUname(uname);
 		let eid = req.params.eid;
@@ -253,19 +252,23 @@ app.get('/ticketPurchasePage', async (req, res) => {
 	try {
 		//console.log(req.query); 
 		let event = await db.getEventById(req.query.eid);
+		let venue = await db.getVenueById(event.venueId);
 		let user = await db.getUserById(req.query.uid);
 		let categories = await db.getAllCategoriesByEventId(req.query.eid);
+		let d = new Date(event.date);
 		res.render('ticket-purchase.html', {
 			uId: user.uid,
 			eId: event.eId,
 			eTitle: event.title,
 			eDetail: event.detail,
 			eAddress: event.address,
-			eDate: event.date,
+			eDate: d.toDateString(),
+			eTime: event.time,
 			eCapacity: event.capacity,
 			eStatus: event.status,
 			eImagePath: event.imagePath,
-			categories:categories
+			eVenue: venue,
+			categories: categories
 		});
 	} catch (error) {
 		console.log(error);
@@ -288,16 +291,12 @@ app.get('/viewTicket/', async (req, res) => {
 			let user = await db.getUserById(ticket.userid);
 			//console.log(ticket);
 			res.render('view-ticket.html', {
-				//<%=eDay%>
-				//<%=eMonth%>
-				//<%=eYear%>
 				tId: tid,
 				tNum: ticket.peoplenumber,
 				tStatus: ticket.status,
-				//ticket category will be added into db
 				uId: user.uid,
 				uName: user.name,
-				uSurname:user.surname,
+				uSurname: user.surname,
 				eId: event.eId,
 				eTitle: event.title,
 				eDetail: event.detail,
@@ -306,8 +305,8 @@ app.get('/viewTicket/', async (req, res) => {
 				eCapacity: event.capacity,
 				eStatus: event.status,
 				eImagePath: event.imagePath,
-				categoryName:category.categoryname,
-				price:category.price
+				categoryName: category.categoryname,
+				price: category.price
 			});
 		}
 		else {
@@ -325,24 +324,20 @@ app.post('/createTicket', async (req, res) => {
 	try {
 		let event = await db.getEventById(req.body.eid);
 		let user = await db.getUserById(req.body.uid);
-		if (event.remainingseat < req.body.peoplenumber) {
-			res.send("no seats left for this event");
-		}
-		else {
-			let result = await db.addNewTicket(req.body.uid, req.body.peoplenumber, req.body.eid,req.body.category);
-			let email = user.email;
-			let tid = result.insertId;
-			let ticket = await db.getTicketById(tid);
-			//console.log(ticket);
-			var name = user.name;
-			var surname = user.surname;
-			var eventTitle = event.title;
-			var eventDetail = event.detail;
-			//var eventAdress = event.address;
-			var eventDate = event.date;
-			var eventImagePath = event.imagePath;
-			var numPeople = ticket.peoplenumber;
-			const output = `
+		let result = await db.addNewTicket(req.body.uid, req.body.peoplenumber, req.body.eid, req.body.category);
+		let email = user.email;
+		let tid = result.insertId;
+		let ticket = await db.getTicketById(tid);
+		//console.log(ticket);
+		var name = user.name;
+		var surname = user.surname;
+		var eventTitle = event.title;
+		var eventDetail = event.detail;
+		//var eventAdress = event.address;
+		var eventDate = event.date;
+		var eventImagePath = event.imagePath;
+		var numPeople = ticket.peoplenumber;
+		const output = `
                 <h3>Hi ${name} ${surname},</h3>
                 
                 <p> Your ticket is created please see details below:</p>
@@ -353,42 +348,40 @@ app.post('/createTicket', async (req, res) => {
                 <li>DATE: ${eventDate}</li>
                 <li>DETAIL: ${eventDetail}</li>
                 </ul>
-                <img src='${eventImagePath}'></img>
+                <img src='${eventImagePath}' height="120px" width="240px"></img>
             `;
 
-			// create reusable transporter object using the default SMTP transport
-			var transporter = nodemailer.createTransport({
-				service: "gmail",
-				auth: {
-					user: process.env.EMAIL,
-					pass: process.env.PASSWORD
-				}
-			});
+		// create reusable transporter object using the default SMTP transport
+		var transporter = nodemailer.createTransport({
+			service: "gmail",
+			auth: {
+				user: process.env.EMAIL,
+				pass: process.env.PASSWORD
+			}
+		});
 
-			// setup email data with unicode symbols
-			let mailOptions = {
-				from: 'cs308reservationsystem@gmail.com', // sender address
-				to: email, // list of receivers
-				subject: 'New Ticket', // Subject line
-				html: output // html body
-			};
+		// setup email data with unicode symbols
+		let mailOptions = {
+			from: 'cs308reservationsystem@gmail.com', // sender address
+			to: email, // list of receivers
+			subject: 'New Ticket', // Subject line
+			html: output // html body
+		};
 
-			// send mail with defined transport object
-			transporter.sendMail(mailOptions, (error, info) => {
-				if (error) {
-					return console.log(error);
-				}
-				console.log('Message sent: %s', info.messageId);
-			});
+		// send mail with defined transport object
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				return console.log(error);
+			}
+			console.log('Message sent: %s', info.messageId);
+		});
 
-			res.redirect(url.format({
-				pathname: '/viewTicket',
-				query: {
-					"tid": result.insertId
-				}
-			}));
-		}
-
+		res.redirect(url.format({
+			pathname: '/viewTicket',
+			query: {
+				"tid": result.insertId
+			}
+		}));
 	} catch (error) {
 		console.log(error);
 	}
@@ -401,16 +394,17 @@ app.get('/deleteTicket/', async (req, res) => {
 		let pnum = req.query.pnum;
 		let categoryid = req.query.categoryid;
 		let invoice = req.query.invoice;
+		// eslint-disable-next-line no-unused-vars
 		let result = await db.deleteTicket(tid, pnum, categoryid);
 		//let result = await db.deleteTicket(tid);
-		console.log(result);
+		//console.log(result);
 
 		let user = await db.getUserById(req.body.uid);
 		let email = user.email;
-		
+
 		var name = user.name;
 		var surname = user.surname;
-			
+
 
 		const output = `
 		<h3>Hi ${name} ${surname},</h3>
@@ -449,9 +443,6 @@ app.get('/deleteTicket/', async (req, res) => {
 			}
 			console.log('Message sent: %s', info.messageId);
 		});
-
-
-
 
 		res.redirect('/profile');
 
@@ -513,7 +504,6 @@ app.post('/events/search', async (req, res) => {
 	}
 });
 
-// TO-DO
 app.get('/company', async function (req, res) {
 	try {
 		if (req.session.loggedin) {

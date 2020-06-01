@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="../../bootstrap-resources/stylesheets/w3.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <script src="../../bootstrap-resources/js/jquery.min.js"></script>
-    <script src="../../bootstrap-resources/js/popper.min.js"></script>
-    <script src="../../bootstrap-resources/js/bootstrap.min.js"></script>
+    <script src="/bootstrap-resources/js/jquery.min.js"></script>
+    <script src="/bootstrap-resources/js/popper.min.js"></script>
+    <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
 
     <script>
-        function func(){	
-            var uId  = "<%= uId %>";
+        function func() {
+            var uId = "<%= uId %>";
             var eId = "<%= eId %>";
             window.location.href = "/ticketPurchasePage?uid=" + uId + "&eid=" + eId;
-            console.log(eId);
-            console.log(uId);
-      }
+            //console.log(eId);
+            //console.log(uId);
+        }
         $('#exampleModalCenter').on('shown.bs.modal', function () {
         })
     </script>
@@ -68,18 +68,20 @@
             left: auto;
             right: 0;
         }
-        p{
+
+        p {
             font-size: medium;
         }
-        h1,
-        h2 {
+
+        h1 {
             font-family: 'Times New Roman', Times, serif;
             font-style: italic;
             color: #0d5abe;
             font-weight: 450;
         }
 
-        h3{ font-family: 'Times New Roman', Times, serif;
+        h3 {
+            font-family: 'Times New Roman', Times, serif;
             font-style: italic;
         }
     </style>
@@ -147,8 +149,8 @@
                         <p><%= eDetail%></p>
                     </div>
                     <div class="col-md-6"">
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#exampleModalCenter" style="margin-bottom: 20px;
+                        <button type=" button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalCenter" style="margin-bottom: 20px;
                                 width: 180px;
                                 height: 45px; 
                                 background-color: #0d5abe;"> Get ticket
@@ -169,49 +171,12 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Close</button>
-                                        <a  onclick="func();"
-                                            type="button" class="btn btn-primary" 
-                                            style="background-color: #0d5abe;
+                                        <a onclick="func();" type="button" class="btn btn-primary" style="background-color: #0d5abe;
                                                     color: #fff;">Proceed to payment</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div id="coming-soon" style="margin-left: 30px;">
-                        <h1 style="text-align: left;">Coming Soon</h1>
-                            <div class="col-md-4" style="margin-bottom: 15px;">
-                                <div class="card" style="width:min-content; ">
-                                    <img src="<%= eImagePath%>" height="125px" width="225px" id="featured-card-img">
-                                    <div class="card-body">
-                                        <p class="card-text"></p>Tolgshow premiere onJanuary 23rd</p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                <button type="button"
-                                                    class="btn btn-sm btn-outline-secondary">View</button>
-                                                <button type="button" class="btn btn-sm btn-primary">Buy</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="card" style="width:min-content; ">
-                                    <img src="<%= eImagePath%>" height="125px" width="225px" id="featured-card-img">
-                                    <div class="card-body">
-                                        <p class="card-text"></p>Tolgshow premiere onJanuary 23rd</p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="btn-group">
-                                                <button type="button"
-                                                    class="btn btn-sm btn-outline-secondary">View</button>
-                                                <button type="button" class="btn btn-sm btn-primary">Buy</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                     </div>
                 </div>
             </div>

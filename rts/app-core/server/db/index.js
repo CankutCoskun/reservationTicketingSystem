@@ -248,7 +248,7 @@ db.getVenueById = (id) => {
 // TO-DO
 db.addNewEvent = (compid, title, venue, date, time, type, detail, city, imagePath) => {
 	return new Promise((resolve, reject) => {
-		
+
 		pool.query(`INSERT INTO Events (cId,title, venueId, date, time,detail,eType, city, status, imagePath)
                     VALUES(?,?,?,?,?,?,?,?, 'ACTIVE', ?);`
 		, [compid, title, venue, date, time, detail, type, city, imagePath], (err, result) => {
@@ -257,7 +257,7 @@ db.addNewEvent = (compid, title, venue, date, time, type, detail, city, imagePat
 
 				return reject(err);
 			}
-			return resolve(JSON.stringify(result) );
+			return resolve(JSON.stringify(result));
 		});
 	});
 };
@@ -466,7 +466,7 @@ db.deleteTicket = (id, pnum, categoryid) => {
 
 	return new Promise((resolve, reject) => {
 		pool.query(`DELETE FROM Tickets WHERE id = ?;
-					UPDATE Categories SET remaining = remaining + ? WHERE categoryid = ?`, [id, , pnum, categoryid], (err, _results) => {
+					UPDATE Categories SET remaining = remaining + ? WHERE categoryid = ?`, [id, pnum, categoryid], (err, _results) => {
 			if (err) {
 				return reject(err);
 			}

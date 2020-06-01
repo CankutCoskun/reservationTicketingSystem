@@ -10,7 +10,7 @@ xhttp.onreadystatechange = function () {
 		data.forEach(function (event) {
 
 			var col = document.createElement('div');
-			col.setAttribute('class', 'col-md-6');
+			col.setAttribute('class', 'col-md-3');
 
 			var card = document.createElement('div');
 			card.setAttribute('class', 'card mb-4 box-shadow');
@@ -32,10 +32,10 @@ xhttp.onreadystatechange = function () {
 			var d_flex = document.createElement('div');
 			d_flex.setAttribute('class', 'd-flex justify-content-between align-items-center');
 			d_flex.innerHTML = "<div class='btn-group'>" +
-        "<a href='/getEventDetailPage/" + event.eId + "'>" +
-        "<button type='button' class='btn btn-sm btn-outline-secondary'>View</button> </a>" +
-        "<button href='' type='button' class='btn btn-sm btn-outline-secondary'>Buy</button>" +
-        "</div>";
+				"<a href='/getEventDetailPage/" + event.eId + "'>" +
+				"<button type='button' class='btn btn-sm btn-outline-secondary'>View</button> </a>" +
+				"<button href='' type='button' class='btn btn-sm btn-outline-secondary'>Buy</button>" +
+				"</div>";
 
 			card_body.appendChild(p);
 			card_body.appendChild(d_flex);
