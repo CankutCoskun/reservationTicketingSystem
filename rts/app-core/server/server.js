@@ -21,6 +21,12 @@ const staticPath = path.resolve(__dirname, '..', 'static');
 
 const app = express();
 
+const PDFDocument = require('pdfkit');
+
+const fs = require("fs");
+
+var gcClient = require('./gcp');
+
 //Render engine config
 //In html syntax <%= var %>
 app.set('views', process.cwd() + '/views');
@@ -353,20 +359,31 @@ app.post('/createTicket', async (req, res) => {
 	try {
 		let event = await db.getEventById(req.body.eid);
 		let user = await db.getUserById(req.body.uid);
-		let result = await db.addNewTicket(req.body.uid, req.body.peoplenumber, req.body.eid, req.body.category);
-		let email = user.email;
-		let tid = result.insertId;
-		let ticket = await db.getTicketById(tid);
-		//console.log(ticket);
-		var name = user.name;
-		var surname = user.surname;
-		var eventTitle = event.title;
-		var eventDetail = event.detail;
-		//var eventAdress = event.address;
-		var eventDate = event.date;
-		var eventImagePath = event.imagePath;
-		var numPeople = ticket.peoplenumber;
-		const output = `
+		if (event.remainingseat < req.body.peoplenumber) {
+			res.send("no seats left for this event");
+		}
+		else {
+			let result = await db.addNewTicket(req.body.uid, req.body.peoplenumber, req.body.eid,req.body.category);
+			let email = user.email;
+			let tid = result.insertId;
+			let ticket = await db.getTicketById(tid);
+			//console.log(ticket);
+
+			let categoryInfo = await db.getPriceFromCategory(req.body.category);
+			var p1=categoryInfo[0].price;
+			let totalprice=(req.body.peoplenumber)*p1;
+			let invoice=await db.addNewInvoice(tid,totalprice);
+
+			var name = user.name;
+			console.log(name);
+			var surname = user.surname;
+			var eventTitle = event.title;
+			var eventDetail = event.detail;
+			//var eventAdress = event.address;
+			var eventDate = event.date;
+			var eventImagePath = event.imagePath;
+			var numPeople = ticket.peoplenumber;
+			const output = `
                 <h3>Hi ${name} ${surname},</h3>
                 
                 <p> Your ticket is created please see details below:</p>
@@ -377,44 +394,186 @@ app.post('/createTicket', async (req, res) => {
                 <li>DATE: ${eventDate}</li>
                 <li>DETAIL: ${eventDetail}</li>
                 </ul>
-                <img src='${eventImagePath}' height="120px" width="240px"></img>
+                <img src='${eventImagePath}'></img>
             `;
 
-		// create reusable transporter object using the default SMTP transport
-		var transporter = nodemailer.createTransport({
-			service: "gmail",
-			auth: {
-				user: process.env.EMAIL,
-				pass: process.env.PASSWORD
-			}
-		});
+			// create reusable transporter object using the default SMTP transport
+			var transporter = nodemailer.createTransport({
+				service: "gmail",
+				auth: {
+					user: process.env.EMAIL,
+					pass: process.env.PASSWORD
+				}
+			});
 
-		// setup email data with unicode symbols
-		let mailOptions = {
-			from: 'cs308reservationsystem@gmail.com', // sender address
-			to: email, // list of receivers
-			subject: 'New Ticket', // Subject line
-			html: output // html body
-		};
+			// setup email data with unicode symbols
+			let mailOptions = {
+				from: 'cs308reservationsystem@gmail.com', // sender address
+				to: email, // list of receivers
+				subject: 'New Ticket', // Subject line
+				html: output // html body
+			};
 
-		// send mail with defined transport object
-		transporter.sendMail(mailOptions, (error, info) => {
-			if (error) {
-				return console.log(error);
-			}
-			console.log('Message sent: %s', info.messageId);
-		});
+			// send mail with defined transport object
+			transporter.sendMail(mailOptions, (error, info) => {
+				if (error) {
+					return console.log(error);
+				}
+				console.log('Message sent: %s', info.messageId);
+			});
 
-		res.redirect(url.format({
-			pathname: '/viewTicket',
-			query: {
-				"tid": result.insertId
-			}
-		}));
+			res.redirect(url.format({
+				pathname: '/viewTicket',
+				query: {
+					"tid": result.insertId
+				}
+			}));
+
+			// invoice pdf 
+			let pdf = new PDFDocument({ size: "A4", margin: 50 });
+
+			
+
+            let buffers = [];
+            pdf.on('data', buffers.push.bind(buffers));
+            pdf.on('end', () => {
+
+                let pdfData = Buffer.concat(buffers);
+
+                // create reusable transporter object using the default SMTP transport
+                var transporter = nodemailer.createTransport({
+                    service: "gmail",
+                    auth: {
+                        user: process.env.EMAIL,
+                        pass: process.env.PASSWORD
+                    }
+                });
+
+                const mailOptions = {
+                    from: 'cs308reservationsystem@gmail.com', // sender address
+                    to: email, // list of receivers
+                    attachments: [{
+                        filename: 'attachment.pdf',
+                        content: pdfData
+                    }]
+                };
+
+                mailOptions.subject = 'PDF in mail';
+                mailOptions.text = 'PDF attached';
+                
+                return transporter.sendMail(mailOptions).then(() => {
+                    console.log('email sent:');
+                }).catch(error => {
+                    console.error('There was an error while sending the email:', error);
+                });
+
+            });
+		    let ipath="./server/Inovice_Uploads/";
+			let pdfname=invoice.insertId.toString()+"_invoice.pdf";
+			//pdf.text(invoice.insertId.toString(), 100, 100);
+			///*////////////////////////////////
+
+
+
+			let compinfo=await db.getCompanyDetailsByCompID(event.cId);
+			console.log(compinfo[0].name);
+			console.log(compinfo[0].companyAddress);
+			let fotopath="./server/"
+			
+			pdf.image(path.resolve(fotopath+"1589117003337_su1.jpg"), 50, 45, { width: 120 }) 
+    		pdf.fillColor("#444444");
+    		pdf.fontSize(20);
+			//pdf.text(compinfo[0].name, 110, 57); 
+			pdf.fontSize(10);
+			pdf.text(compinfo[0].name, 200, 50, { align: "right" });
+			pdf.text(compinfo[0].companyAddress, 200, 65, { align: "right" });
+			//pdf.text("Turke, 200, 80, { align: "right" });
+			pdf.moveDown();
+			pdf.fillColor("#444444");
+			pdf.fontSize(20);
+			pdf.text("Invoice", 50, 160);
+			pdf.strokeColor("#aaaaaa");
+			pdf.lineWidth(1);
+			pdf.moveTo(50, 185);
+			pdf.lineTo(550, 185);
+			pdf.stroke();
+			pdf.fontSize(10);
+
+			//fatura bilgileri ve kişi bilgileri 
+
+			const customerInformationTop = 200;
+			pdf.text("Invoice Number:", 50, customerInformationTop);
+			pdf.font("Helvetica-Bold");
+			pdf.text(invoice.insertId, 150, customerInformationTop);
+			pdf.font("Helvetica");
+			pdf.text("Invoice Date:", 50, customerInformationTop + 15);
+
+			var d = new Date();
+			const day = d.getDate();
+			const month = d.getMonth() + 1;
+			const year = d.getFullYear();
+		  
+			let nd= year + "/" + month + "/" + day;
+
+			pdf.text(nd, 150, customerInformationTop + 15);
+			pdf.text("Balance Due:", 50, customerInformationTop + 30);
+			pdf.text(totalprice.toString()+" TL",150,customerInformationTop + 30);
+
+			pdf.font("Helvetica-Bold");
+			pdf.text(user.name + " " + user.surname, 300, customerInformationTop);
+			pdf.font("Helvetica");
+			pdf.text(user.email, 300, customerInformationTop + 15);
+			pdf.moveDown();
+
+			pdf.strokeColor("#aaaaaa");
+			pdf.lineWidth(1);
+			pdf.moveTo(50, 252);
+			pdf.lineTo(550, 252);
+			pdf.stroke();
+
+
+			// fatura tablosu 
+			const invoiceTableTop = 330;			
+			pdf.font("Helvetica-Bold");
+			pdf.fontSize(10)
+			pdf.text("Event", 50, 330)
+			pdf.text("Date", 150, 330, { width: 90, align: "right" })
+			pdf.text("Unit Cost", 280, 330, { width: 90, align: "right" })  
+  			pdf.text("Quantity", 370, 330, { width: 90, align: "right" })
+  			pdf.text("Total", 0, 330, { align: "right" });
+  			pdf.strokeColor("#aaaaaa")
+  			pdf.lineWidth(1)
+  			pdf.moveTo(50, 350)
+  			pdf.lineTo(550, 350)
+			pdf.stroke();
+			  
+			//fatura satırı 
+			const position = invoiceTableTop + (1) * 30;
+			pdf.fontSize(10)
+			pdf.text(event.title, 50, position)
+			var a=event.date.toString();
+			var b=a.substr(0,15);
+			pdf.text(b, 200, position)
+			pdf.text(p1.toString()+" TL", 280, position, { width: 90, align: "right" })
+			pdf.text(req.body.peoplenumber, 370, position, { width: 90, align: "right" })
+			pdf.text(totalprice.toString()+" TL", 0, position, { align: "right" });
+
+
+
+
+			/////////////*/////////////////////////
+			pdf.pipe(fs.createWriteStream(path.resolve(ipath+pdfname)));
+			await db.setInvoicePath(invoice.insertId,gcClient.getPublicUrlForItem(pdfname));		
+			pdf.end();
+			await gcClient.uploadFile(path.resolve(ipath+pdfname));
+			
+		}
+
 	} catch (error) {
 		console.log(error);
 	}
 });
+
 
 app.get('/deleteTicket/', async (req, res) => {
 	try {
