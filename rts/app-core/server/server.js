@@ -375,7 +375,6 @@ app.post('/createTicket', async (req, res) => {
 			let invoice=await db.addNewInvoice(tid,totalprice);
 
 			var name = user.name;
-			console.log(name);
 			var surname = user.surname;
 			var eventTitle = event.title;
 			var eventDetail = event.detail;
@@ -431,53 +430,8 @@ app.post('/createTicket', async (req, res) => {
 
 			// invoice pdf 
 			let pdf = new PDFDocument({ size: "A4", margin: 50 });
-
-			
-
-            let buffers = [];
-            pdf.on('data', buffers.push.bind(buffers));
-            pdf.on('end', () => {
-
-                let pdfData = Buffer.concat(buffers);
-
-                // create reusable transporter object using the default SMTP transport
-                var transporter = nodemailer.createTransport({
-                    service: "gmail",
-                    auth: {
-                        user: process.env.EMAIL,
-                        pass: process.env.PASSWORD
-                    }
-                });
-
-                const mailOptions = {
-                    from: 'cs308reservationsystem@gmail.com', // sender address
-                    to: email, // list of receivers
-                    attachments: [{
-                        filename: 'attachment.pdf',
-                        content: pdfData
-                    }]
-                };
-
-                mailOptions.subject = 'PDF in mail';
-                mailOptions.text = 'PDF attached';
-                
-                return transporter.sendMail(mailOptions).then(() => {
-                    console.log('email sent:');
-                }).catch(error => {
-                    console.error('There was an error while sending the email:', error);
-                });
-
-            });
-		    let ipath="./server/Inovice_Uploads/";
-			let pdfname=invoice.insertId.toString()+"_invoice.pdf";
-			//pdf.text(invoice.insertId.toString(), 100, 100);
-			///*////////////////////////////////
-
-
-
+			//////////////
 			let compinfo=await db.getCompanyDetailsByCompID(event.cId);
-			console.log(compinfo[0].name);
-			console.log(compinfo[0].companyAddress);
 			let fotopath="./server/"
 			
 			pdf.image(path.resolve(fotopath+"1589117003337_su1.jpg"), 50, 45, { width: 120 }) 
@@ -557,6 +511,49 @@ app.post('/createTicket', async (req, res) => {
 			pdf.text(p1.toString()+" TL", 280, position, { width: 90, align: "right" })
 			pdf.text(req.body.peoplenumber, 370, position, { width: 90, align: "right" })
 			pdf.text(totalprice.toString()+" TL", 0, position, { align: "right" });
+			//////////////////
+            let buffers = [];
+            pdf.on('data', buffers.push.bind(buffers));
+            pdf.on('end', () => {
+
+                let pdfData = Buffer.concat(buffers);
+
+                // create reusable transporter object using the default SMTP transport
+                var transporter = nodemailer.createTransport({
+                    service: "gmail",
+                    auth: {
+                        user: process.env.EMAIL,
+                        pass: process.env.PASSWORD
+                    }
+                });
+
+                const mailOptions = {
+                    from: 'cs308reservationsystem@gmail.com', // sender address
+                    to: email, // list of receivers
+                    attachments: [{
+                        filename: 'attachment.pdf',
+                        content: pdfData
+                    }]
+                };
+
+                mailOptions.subject = 'PDF in mail';
+                mailOptions.text = 'PDF attached';
+                
+                return transporter.sendMail(mailOptions).then(() => {
+                    console.log('email sent:');
+                }).catch(error => {
+                    console.error('There was an error while sending the email:', error);
+                });
+
+            });
+		    let ipath="./server/Inovice_Uploads/";
+			let pdfname=invoice.insertId.toString()+"_invoice.pdf";
+			//pdf.text(invoice.insertId.toString(), 100, 100);
+			///*////////////////////////////////
+
+
+
+			
 
 
 
