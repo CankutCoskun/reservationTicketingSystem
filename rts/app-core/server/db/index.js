@@ -475,6 +475,71 @@ db.deleteTicket = (id, pnum, categoryid) => {
 	});
 };
 
+//*********************************
+/**** Invoice ***/
+
+
+db.getPriceFromCategory = (cid) => {
+	return new Promise((resolve, reject) => {
+		pool.query(`SELECT price FROM Categories WHERE categoryid = ?`,[cid], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
+db.addNewInvoice = (ticketid,price) => {
+	return new Promise((resolve, reject) => {
+		pool.query(`
+                    INSERT INTO Invoice (tid,type, price) VALUES( ?, 'Purchase',?);` ,
+		[ticketid,price], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
+db.getInoviceDetailsByTicketID =(tid)=>{
+	return new Promise((resolve, reject) => {
+		pool.query(`SELECT price FROM Categories WHERE categoryid = ?`,[cid], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+
+};
+
+db.setInvoicePath=(invoiceid,pdfpath)=>{
+	return new Promise((resolve, reject) => {
+		pool.query(`
+                    UPDATE Invoice SET invoicepath=? WHERE iid=?;` ,
+		[pdfpath,invoiceid], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+}
+
+db.getCompanyDetailsByCompID =(cid)=>{
+	return new Promise((resolve, reject) => {
+		pool.query(`SELECT * FROM Companies WHERE id = ?`,[cid], (err, results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+
+};
+
 /* ****************  Login Authentication    ***************** */
 //
 
