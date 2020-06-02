@@ -214,13 +214,12 @@
                         <td><%= events[i].detail %></td>
                         <td>
                             <div class="container">
-                                <a href="#demo" class="btn btn-primary" data-toggle="collapse"
-                                    style="background-color: #0d5abe; height: 35px;"
-                                    onclick="displayCategories(<%= events[i].eId %>)">
+                                <a href="#table_<%=events[i].eId%>" class="btn btn-primary" data-toggle="collapse"
+                                    style="background-color: #0d5abe; height: 35px;">
                                     Categories
                                 </a>
 
-                                <div id="demo" class="collapse">
+                                <div id="table_<%=events[i].eId%>" class="collapse">
                                     <table class="table" id="categoryTable">
                                         <thead>
                                             <tr>
@@ -231,7 +230,7 @@
                                                 <th scope="col">price</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="categories">
+                                        <tbody id="categories_<%=events[i].eId%>">
                                             <!--
                                                 DYNAMICALLY FILLED
                                             -->
@@ -244,11 +243,10 @@
                             <div class="text-md-left">
                                 <!-- Button trigger modal -->
                                 <input id="cbtn" value="Add Category" type="submit" class="btn btn-dark generate"
-                                    data-toggle="modal" data-target="#exampleModal">
+                                    data-toggle="modal" data-target="#modal_<%=events[i].eId %>">
                             </div>
                             <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modal_<%=events[i].eId %>" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -257,11 +255,8 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <form action="/api/events/category/add/<%= events[i].eId %>" method="POST">
+                                        <form action="/api/events/category/add/<%=events[i].eId%>" method="POST">
                                             <div class="modal-body">
-                                                <!--
-                                                        CATEGORY FORM DYNAMICALLY CREATED
-                                                    -->
                                                 <div class="form-group">
                                                     <label>Category Name</label>
                                                     <input type="text" name="cname" class="form-control"
@@ -337,8 +332,10 @@
 
     <script>
 
+
+
         function deleteCategory(cid) {
-            alert(cid);
+            //alert(cid);
             var xmlhttp = new XMLHttpRequest();
             var a = "api/events/category/delete/" + String(cid);
             xmlhttp.open("DELETE", a, true);
@@ -363,7 +360,7 @@
             window.location.reload();
         }
 
-        function displayCategories(eid) {
+        function writeCategories(eid) {
             var xmlhttp = new XMLHttpRequest();
 
             xmlhttp.onreadystatechange = function () {
@@ -371,7 +368,7 @@
                     var rowCount = $('#categoryTable >tbody >tr').length;
                     const data = JSON.parse(this.responseText);
                     if (rowCount != data.length) {
-                        var table_body = document.getElementById('categories');
+                        var table_body = document.getElementById('categories_' + String(eid));
                         data.forEach(function (category) {
                             console.log(category);
                             var row = document.createElement('tr');
@@ -411,6 +408,12 @@
             xmlhttp.send();
 
         }
+        
+        <% for (var i = 0; i < events.length; i++) { %>
+            //alert(<%=events[i].eId %>);
+            writeCategories(<%=events[i].eId %>);
+        <%}%>
+
 
     </script>
 
