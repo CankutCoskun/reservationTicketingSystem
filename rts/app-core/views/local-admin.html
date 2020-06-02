@@ -349,6 +349,14 @@
             window.location.reload();
         }
 
+        function deleteVenue(vid) {
+            var xmlhttp = new XMLHttpRequest();
+            var a = "/api/venues/delete/" + String(vid);
+            xmlhttp.open("DELETE", a, true);
+            xmlhttp.send();
+            window.location.reload();
+        }
+
         //NOT USED
         function addCategory(vid) {
             var xmlhttp = new XMLHttpRequest();

@@ -163,7 +163,7 @@
                     <li class="list-group-item text-right"><span class="pull-left"><strong>User
                                 Name</strong></span><%= username %></li>
                     <li class="list-group-item text-right"><span
-                            class="pull-left"><strong>Joined</strong></span><%= created %></li>
+                            class="pull-left"><strong>Joined</strong></span><%= created%></li>
                     <li class="list-group-item text-right"><span
                             class="pull-left"><strong>Updated</strong></span><%= updated %></li>
 
@@ -195,6 +195,7 @@
                                         <th>Time</th>
                                         <th>Status</th>
                                         <th>Activity</th>
+                                        <th>Invoice</th>
 
                                     </tr>
                                 </thead>
@@ -214,10 +215,6 @@
                                                     style="background-color: #0d5abe;" role='button' value='See Ticket'>
                                             </a>
                                             <br>
-                                            <a href=<%= tickets[i].invoice %>>
-                                                <input type='submit' name='edit' class='btn btn-secondary btn-sl'
-                                                    style="background-color: #0d5abe;" role='button' value='See Invoice'>
-                                            </a>
                                             <br>
                                             <!-- <a href="/deleteTicket?tid=<%=tickets[i].id%>&pnum=<%=tickets[i].peoplenumber%>&eid=<%=tickets[i].eid%>">-->
 
@@ -229,8 +226,8 @@
                                             <script>
 
 
-                                                var cancelticket = function (edate, title, id, pnum, categoryid,invoice) {
-                                                    document.getElementById("canceltheticket").href = "/deleteTicket?tid=" + id + "&pnum=" + pnum + "&categoryid=" + categoryid +  "&invoice=" + invoice;
+                                                var cancelticket = function (edate, title, id, pnum, categoryid, invoice) {
+                                                    document.getElementById("canceltheticket").href = "/deleteTicket?tid=" + id + "&pnum=" + pnum + "&categoryid=" + categoryid + "&invoice=" + invoice;
 
 
                                                     const evntdate = Date.parse(edate);
@@ -265,6 +262,9 @@
 
 
                                             </script>
+                                        </td>
+                                        <td>
+                                            <a href=<%= tickets[i].invoice %>>See Invoice</a>
                                         </td>
                                     </tr>
                                     <% } %>
