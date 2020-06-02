@@ -220,7 +220,7 @@
                                 </a>
 
                                 <div id="table_<%=events[i].eId%>" class="collapse">
-                                    <table class="table" id="categoryTable">
+                                    <table class="table" id="categoryTable_<%=events[i].eId%>">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
@@ -332,8 +332,6 @@
 
     <script>
 
-
-
         function deleteCategory(cid) {
             //alert(cid);
             var xmlhttp = new XMLHttpRequest();
@@ -351,8 +349,8 @@
             window.location.reload();
         }
 
+        //NOT USED
         function addCategory(vid) {
-            //NOT USED
             var xmlhttp = new XMLHttpRequest();
             var targetApi = "/api/venues/category/add/" + String(vid);
             xmlhttp.open("POST", targetApi, true);
@@ -365,7 +363,7 @@
 
             xmlhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    var rowCount = $('#categoryTable >tbody >tr').length;
+                    var rowCount = $('#categoryTable_' + String(eid) + ' >tbody >tr').length;
                     const data = JSON.parse(this.responseText);
                     if (rowCount != data.length) {
                         var table_body = document.getElementById('categories_' + String(eid));
