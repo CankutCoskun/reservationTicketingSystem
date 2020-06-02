@@ -73,7 +73,7 @@ app.use(session({
 	secret: 'secret',
 	resave: true,
 	saveUninitialized: true,
-	cookie: { maxAge: 36000000 },
+	cookie: { maxAge: 360000 },
 }));
 
 
@@ -192,28 +192,46 @@ app.get('/events', function (req, res) {
 	}
 });
 
-// TO-DO
+
 app.get('/getEventDetailPage/:eid', async function (req, res) {
 
 	try {
-		//console.log(req.session.username);
-		let uname = req.session.username;
-		let user = await db.getUserByUname(uname);
-		let eid = req.params.eid;
-		let event = await db.getEventById(eid);
-		//If you render relative path /views/
-		res.render('event-detail.html', {
-			uId: user.uid,
-			eId: event.eId,
-			eTitle: event.title,
-			eDetail: event.detail,
-			eAddress: event.address,
-			eDate: event.date,
-			eCapacity: event.capacity,
-			eStatus: event.status,
-			eImagePath: event.imagePath
-			//cId: event.cId;
-		});
+		if (req.session.username == undefined) {
+			res.redirect('/login');
+		}
+		else {
+			//console.log(req.path);
+			//console.log(req.session);
+			let uname = req.session.username;
+			//console.log(uname);
+			let user = await db.getUserByUname(uname);
+			//console.log(user);
+			let eid = req.params.eid;
+			let event = await db.getEventById(eid);
+			let eCategories = await db.getAllCategoriesByEventId(eid);
+			let eVenue = await db.getVenueById(event.venueId);
+			var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+			event.date = event.date.toLocaleDateString("en-US", dateOptions); // Saturday, September 17, 2016
+
+			//If you render relative path /views/
+			res.render('event-detail.html', {
+				uId: user.uid,
+				eId: event.eId,
+				eTitle: event.title,
+				eDetail: event.detail,
+				eAddress: event.address,
+				eDate: event.date,
+				eTime: event.time,
+				eCapacity: event.capacity,
+				eStatus: event.status,
+				eImagePath: event.imagePath,
+				venuename: eVenue.name,
+				seatingplan: eVenue.imagePath,
+				categories: eCategories,
+				venue: eVenue,
+			});
+		}
+
 	} catch (error) {
 		console.log(error);
 	}
@@ -224,24 +242,34 @@ app.get('/getEventDetailPage/:eid', async function (req, res) {
 app.get('/getEventDetailPageNoLogin/:eid', async function (req, res) {
 
 	try {
-		//let uname = req.session.username;
-		//let user = await db.getUserByUname(uname);
+
 		let eid = req.params.eid;
-		req.session.eid = eid;
 		let event = await db.getEventById(eid);
+		//console.log(event);
+		let eCategories = await db.getAllCategoriesByEventId(eid);
+		//console.log(eCategories);
+		let eVenue = await db.getVenueById(event.venueId);
+		//console.log(eVenue);
+		var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+		event.date = event.date.toLocaleDateString("en-US", dateOptions); // Saturday, September 17, 2016
+
 		//If you render relative path /views/
 		res.render('event-detail-no-login.html', {
-			//uId: user.uid,
 			eId: event.eId,
 			eTitle: event.title,
 			eDetail: event.detail,
 			eAddress: event.address,
 			eDate: event.date,
+			eTime: event.time,
 			eCapacity: event.capacity,
 			eStatus: event.status,
-			eImagePath: event.imagePath
+			eImagePath: event.imagePath,
+			venuename: eVenue.name,
+			seatingplan: eVenue.imagePath,
+			categories: eCategories
 			//cId: event.cId;
 		});
+
 	} catch (error) {
 		console.log(error);
 	}
@@ -536,7 +564,7 @@ app.get('/company', async function (req, res) {
 });
 
 app.post('/updateUser', async function (request, response) {
-	console.log('update user request: ', request.body);
+	//console.log('update user request: ', request.body);
 	var uid = request.body.uid;
 	var username = request.body.uname;
 	var password = request.body.password;
