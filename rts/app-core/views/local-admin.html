@@ -215,11 +215,11 @@
                         <td><%= events[i].city %></td>
                         <td><%= events[i].eType %></td>
                         <td>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#detailModal"
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventdetail_<%=events[i].eId%>"
                                 style="background-color:sienna;">
                                 Detail
                             </button>
-                            <div class="modal fade" id="detailModal" data-backdrop="static" tabindex="-1" role="dialog"
+                            <div class="modal fade" id="eventdetail_<%=events[i].eId%>" data-backdrop="static" tabindex="-1" role="dialog"
                                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
