@@ -74,7 +74,7 @@
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" class="active" href="#"><i class="fa fa-fw fa-home"></i> Home</a>
+                        <a class="nav-link" class="active" href="/home"><i class="fa fa-fw fa-home"></i> Home</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Events</a>
@@ -101,13 +101,13 @@
                         <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">
                             <i class="fa fa-fw fa-user"></i> Profile </a>
                         <div class="dropdown-menu" id="profile-section" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i> My Profile</a>
+                            <a class="dropdown-item" href="/profile"><i class="fa fa-fw fa-user"></i> My Profile</a>
                             <a class="dropdown-item" href="#">Events</a>
                             <a class="dropdown-item" href="#">My tickets</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+                        <a class="nav-link" href="/logout"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
                     </li>
                     </li>
                 </ul>
@@ -174,7 +174,7 @@
                             <h4>Available Categories:</h4>
                             <ul>
                                 <% for (var i = 0; i < categories.length ; i++) { %>
-                                <li> <%= categories[i].categoryname %> : <%= categories[i].price %> TL </li>
+                                <li><b> <%= categories[i].categoryname %> : </b> <%= categories[i].price %> TL </li>
                                 <% } %>
                             </ul>
                             <br>

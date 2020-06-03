@@ -96,6 +96,33 @@ router.get('/calendarevents/', async (req, res) => {
 				var event = new Object();
 				event.title = String(results[i].title);
 				event.start = results[i].date;
+				event.url = '/getEventDetailPage/' + String(results[i].eId);
+				event.city =String(results[i].city);
+				event.detail = String(results[i].detail);
+				events.push(event);
+			}
+			
+			res.json(events);
+		}
+	} catch (e) {
+		console.log(e);
+		res.sendStatus(500);
+	}
+});
+
+router.get('/calendarEventsNoLogin/', async (req, res) => {
+	try {
+		let results = await db.getEvents();
+
+		if (results.length==0) {
+			res.json({});
+		}
+		else {
+			let events = [];
+			for (var i = 0; i < results.length; i++) {
+				var event = new Object();
+				event.title = String(results[i].title);
+				event.start = results[i].date;
 				event.url = '/getEventDetailPageNoLogin/' + String(results[i].eId);
 				event.city =String(results[i].city);
 				event.detail = String(results[i].detail);
@@ -109,6 +136,7 @@ router.get('/calendarevents/', async (req, res) => {
 		res.sendStatus(500);
 	}
 });
+//					event.url = '/getEventDetailPage/' + String(results[i].eId);
 
 router.get('/events/:id', async (req, res) => {
 	try {
@@ -167,6 +195,87 @@ router.post('/events/add', upload.single('myFile'), async (req, res) => {
 			req.body.eventdetail, req.body.city, gcClient.getPublicUrlForItem(file.filename));
 		res.redirect("/company");
 
+	} catch (error) {
+		console.log(error);
+		res.sendStatus(500);
+	}
+});
+
+
+router.post('/events/seatingPlan/add/:eid', upload.single('myFile'), async (req, res) => {
+
+	try {
+		var eid = req.params.eid ;
+		let seatingPlan=req.body.seatingplan.split(',');
+		
+		for (var i =0; i< seatingPlan.length; i++ ){ 
+			var row= seatingPlan[i];
+			var row= row.replace("\n",'');
+			row= row.replace("\r",'');
+			row= row.replace(/\n$/, '');
+
+			// DB eventseatmaps PUSH each row with their col number;
+			await db.addNewSeatRow(eid, row,i+1);
+
+			for (var j = 0; j < row.length; j++) {
+				var spaceCount=0;
+			  if (row.charAt(j)=='_'){
+				spaceCount++;}
+			else {
+				var colN=j +1 - spaceCount;
+				var rowN=i +1;
+				var char=row.charAt(j);
+				console.log(eid,colN,rowN,char,'active' );
+				await db.addNewSeat(eid,colN,rowN, char ,'active');
+				// 
+			}
+			
+			}
+		}
+
+		res.redirect("/company");
+
+	} catch (error) {
+		console.log(error);
+		res.sendStatus(500);
+	}
+});
+
+
+router.get('/events/seatingplan/get/:eid', async (req, res) => {
+	try {
+		// eslint-disable-next-line no-unused-vars
+		let results = await db.getSeatRowsByEventId(req.params.eid);
+		let seatmap=[];
+		
+		for (var i=0; i< results.length; i++ ){
+			seatmap.push(results[i].rowstr);
+
+		}
+		res.send(seatmap);
+	} catch (error) {
+		console.log(error);
+		res.sendStatus(500);
+	}
+});
+
+router.get('/events/bookedseats/get/:eid', async (req, res) => {
+	try {
+		// eslint-disable-next-line no-unused-vars
+		let results = await db.getBookedSeats(req.params.eid);
+
+		if (results.length==0) {
+			res.send(['1_1']); // just trying
+		}
+		else {
+			var bookedSeats = [];
+			for (var i = 0; i < results.length; i++) {
+				var seat= String(results[i].rowId) + '_' + String(results[i].columnId);
+				bookedSeats.push(seat);
+				console.log(bookedSeats);
+			}
+		}
+		res.send(bookedSeats);
 	} catch (error) {
 		console.log(error);
 		res.sendStatus(500);
@@ -241,8 +350,8 @@ router.delete('/events/category/delete/:cid', async (req, res) => {
 
 router.post('/events/category/add/:eid', async (req, res) => {
 	try {
-		//console.log(req.body);
-		await db.addCategory(req.params.eid, req.body.cname, req.body.ccap, req.body.cprice);
+		console.log('aa:'+req.body.csymbol);
+		await db.addCategory(req.params.eid, req.body.cname, req.body.ccap, req.body.cprice, req.body.csymbol);
 		//console.log({ "message": "Category is added" });
 		res.redirect('/company');
 	} catch (error) {

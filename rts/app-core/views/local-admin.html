@@ -35,6 +35,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/logout" style="color: white;"><i class="fa fa-fw fa-sign-out"></i>
                             Logout</a>
+                        <a class="nav-link" href="/events" style="color: white;"><i class="fa fa-fw fa-sign-out"></i>
+                            Events</a>
                     </li>
                     </li>
                 </ul>
@@ -225,6 +227,7 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">name</th>
+												<th scope="col">symbol </th>
                                                 <th scope="col">capacity</th>
                                                 <th scope="col">remaining</th>
                                                 <th scope="col">price</th>
@@ -268,6 +271,11 @@
                                                         placeholder="capacity" required="">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label> Symbol</label>
+                                                    <input type="text" name="csymbol" class="form-control"
+                                                        placeholder="symbol" required="">
+                                                </div>
+                                                <div class="form-group">
                                                     <label> Price ₺</label>
                                                     <input type="number" name="cprice" class="form-control"
                                                         placeholder="price" required="">
@@ -286,6 +294,39 @@
                         <td>
                             <input type='submit' name='delete' class='btn btn-sm btn-danger' role='button'
                                 value='Delete' onclick="deleteFunc(<%= events[i].eId %>)">
+                        </td>
+						<td>
+                            <input type='submit' name='addSeatingPlan' class='btn btn-secondary' role='button'
+                                value='Add Seating Plan' data-toggle="modal" data-target="#modal_seatingplan<%=events[i].eId %>">
+                            
+                                <div class="modal fade" id="modal_seatingplan<%=events[i].eId %>" tabindex="-1" role="dialog"
+                                aria-labelledby="seatModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="seatModalLabel">Request Dynamic Seating Plan</h5>
+                                        
+
+                                            
+                                            
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="api/events/seatingPlan/add/<%= events[i].eId %>" method="POST">
+                                            <div class="modal-body">
+                                                <p> <%= events[i].eId %> : By using symbols for categories, you can draw a rectangular plan.Use underscore for empty spaces (eg. aaa,b_b,ccc ) </p>
+                                                <textarea id="request" name="seatingplan" rows="4" cols="50"></textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Send Request</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <% } %>
@@ -382,6 +423,9 @@
                             id.innerText = category.categoryid;
                             var name = document.createElement('td');
                             name.innerText = category.categoryname;
+							
+							var char = document.createElement('td');
+                            char.innerText = category.categorysymbol;
                             var capacity = document.createElement('td');
                             capacity.innerText = category.capacity;
                             var price = document.createElement('td');
@@ -399,6 +443,7 @@
                             //"<input type='submit' class='btn btn-sm btn-danger' role='button' value = 'X' onclick ='deleteCategory()' >" 
                             row.appendChild(id);
                             row.appendChild(name);
+							row.appendChild(char);
                             row.appendChild(capacity);
                             row.appendChild(rem);
                             row.appendChild(price);

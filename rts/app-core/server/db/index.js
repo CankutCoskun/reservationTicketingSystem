@@ -314,6 +314,91 @@ db.searchEvents = (type, date, location, _text) => {
 	});
 };
 
+/* SEATCHART OF EVENTS*/
+
+db.addNewSeat = (eid,colN,rowN,char,status) => {
+
+	return new Promise((resolve, reject) => {
+
+		pool.query(`INSERT INTO eventseats (eventId,rowId,columnId,symbol,status) VALUES (?, ?, ?, ?, ?);`, [eid,rowN,colN,char,status], (err) => {
+			if (err) {
+				return reject(err);
+			}
+
+			return resolve({ message: 'new seat has been created' });
+		});
+	});
+};
+
+db.addNewSeatRow = (eventId, seatRow,rowId) => {
+
+	return new Promise((resolve, reject) => {
+
+		pool.query(`INSERT INTO eventseatrows (eventid,rowid, rowstr) VALUES (?, ?, ?);`, [eventId, rowId, seatRow], (err) => {
+			if (err) {
+				return reject(err);
+			}
+
+			return resolve({ message: 'new seatrow added successfully' });
+		});
+	});
+};
+
+db.getSeatRowsByEventId = (eventId) => {
+
+	return new Promise((resolve, reject) => {
+
+		pool.query(`SELECT * FROM eventseatrows WHERE eventid= ? ORDER BY rowid ASC `, [eventId], (err,results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+			
+		});
+	});
+};
+
+
+
+
+
+db.UpdateSeatStatus = (eventId,rowId,colId,status) => {
+
+	return new Promise((resolve, reject) => {
+
+		pool.query(`UPDATE eventseats SET status = ? WHERE rowId=? AND columnId= ? AND eventId=? ; `, [status,rowId,colId,eventId], (err,results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
+
+db.getBookedSeats = (eventId) => {
+	return new Promise((resolve, reject) => {
+		pool.query(`SELECT rowId,columnId FROM eventseats WHERE eventId=? AND status='booked' ; `, [eventId], (err,results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results);
+		});
+	});
+};
+
+db.getCategoryIdBySymbolAndEId = (symbol,eventId) =>{
+	return new Promise((resolve, reject) => {
+
+		pool.query(`SELECT * FROM Categories WHERE eventid= ? AND categorysymbol=?`, [eventId,symbol], (err,results) => {
+			if (err) {
+				return reject(err);
+			}
+			return resolve(results[0]);
+			
+		});
+	});
+}; 
 
 /* VENUE */
 
@@ -367,11 +452,11 @@ db.getAllCategoriesByEventId = async (eid) => {
 	});
 };
 
-db.addCategory = (eid, cname, ccap, cprice) => {
+db.addCategory = (eid, cname, ccap, cprice,csymbol) => {
 
 	return new Promise((resolve, reject) => {
-		pool.query(`INSERT INTO Categories (eventid, categoryname, capacity, price, remaining ) 
-					VALUES (?, ?, ?, ?, ?);`, [eid, cname, ccap, cprice, ccap], (err, result) => {
+		pool.query(`INSERT INTO Categories (eventid, categoryname, capacity, price, remaining, categorysymbol ) 
+					VALUES (?,?,?,?,?,?);`, [eid, cname, ccap, cprice, ccap,csymbol], (err, result) => {
 
 			if (err) {
 				return reject(err);
@@ -447,11 +532,11 @@ db.getTicketsByUserId = (id) => {
 
 // TO-DO
 //decrease remaining capacity of event and create tickets for the user
-db.addNewTicket = (userid, peoplenumber, eId, cid) => {
+db.addNewTicket = (userid, peoplenumber, eId, cid,seatList) => {
 	return new Promise((resolve, reject) => {
 		pool.query(`
-                    INSERT INTO Tickets (userid, peoplenumber,status, categoryid) VALUES( ?, ?, 'ACTIVE',?);` ,
-		[userid, peoplenumber, cid], (err, results) => {
+                    INSERT INTO Tickets (userid, peoplenumber,status, categoryid,seatlist, eventid) VALUES( ?, ?, 'ACTIVE',?, ?, ? );` ,
+		[userid, peoplenumber, cid,seatList,eId], (err, results) => {
 			if (err) {
 				return reject(err);
 			}
@@ -474,6 +559,8 @@ db.deleteTicket = (id, pnum, categoryid) => {
 		});
 	});
 };
+
+/* SEATS*/
 
 //*********************************
 /**** Invoice ***/

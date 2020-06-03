@@ -6,14 +6,18 @@
   <title>Ticket Purchase Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <!-- Bootstrap core CSS -->
+  <!-- Bootstrap core CSS --> 
   <link href="/bootstrap-resources/stylesheets/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/web-pages/ticket-pages/ticket-purchase.css">
+  <link rel="stylesheet" href="/seatchart/jquery.seat-charts.css">
 
-  '
-  <script src="/bootstrap-resources/js/jquery-3.4.1.slim.min.js"></script>'
+  <script src="/bootstrap-resources/js/jquery.min.js"></script>
+  
   <script src="/bootstrap-resources/docs/4.4/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/seatchart/jquery.seat-charts.js"></script>
+
+  
 
   <!-- TO-DO  VALIDATE FORM INPUTS 
     <script src="/web-pages/ticket-pages/form-validation.js"></script> -->
@@ -32,10 +36,154 @@
     }
 
   </script>
+      <script>
+        $(document).ready(function() {
+          var beer = $.ajax({
+                url: 'api/events/seatingplan/get/<%= eId %>',
+                async: false,
+                dataType: 'json'
+                  }).responseJSON;
+          console.log(beer);
+          var mapArray=[];
+          for (let key in beer) {
+               mapArray.push( beer[key] );
+                  }
+          console.log(mapArray);
+          var selected_list=[];
 
-  <style>
-  </style>
+          var booked = $.ajax({
+                url: 'api/events/bookedseats/get/<%= eId %>',
+                async: false,
+                dataType: 'json'
+                  }).responseJSON;
+                console.log(booked);
+                var bookedArray=[];
+          for (let key in booked) {
+            bookedArray.push( booked[key] );
+                  }
+            
+var sc = $('#dynamicseat').seatCharts({
+    map: mapArray,
+    naming : {
+						getLabel : function (character, row, column) {
+							return character;
+						},
+					},
+    
+    click: function () {
+        if (this.status() == 'available') {
+          selected_list.push(this.settings.id);
+          if(document.getElementById('categorysymbol').value == '' || document.getElementById('categorysymbol').value == this.settings.character){
+            document.getElementById('categorysymbol').value = this.settings.character;
+            document.getElementById('seatlist').value = selected_list;
+            return 'selected';
+            console.log(selected_list);
+          }
+          else{
+            alert('Choices from category '+this.settings.character + 'is valid. Refresh the page to choose from the other category.');
+            var index = selected_list.indexOf(this.settings.id);
+            if (index > -1) {
+              selected_list.splice(index, 1);
+            }
+          document.getElementById('seatlist').value = selected_list;
+            if(selected_list.length==0){
+              document.getElementById('categorysymbol').value= '';
+            }
+            console.log(selected_list);
+            console.log(document.getElementById('categorysymbol').value);
 
+          }
+
+          
+        } else if (this.status() == 'selected') {
+          var index = selected_list.indexOf(this.settings.id);
+            if (index > -1) {
+              selected_list.splice(index, 1);
+            }
+          document.getElementById('seatlist').value = selected_list;
+            if(selected_list.length==0){
+              document.getElementById('categorysymbol').value= '';
+            }
+
+
+
+          console.log(selected_list);
+
+            return 'available';
+        } else if (this.status() == 'unavailable') {
+          console.log(selected_list);
+            return 'unavailable';
+        } else {
+            return this.style();
+        }
+    }
+});
+
+//disable alreadybooked ones
+sc.get(bookedArray).status('unavailable');
+
+
+console.log(sc.find('selected'));
+
+function getselectedseats(sc) {
+			//basically find every selected seat and sum its price
+			sc.find('selected').each(function () {
+				//console.log(this.data());
+			});
+			
+		}
+
+});
+    </script>
+    <style>
+ 
+div.seatCharts-cell {
+	color: #182C4E;
+	height: 25px;
+	width: 25px;
+	line-height: 25px;
+	
+}
+div.seatCharts-seat {
+	color: #FFFFFF;
+	cursor: pointer;	
+}
+div.seatCharts-row {
+	height: 35px;
+}
+
+div.seatCharts-seat.available {
+/* 	background: url(vip.png); */
+	background-color: #3a78c3;
+}
+div.seatCharts-seat.focused {
+	background-color: #76B474;
+}
+div.seatCharts-seat.selected {
+	background-color: #E6CAC4;
+}
+div.seatCharts-seat.unavailable {
+	background-color: #472B34;
+}
+.front-indicator {
+	width: 1000px;
+	margin: 5px 32px 15px 32px;
+	background-color: #6f72f5;	
+	color: #000000;
+	text-align: center;
+	padding: 3px;
+	border-radius: 5px;
+}
+
+#selected-seats {
+	max-height: 90px;
+	overflow-y: scroll;
+	overflow-x: none;
+	width: 170px;
+}
+    </style>
+
+  
 </head>
 
 <body class="bg-light">
@@ -82,6 +230,9 @@
       <div class="py-5 text-center">
         <h1 style="font-style: italic;"><%= eTitle%></h1>
       </div>
+      <div id='dynamicseat'> 					<div class="front-indicator">Front</div>
+    </div>
+      <div id='legend'></div>
       <div class="row">
         <div class="col">
           <div class="container">
@@ -95,7 +246,7 @@
                 <div class="col-50">
                   <h3>Event Details</h3>
                   <br>
-                  <label class="font-weight-bold">Explanation</label>
+                  <label class="font-weight-bold">Event Description</label>
                   <p><%= eDetail%></p>
                   <label class="font-weight-bold">Date & Time </label>
                   <p>Date: <%= eDate%></p>
@@ -103,24 +254,35 @@
                   <label class="font-weight-bold">Venue</label>
                   <p>Venue: <%= eVenue.name%></p>
                   <p>Address: <%= eVenue.address%></p>
-                  <label class="font-weight-bold">Ticket details</label>
-                  <a href="<%= eVenue.imagePath%>">see Seat-map</a>
+                  <label class="font-weight-bold">Available Categories in the Seating Plan</label>
+                  <!-- <a href="<%= eVenue.imagePath%>">see Seat-map</a>--> 
                   <br>
+                  <ul>
+                    <% for (var i = 0; i < categories.length ; i++) { %>
+                    <li><b> <%= categories[i].categoryname %> : </b> <%= categories[i].price %> TL </li>
+                    <% } %>
+                </ul>
                   <div class="row">
                     <div class="col-50">
-                      <label for="num">How many tickets will you get?</label>
-                      <input id="num" type="number" name="peoplenumber" required>
+                     <!--  <label for="num">How many tickets will you get?</label>
+                      <input id="num" type="number" name="peoplenumber" required>--> 
+                      <input id='seatlist' type="hidden"  name="seatlist">
+                      <input id='categorysymbol' type="hidden"  name="categorysymbol" value=''>
+
                     </div>
                     <div class="col-50">
+
+                        <!-- 
                       <label for="cars">Choose a category:</label>
                       <select id="category" name="category" required>
                         <% for(var i=0; i < categories.length; i++) { %>
 
                         <option value="<%= categories[i].categoryid %>"><%= categories[i].categoryname %></option>
                         <% }  %>
-                      </select>
+                      </select>  --> 
                     </div>
                   </div>
+                  
                 </div>
                 <div class="col-50">
                   <img src="<%= eImagePath %>" width="420px" height="240px">
