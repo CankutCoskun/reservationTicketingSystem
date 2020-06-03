@@ -604,7 +604,8 @@ app.get('/deleteTicket/', async (req, res) => {
 		let ticket = await db.getTicketById(tid);
 		let eid = ticket.eventid;
 		let seatlist = ticket.seatlist.split(',');
-		for (var i = 0; i < seatlist.length; i++) {
+		//console.log(seatlist);
+		for (var i = 0; i < seatlist.length ; i++) {
 			var lst = seatlist[i].split("_");
 			let rowS = lst[0];
 			let colS = lst[1];

@@ -62,8 +62,8 @@ xhttp.onreadystatechange = function () {
 					error: function () {
 						alert('there was an error while fetching events!');
 					},
-					color: 'green',   // a non-ajax option
-					textColor: 'black' // a non-ajax option
+					color: 'seablue',   // a non-ajax option
+					textColor: 'white' // a non-ajax option
 				}],
 
 
