@@ -20,7 +20,7 @@
   <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
 
   <style>
-    .btn-primary{
+    .btn-primary {
       background-color: #0d5abe;
     }
   </style>
@@ -81,42 +81,39 @@
       <div class="container">
         <h1><%=eTitle %></h1>
         <div class="row"">
-          <article class="card">
-            <section class="date">
-              <time datetime="23th feb">
-                <span><%=price%></span><span>₺</span>
+          <article class=" card">
+          <section class="date">
+            <time datetime="23th feb">
+              <span><%=price%>₺</span>
+            </time>
+          </section>
+          <section class="card-cont">
+            <small><%=uName%> <%=uSurname%></small>
+            <h3><%=eTitle %></h3>
+            <div class="even-date">
+              <i class="fa fa-calendar"></i>
+              <time>
+                <span><%=eDate%></span>
+                <span></span>
               </time>
-            </section>
-            <section class="card-cont">
-              <small><%=uName%> <%=uSurname%></small>
-              <h3><%=eTitle %></h3>
-              <div class="even-date">
-                <i class="fa fa-calendar"></i>
-                <time>
-                  <span><%=eDate%></span>
-                  <span></span>
-                </time>
-              </div>
-              <div class="even-info">
-                <i class="fa fa-map-marker"></i>
-                <p>
-                  <%=eVenue%> 
-                  <br>
-                  Category: <%=categoryName%> 
-                </p>
-                <p>
-                  <br>
-                  Seats: <%=seats%> 
-                </p>
-                
-              </div>
-              <br>
+            </div>
+            <div class="even-info">
+              <i class="fa fa-map-marker"></i>
               <p>
-                <%=eDetail%>
+                <%=eVenue%>
+                <br>
+                Category: <%=categoryName%>
               </p>
-            </section>
+              <p>
+                <br>
+                Seats: <%=seats%>
+              </p>
+
+            </div>
+            <br>
+          </section>
           </article>
-          <img src="<%=eImagePath%>" alt="" width="400" height="300">
+          <img src="<%=eImagePath%>" alt="" width="450" height="250">
         </div>
       </div>
       <section class="container" style="text-align: center;">
