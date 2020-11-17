@@ -1,3 +1,4 @@
-CS 308 GROUP PROJECT 
+CS 308 GROUP PROJECT
 
-25.03.2020  
+Software Engineering Term Project
+Reservation and Ticketing System

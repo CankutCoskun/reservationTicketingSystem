@@ -464,9 +464,9 @@ app.post('/createTicket', async (req, res) => {
 			let compinfo = await db.getCompanyDetailsByCompID(event.cId);
 			console.log(compinfo[0].name);
 			console.log(compinfo[0].companyAddress);
-			let fotopath = "./server/"
+			let fotopath = "./server/";
 
-			pdf.image(path.resolve(fotopath + "1589117003337_su1.jpg"), 50, 45, { width: 120 })
+			pdf.image(path.resolve(fotopath + "1589117003337_su1.jpg"), 50, 45, { width: 120 });
 			pdf.fillColor("#444444");
 			pdf.fontSize(20);
 			//pdf.text(compinfo[0].name, 110, 57); 
@@ -534,7 +534,7 @@ app.post('/createTicket', async (req, res) => {
 
 			//fatura satırı 
 			const position = invoiceTableTop + (1) * 30;
-			pdf.fontSize(10)
+			pdf.fontSize(10);
 			pdf.text(event.title, 50, position);
 			var a = event.date.toString();
 			var b = a.substr(0, 15);
