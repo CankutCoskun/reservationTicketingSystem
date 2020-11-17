@@ -1,0 +1,14 @@
+.vscode
+rts/db_properties.txt
+
+rts/app-core/node_modules/
+rts/app-core/cs308-rts-af8045b0ad06.json
+rts/app-core/.env
+rts/app-core/.eslintrc.json
+
+rts/app-core/static/uploads/
+
+rts/app-core/server/Invoice_Uploads/*.pdf
+rts/app-core/server/cs308-rts-af8045b0ad06.json
+rts/app-core/server/db/db_prop.json
+

@@ -1,0 +1,98 @@
+<!doctype html>
+
+
+
+
+
+
+
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>Sabanci CS308 Project</title>
+  <style>
+    label{
+      color: white;
+    }
+    .btn.btn-primary{
+      background-color: #0d5abe;
+      width: 240px;
+    }
+
+    .btn.btn-secondary{
+      width: 240px;
+    }
+  </style>
+</head>
+
+<body style="background-color:#d9dcdf;">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/home ">
+      <img src="/image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top mr-3" alt=""> 
+    </a>
+    <p style="color: white; font-size: large;">Reservation & Ticketing System </p>
+  </nav>
+  <div class="container mt-5 ">
+    <div class="row ">
+      <div class="col-3">
+      </div>
+
+      <div class="col-5 bg-dark text-dark rounded border border-white p-5">
+
+        <form action='createUser' method='POST'>
+      
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" class="form-control" name="name"placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="surname">Your Surname</label>
+            <input type="text" class="form-control" name="surname"placeholder="Surname"required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Your Email</label>
+            <input type="text" class="form-control" name="email"placeholder="name@example.com"required>
+          </div>
+          <div class="form-group">
+            <label for="uname">Your Username</label>
+            <input type="text" class="form-control" name="uname" placeholder="username"required>
+          </div>
+          <div class="form-group">
+            <label for="password">Your Password</label>
+            <input type="password" class="form-control" name="password" placeholder="********" required>
+          </div>
+
+          <div class="form-group" style="text-align: center; margin-top: 30px;">
+            <input type='submit' name='log1' class="btn btn-primary" role="button" aria-pressed="true"
+              value="Sign Up">
+          </div>
+          <div style="text-align: center; margin-top: 45px;">
+            <label for="login">Have an account already?</label>
+            <a name="login" href="/login" class="btn btn-secondary">Sign In</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+</body>
+
+</html>

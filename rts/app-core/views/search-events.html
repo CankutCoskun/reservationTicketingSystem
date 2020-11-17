@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+
+	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
+	<link rel="stylesheet" href="/web-pages/event-pages/resources/stylesheets/events.css">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+	<script>
+
+		var type = "<%= type%>";
+		var date = "<%= date%>";
+		var city = "<%= city%>";
+		//console.log(type, date, city);
+
+	</script>
+	<style>
+
+	</style>
+</head>
+
+<body>
+	<header>
+		<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm"
+			style="margin-bottom: 0; color: white;">
+
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+				aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarColor02">
+				<img style="margin-right: 10px;" src="/image-assets/ticket.png" width="60" height="60"
+					class="d-inline-block align-top" alt="">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<h3 style="color: white;">RTS</h3>
+					</li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right ml-auto" style="text-align: center;">
+					<li class="nav-item">
+						<a href="#" data-toggle="dropdown"
+							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
+							style="border-color: white; color: white;"> <i class="fa fa-sign-in" aria-hidden="true"></i>
+							Login</a>
+						<ul class="dropdown-menu form-wrapper">
+							<li>
+								<form action='/auth' method='POST'>
+
+									<div class="form-group">
+										<input type="text" name="username" class="form-control" placeholder="Username"
+											required="required">
+									</div>
+									<div class="form-group">
+										<input type="password" name="password" class="form-control"
+											placeholder="Password" required="required">
+									</div>
+									<input type="submit" class="btn btn-dark btn-block" value="Login">
+									<div class="form-footer">
+										<a href="#">Forgot Your password?</a>
+									</div>
+								</form>
+							</li>
+						</ul>
+					</li>
+					<li class="nav-item" style="margin-left: 20px;">
+						<a href="#" data-toggle="dropdown"
+							class="btn btn-dark dropdown-toggle get-started-btn mt-1 mb-1"
+							style="border-color: white; color: white;">Sign up</a>
+						<ul class="dropdown-menu form-wrapper">
+							<li>
+								<form action='createUser' method='POST'>
+									<p class="hint-text">Fill in this form to create your account!</p>
+									<div class="form-group">
+
+										<input type="text" class="form-control" name="name" placeholder="Name" required>
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control" name="surname" placeholder="Surname"
+											required>
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control" name="email"
+											placeholder="name@example.com" required>
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control" name="uname" placeholder="username"
+											required>
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" name="password"
+											placeholder="********" required>
+									</div>
+									<input type="submit" class="btn btn-dark btn-block" value="Sign up">
+								</form>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div style="background-color:#343a4077;">
+			<ul class="nav justify-content-center" style="padding: 20px; margin-top: 75px;">
+				<li class="nav-item">
+					<form class="" action="/events/search" method="POST">
+						<div class="row">
+							<div class="col">
+								<img src="/image-assets/theater-masks-solid.svg" height="36px" width="36px"
+									style="margin-bottom: 5px;">
+								<label for="type" style="font-size: large;">Kind</label>
+								<select class="form-control" id="type" name="type" required>
+									<option>CONCERT</option>
+									<option>THEATRE</option>
+									<option>DANCE</option>
+									<option>STANDUP</option>
+									<option>MUSICAL</option>
+									<option>OPERA</option>
+									<option>BALLET</option>
+								</select>
+							</div>
+							<div class="col">
+								<i class="fa fa-fw fa-calendar" style="font-size: 30px;"></i>
+								<label for="date" style="font-size: large;"> Date:</label>
+								<input class="datepicker" id="date" name="date" required style="width: 150px">
+							</div>
+							<div class="col">
+								<i class="fa fa-map-marker" aria-hidden="true" style="font-size: 30px;"></i>
+								<label for="location" style="font-size: large;">Location</label>
+								<select class="form-control" id="location" name="location" required>
+									<option>ANTALYA</option>
+									<option>ANKARA</option>
+									<option>ISTANBUL</option>
+									<option>IZMIR</option>
+									<option>BURSA</option>
+								</select>
+							</div>
+							<div class="col">
+								<input type="text" class="form-control" placeholder="Search" id="text" name="text"
+									style="margin-top: 42px; width: 210px;">
+							</div>
+							<div class="col">
+								<div class="input-group-btn">
+									<button class="btn-dark" type="submit" style="margin-top: 42px; width: 150px;">
+										<i class="fa fa-search" aria-hidden="true" style="font-size: 20px;"></i> Find
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</li>
+			</ul>
+		</div>
+	</header>
+	<main role="main">
+		<br>
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<table class="table table-image" style="text-align: center;">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col"></th>
+								<th scope="col">Name</th>
+								<th scope="col">Date</th>
+								<th scope="col">Time</th>
+								<th scope="col">Status</th>
+								<th scope="col">Detail</th>
+							</tr>
+						</thead>
+						<tbody id="events">
+							<% for(var i=0; i < events.length; i++) { %>
+							<tr>
+								<th scope="row"><%=events[i].eId%></th>
+								<td class="w-25">
+									<a href="/home"><img src="<%=events[i].imagePath%>"
+											class="img-fluid img-thumbnail"></a>
+								</td>
+								<td><%=events[i].title%></td>
+								<td><%=date%></td>
+								<td><%=events[i].time%></td>
+								<td><%=events[i].status%></td>
+								<td><%=events[i].detail%></td>
+							</tr>
+							<% } %>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<!--	Bootstrap Script-->
+	<script src="/bootstrap-resources/js/jquery.min.js"></script>
+	<script src="/bootstrap-resources/js/popper.min.js"></script>
+	<script src="/bootstrap-resources/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script>
+		$('.datepicker').datepicker();
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Your Profile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap-resources/stylesheets/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <script src="/bootstrap-resources/js/jquery.min.js"></script>
+    <script src="/bootstrap-resources/js/popper.min.js"></script>
+    <script src="/bootstrap-resources/js/bootstrap.min.js"></script>
+
+
+    <style>
+        .navbar-nav>.nav-item {
+            color: white;
+            margin-left: 10px;
+            margin-right: 5px;
+        }
+
+        .navbar ul.nav li.open>a.get-started-btn {
+            color: #fff;
+            background: white;
+        }
+
+        /* change the brand and text color */
+        .navbar .navbar-brand,
+        .navbar .navbar-text {
+            color: white;
+        }
+
+        /* change the link color */
+        .navbar-nav .nav-item .nav-link {
+            color: white;
+        }
+
+        /* change the color of active or hovered links */
+        .navbar-nav .nav-item.active .nav-link,
+        .navbar-nav .nav-item:hover .nav-link {
+            color: white;
+
+        }
+
+        .panel-heading {
+            padding: 10px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px
+        }
+
+        #profile-section {
+            width: 280px;
+            padding: 20px;
+            left: auto;
+            right: 0;
+        }
+
+        h1,
+        h2 {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+            color: #0d5abe;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="modal fade" id="exampleModalCenter">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="exampleModalCenterTitle">Ticket Cancelling </h1>
+                </div>
+                <div class="modal-body">
+                    <h3 id="etitle"></h3>
+                    <p id="edate"></p>
+                    <p id="people"></p>
+                    <p id="remainday"></p>
+                    <p id="about"></p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a id="canceltheticket" href="">
+                        <input type='submit' name='edit' class='btn btn-secondary btn-sl'
+                            style="background-color: #0d5abe;" role='button' value='Cancel Ticket'>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
+            <img src="../image-assets/ticket.png" width="60" height="60" class="d-inline-block align-top" alt="">
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" class="active" href="/events"><i class="fa fa-fw fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">Events</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Concerts</a>
+                            <a class="dropdown-item" href="#">Theatre</a>
+                            <a class="dropdown-item" href="#">Dance</a>
+                            <a class="dropdown-item" href="#">Stand-up Comedy</a>
+                            <a class="dropdown-item" href="#">Opera/Ballet</a>
+                            <a class="dropdown-item" href="#">Musical</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right ml-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-fw fa-envelope"></i> Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+                    </li>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+    <hr>
+    <hr>
+    <hr>
+    <div class="container bootstrap snippet">
+
+
+        <div class="row">
+            <div class="col-sm-10">
+                <!--    <a href="/users" class="pull-left"><img title="profile image" class="img-circle img-responsive" src="https://bootdey.com/img/Content/avatar/avatar1.png"></a>
+					-->
+                <h1><%= name_surname %></h1>
+
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">Credentials</div>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>User
+                                Name</strong></span><%= username %></li>
+                    <li class="list-group-item text-right"><span
+                            class="pull-left"><strong>Joined</strong></span><%= created%></li>
+                    <li class="list-group-item text-right"><span
+                            class="pull-left"><strong>Updated</strong></span><%= updated %></li>
+
+                </div>
+
+
+
+            </div>
+            <!--/col-3-->
+            <div class="col-sm-9">
+
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="nav-link active"><a href="#home" data-toggle="tab">My Tickets</a></li>
+                    <li class="nav-link"><a href="#settings" data-toggle="tab">Update Profile</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Company</th>
+                                        <th>Venue</th>
+                                        <th>Time</th>
+                                        <th>Status</th>
+                                        <th>Activity</th>
+                                        <th>Invoice</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="items">
+                                    <% for(var i=0; i < tickets.length; i++) { %>
+                                    <tr>
+                                        <td><%= i+1 %> </td>
+                                        <td><%= tickets[i].title %></td>
+                                        <td><%= tickets[i].eventtype %></td>
+                                        <td><%= tickets[i].companyname %></td>
+                                        <td><%= tickets[i].venue %></td>
+                                        <td><%= tickets[i].eventdate %></td>
+                                        <td><%= tickets[i].status %></td>
+                                        <td>
+                                            <a href="/viewTicket?tid=<%=tickets[i].id%>">
+                                                <input type='submit' name='edit' class='btn btn-secondary btn-sl'
+                                                    style="background-color: #0d5abe;" role='button' value='See Ticket'>
+                                            </a>
+                                            <br>
+                                            <br>
+                                            <!-- <a href="/deleteTicket?tid=<%=tickets[i].id%>&pnum=<%=tickets[i].peoplenumber%>&eid=<%=tickets[i].eid%>">-->
+
+                                            <!-- <a href="/deleteTicket?tid=<%=tickets[i].id%>&pnum=<%=tickets[i].peoplenumber%>&eid=<%=tickets[i].eid%>"> -->
+                                            <input type='submit' name='delete' class='btn btn-secondary btn-sl'
+                                                role='button' value='Cancel'
+                                                onclick=' cancelticket( "<%= tickets[i].eventdate %>" ,"<%= tickets[i].title %>","<%=tickets[i].id%>","<%=tickets[i].peoplenumber%>","<%=tickets[i].categoryid%>","<%=tickets[i].invoice%>" ); '>
+
+                                            <script>
+
+
+                                                var cancelticket = function (edate, title, id, pnum, categoryid, invoice) {
+                                                    document.getElementById("canceltheticket").href = "/deleteTicket?tid=" + id + "&pnum=" + pnum + "&categoryid=" + categoryid + "&invoice=" + invoice;
+
+
+                                                    const evntdate = Date.parse(edate);
+                                                    const today = new Date();
+                                                    const td = Date.parse(today);
+
+                                                    var dif = (evntdate - td) / 1000 / 3600 / 24;
+                                                    // expected output: 818035920000
+                                                    console.log(dif / 60 / 60 / 24 / 1000)
+
+                                                    if (dif < 3) {
+                                                        document.getElementById("about").innerHTML = "You will be getting no payment as  the remaining day to event is less than 3";
+                                                    }
+                                                    else if (dif < 7) {
+                                                        document.getElementById("about").innerHTML = "You will be getting repayment as %50 of your ticket price as the remaining day is less than 7";
+                                                    }
+
+                                                    else {
+                                                        document.getElementById("about").innerHTML = "You will be getting repayment as your ticket price as the remaining day is more than 7";
+                                                    }
+                                                    document.getElementById("about").style.color = "red";
+                                                    //document.getElementById("remainday").innerHTML = dif;
+                                                    document.getElementById("edate").innerHTML = "Event date : " + edate;
+                                                    document.getElementById("etitle").innerHTML = "Event Name : " + title;
+                                                    document.getElementById("people").innerHTML = "Number of seats in this ticket: " + pnum;
+
+                                                    document.getElementById("about").innerHTML
+                                                    $('#exampleModalCenter').modal("show");
+                                                }
+
+
+
+
+                                            </script>
+                                        </td>
+                                        <td>
+                                            <a href=<%= tickets[i].invoice %>>See Invoice</a>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4 col-md-offset-4 text-center">
+                                    <ul class="pagination" id="myPager"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/table-resp-->
+
+                        <hr>
+
+                    </div>
+
+
+                    <div class="tab-pane" id="settings">
+
+                        <hr>
+                        <form class="form" action="updateUser" method="post" id="registrationForm">
+                            <input hidden type="text" class="form-control" name="uid" id="uid" value="<%= uid %>">
+
+                            <div class="form-row">
+
+                                <div class="col-5">
+                                    <label for="first_name">
+                                        <h4>First name</h4>
+                                    </label>
+                                    <input type="text" class="form-control" name="name" value="<%= name %>"
+                                        title="enter your first name if any.">
+                                </div>
+                                <div class="col-5">
+                                    <label for="last_name">
+                                        <h4>Last name</h4>
+                                    </label>
+                                    <input type="text" class="form-control" name="surname" value="<%= surname %>">
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+
+                                <div class="col-5">
+                                    <label for="username">
+                                        <h4>Username</h4>
+                                    </label>
+                                    <input type="text" readonly class="form-control" name="uname"
+                                        value="<%= username %>">
+                                </div>
+                                <div class="col-5">
+                                    <label for="email">
+                                        <h4>Email</h4>
+                                    </label>
+                                    <input type="email" class="form-control" name="email" value="<%= email %>">
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+
+                                <div class="col-5">
+                                    <label for="phone">
+                                        <h4>Phone</h4>
+                                    </label>
+                                    <input type="text" class="form-control" name="phone" id="phone"
+                                        placeholder="enter phone">
+                                </div>
+                                <div class="col-5">
+                                    <label for="email">
+                                        <h4>Address</h4>
+                                    </label>
+                                    <input type="email" class="form-control" id="location" placeholder="somewhere">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="col-5">
+                                    <label for="password">
+                                        <h4>Password</h4>
+                                    </label>
+                                    <input type="password" class="form-control" name="password" id="password"
+                                        placeholder="*******" required>
+                                </div>
+                                <div class="col-5">
+                                    <label for="password2">
+                                        <h4>Verify</h4>
+                                    </label>
+                                    <input type="password" class="form-control" name="password2" id="password2"
+                                        placeholder="******" onkeyup="check();" required>
+                                    <span id="message"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <br>
+                                    <button style="background-color: #0d5abe;" class="btn btn-lg btn-primary"
+                                        type="submit">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <script>
+
+
+
+                        var check = function () {
+                            if (document.getElementById("password").value == document.getElementById("password2").value) {
+                                document.getElementById("message").style.color = "green";
+                                document.getElementById("message").innerHTML = "matching";
+                            }
+                            else {
+                                document.getElementById("message").style.color = "red";
+                                document.getElementById("message").innerHTML = "no match";
+                            }
+                        }
+                    </script>
+
+                </div>
+
+
+                <!--/tab-pane-->
+            </div>
+            <!--/tab-content-->
+
+        </div>
+        <!--/col-9-->
+    </div>
+    <!--/row-->
+
+</body>
+
+</html>
