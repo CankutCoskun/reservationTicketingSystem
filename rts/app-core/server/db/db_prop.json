@@ -1,9 +1,0 @@
-{
-    "username": "doadmin",
-    "password": "lomdyrob8p6pb56g",
-    "host": "cs308db-do-user-7358055-0.a.db.ondigitalocean.com",
-    "port": "25060",
-    "database": "reservations",
-    "sslmode": "REQUIRED"
-
-}
